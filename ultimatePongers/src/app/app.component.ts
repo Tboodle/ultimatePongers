@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ultimatePongers';
+
+  constructor(private router: Router) { }
+
+  isHomePage() {
+    return this.router.url.endsWith('/');
+  }
+
+  isCompetitorsPage() {
+    return this.router.url.endsWith('/competitors');
+  }
 }
