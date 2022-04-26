@@ -6,4 +6,6 @@ export interface Player {
     nickName?: string;
     paddle?: string;
     picture?: number;
+    wins: number;
+    losses: number;
 }

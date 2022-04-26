@@ -4,10 +4,48 @@
     <div class="flex flex-col justify-center bg-white rounded-2xl shadow-xl shadow-slate-300/60">
         <!-- text information -->
         <div class="p-4">
-            <h1 class="text-2xl font-medium text-slate-600 pb-2">Leaderboard</h1>
-            <p *ngFor="let player of players" class="text-sm tracking-tight font-light text-slate-400 leading-6">
-                {{player.name}}
-            </p>
+            <h1 class="text-2xl font-medium text-slate-600 pb-2 px-6">Leaderboard</h1>
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs uppercase">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Rank
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Win Percentage
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Wins
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Losses
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let player of players; let i = index" class="bg-white">
+                        <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap"
+                            [ngClass]="{'text-3xl text-gold': i == 0, 'text-2xl': i == 1, 'text-xl': i == 2, 'text-silver' : i == 1, 'text-bronze': i == 2}">
+                            {{ i + 1 }}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{player.name}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ 100 * player.wins / (player.wins + player.losses) }}%
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ player.wins }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ player.losses }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
