@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Match } from 'src/app/models/match';
 
 @Component({
   selector: 'app-recent-matches',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./recent-matches.component.scss']
 })
 export class RecentMatchesComponent implements OnInit {
+  @Input() matches: Match[];
 
   constructor() { }
 

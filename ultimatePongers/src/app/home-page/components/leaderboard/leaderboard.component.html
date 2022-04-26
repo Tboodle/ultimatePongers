@@ -5,7 +5,9 @@
         <!-- text information -->
         <div class="p-4">
             <h1 class="text-2xl font-medium text-slate-600 pb-2">Leaderboard</h1>
-            <p class="text-sm tracking-tight font-light text-slate-400 leading-6">Stats coming soon...</p>
+            <p *ngFor="let player of players" class="text-sm tracking-tight font-light text-slate-400 leading-6">
+                {{player.name}}
+            </p>
         </div>
     </div>
 </div>
