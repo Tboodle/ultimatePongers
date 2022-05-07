@@ -14,4 +14,14 @@ export class LeaderboardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getWinPercentageForPlayer(player: Player): string {
+    const totalMatches = player.wins + player.losses;
+
+    if (totalMatches > 0) {
+      return (100 * player.wins / totalMatches ).toFixed(2) + '%';
+    } else {
+      return '-'; 
+    }
+  }
+
 }
