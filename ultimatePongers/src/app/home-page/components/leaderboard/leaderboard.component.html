@@ -4,19 +4,19 @@
     <div class="flex flex-col justify-center bg-white rounded-2xl shadow-xl shadow-slate-300/60">
         <!-- text information -->
         <div class="p-4">
-            <h1 class="text-3xl font-medium text-slate-400 pb-12 px-6">Leaderboard</h1>
+            <h1 class="text-3xl font-medium text-slate-800 pb-12 px-6">Leaderboard</h1>
             <table class="table-fixed w-full">
                 <thead class="text-center text-slate-400">
                     <tr>
                         <th class="w-1/12"></th>
-                        <th class="w-3/12"></th>
-                        <th>Win Percentage</th>
+                        <th class="w-5/12"></th>
+                        <th>Win %</th>
                         <th>Wins</th>
                         <th>Losses</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let player of players; let i = index" class="bg-white max-h-2">
+                    <tr *ngFor="let player of players; let i = index" class="bg-white">
                         <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap"
                             [ngClass]="{'text-gold': i == 0, 'text-silver': i == 1, 'text-bronze': i == 2, 'text-3xl': i <= 2, 'text-xl': i >= 3}">
                             {{ i + 1 }}

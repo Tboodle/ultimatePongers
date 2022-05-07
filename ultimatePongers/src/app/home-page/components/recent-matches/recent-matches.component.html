@@ -4,10 +4,28 @@
     <div class="flex flex-col justify-center bg-white rounded-2xl shadow-xl shadow-slate-300/60">
         <!-- text information -->
         <div class="p-4">
-            <h1 class="text-2xl font-medium text-slate-600 pb-2">Recent Matches</h1>
-            <p *ngFor="let match of matches" class="text-sm tracking-tight font-light text-slate-400 leading-6">
-                {{match.id}}
-            </p>
+            <h1 class="text-3xl font-medium text-slate-800 pb-12 px-6">Recent Matches</h1>
+            <div *ngFor="let match of matches"
+                class="text-sm tracking-tight font-light text-slate-400 leading-6 flex flex-row px-6">
+                <div class="text-slate-400 w-1/4">
+                    {{match.date | formatDate}}
+                </div>
+                <div class="grid grid-cols-3 text-center w-3/4">
+                    <match-player-display [player]="getPlayer(match.winnerId)"></match-player-display>
+                    <div class="grid grid-cols-3 text-l">
+                        <div class="text-green-400 text-xl">
+                            {{match.winnerScore}}
+                        </div>
+                        <div>
+                            -
+                        </div>
+                        <div class="text-red-400 text-xl">
+                            {{match.loserScore}}
+                        </div>
+                    </div>
+                    <match-player-display [player]="getPlayer(match.loserId)"></match-player-display>
+                </div>
+            </div>
         </div>
     </div>
 </div>

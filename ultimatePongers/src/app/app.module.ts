@@ -7,6 +7,8 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { CompetitorsPageComponent } from './competitors-page/competitors-page.component';
 import { LeaderboardComponent } from './home-page/components/leaderboard/leaderboard.component';
 import { RecentMatchesComponent } from './home-page/components/recent-matches/recent-matches.component';
+import { MatchPlayerDisplayComponent } from './home-page/components/match-player-display/match-player-display.component';
+import { FormatDatePipe } from './pipes/format-date.pipe';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { RecentMatchesComponent } from './home-page/components/recent-matches/re
     HomePageComponent,
     CompetitorsPageComponent,
     LeaderboardComponent,
-    RecentMatchesComponent
+    RecentMatchesComponent,
+    MatchPlayerDisplayComponent,
+    FormatDatePipe,
   ],
   imports: [
     BrowserModule,

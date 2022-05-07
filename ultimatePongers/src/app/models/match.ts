@@ -1,7 +1,7 @@
 
 export interface Match {
     id: string;
-    playerIds: string[];
+    loserId: string;
     winnerId: string;
     winnerScore: number;
     loserScore: number;
