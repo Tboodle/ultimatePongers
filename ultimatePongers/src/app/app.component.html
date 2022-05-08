@@ -1,13 +1,12 @@
-<!-- This example requires Tailwind CSS v2.0+ -->
 <header class="bg-bti-dark">
-  <nav class="max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
+  <nav class="px-4 sm:px-6 lg:px-8" aria-label="Top">
     <div class="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
       <div class="flex items-center">
         <a href="#">
           <span class="sr-only">Ultimate Pongers</span>
           <img src="../assets/02_BTI360_Primary_Logo_White+Color.svg" alt="" class="h-8">
         </a>
-        <div class="hidden ml-10 space-x-8 lg:block">
+        <div class="ml-10 space-x-8 lg:block">
           <a href="/" class="text-base font-medium text-white hover:text-indigo-50"
             [ngClass]="{'active': isHomePage()}"> Home </a>
 
@@ -15,6 +14,9 @@
             [ngClass]="{'active': isCompetitorsPage()}"> Competitors </a>
         </div>
       </div>
+      <button class="bg-bti-orange-800 hover:bg-bti-orange-600 text-white font-semibold py-2 px-4 rounded shadow" (click)="showAddMatchModal()">
+        Add Match
+      </button>
     </div>
   </nav>
 </header>

@@ -9,6 +9,7 @@ import { LeaderboardComponent } from './home-page/components/leaderboard/leaderb
 import { RecentMatchesComponent } from './home-page/components/recent-matches/recent-matches.component';
 import { MatchPlayerDisplayComponent } from './home-page/components/match-player-display/match-player-display.component';
 import { FormatDatePipe } from './pipes/format-date.pipe';
+import { AddMatchModalComponent } from './add-match-modal/add-match-modal/add-match-modal.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { FormatDatePipe } from './pipes/format-date.pipe';
     RecentMatchesComponent,
     MatchPlayerDisplayComponent,
     FormatDatePipe,
+    AddMatchModalComponent,
   ],
   imports: [
     BrowserModule,
