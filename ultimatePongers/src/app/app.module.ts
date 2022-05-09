@@ -10,6 +10,8 @@ import { RecentMatchesComponent } from './home-page/components/recent-matches/re
 import { MatchPlayerDisplayComponent } from './home-page/components/match-player-display/match-player-display.component';
 import { FormatDatePipe } from './pipes/format-date.pipe';
 import { AddMatchModalComponent } from './add-match-modal/add-match-modal/add-match-modal.component';
+import { DropdownInputComponent } from './shared/dropdown-input/dropdown-input.component';
+import { HoverClassDirective } from './directives/hover-class.directive';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { AddMatchModalComponent } from './add-match-modal/add-match-modal/add-ma
     MatchPlayerDisplayComponent,
     FormatDatePipe,
     AddMatchModalComponent,
+    DropdownInputComponent,
+    HoverClassDirective,
   ],
   imports: [
     BrowserModule,

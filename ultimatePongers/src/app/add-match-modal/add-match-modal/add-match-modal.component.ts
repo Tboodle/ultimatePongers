@@ -1,4 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Player } from 'src/app/models/player';
+import { MatchService } from 'src/app/services/match-service.service';
+import { PlayerService } from 'src/app/services/player-service.service';
 
 @Component({
   selector: 'app-add-match-modal',
@@ -8,9 +11,24 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class AddMatchModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter<null>();
 
-  constructor() { }
+  players: Player[] = [];
+  winner: Player;
+  loser: Player;
+  winnerScore: number;
+  loserScore: number;
+
+  constructor(private matchService: MatchService, private playerService: PlayerService) { }
 
   ngOnInit(): void {
+    this.players = this.playerService.getPlayers();
+  }
+
+  setWinner(event: any) {
+    this.winner = event;
+  }
+
+  setLoser(event: any) {
+    this.loser = event;
   }
 
 }
