@@ -9,22 +9,23 @@ export class DropdownInputComponent implements OnInit {
 
   @Input() data: any[];
   @Input() fieldTitle: string;
+  @Input() selectedData: any;
   @Output() selectionEmitter = new EventEmitter<any>();
 
-  optionsElement: HTMLElement;
+  isOpen = false;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.optionsElement = document.getElementById('options')!;
   }
 
-  displayOptions() {
-    this.optionsElement.classList.remove('hidden');
+  toggleDropdown() {
+    this.isOpen = !this.isOpen;
   }
 
-  hideOptions() {
-    this.optionsElement.classList.add('hidden');
+  selectItem(event: Event, item: any) {
+    event.stopPropagation();
+    this.selectionEmitter.emit(item);
+    this.toggleDropdown();
   }
-
 }
