@@ -9,7 +9,7 @@ import { PlayerService } from 'src/app/services/player-service.service';
   styleUrls: ['./add-match-modal.component.scss']
 })
 export class AddMatchModalComponent implements OnInit {
-  @Output() closeModal = new EventEmitter<null>();
+  @Output() closeModal = new EventEmitter<any>();
 
   players: Player[] = [];
   winner: Player;
@@ -31,4 +31,11 @@ export class AddMatchModalComponent implements OnInit {
     this.loser = event;
   }
 
+  updateWinnerScore(score: any) {
+    this.winnerScore = score;
+  }
+
+  updateLoserScore(score: any) {
+    this.loserScore = score;
+  }
 }

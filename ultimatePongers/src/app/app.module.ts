@@ -10,7 +10,7 @@ import { RecentMatchesComponent } from './home-page/components/recent-matches/re
 import { MatchPlayerDisplayComponent } from './home-page/components/match-player-display/match-player-display.component';
 import { FormatDatePipe } from './pipes/format-date.pipe';
 import { AddMatchModalComponent } from './add-match-modal/add-match-modal/add-match-modal.component';
-import { DropdownInputComponent } from './shared/dropdown-input/dropdown-input.component';
+import { PlayerDropdownComponent } from './shared/player-dropdown/player-dropdown.component';
 import { HoverClassDirective } from './directives/hover-class.directive';
 
 @NgModule({
@@ -23,7 +23,7 @@ import { HoverClassDirective } from './directives/hover-class.directive';
     MatchPlayerDisplayComponent,
     FormatDatePipe,
     AddMatchModalComponent,
-    DropdownInputComponent,
+    PlayerDropdownComponent,
     HoverClassDirective,
   ],
   imports: [

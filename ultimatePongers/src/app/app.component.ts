@@ -24,6 +24,6 @@ export class AppComponent {
 
   showAddMatchModal() {
     this.addMatchModal = this.vcr.createComponent(AddMatchModalComponent);
-    this.addMatchModal.instance.closeModal.subscribe(() => this.vcr.clear());
+    this.addMatchModal.instance.closeModal.subscribe((result?) => { console.log(result); this.vcr.clear(); });
   }
 }
