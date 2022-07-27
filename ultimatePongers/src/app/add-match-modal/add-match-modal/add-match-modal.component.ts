@@ -1,7 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Player } from 'src/app/models/player';
-import { MatchService } from 'src/app/services/match-service.service';
-import { PlayerService } from 'src/app/services/player-service.service';
+import { Player } from '../../../../../shared/player';
+import { Match } from '../../../../../shared/match';
+import { MatchService } from 'src/app/services/match.service';
+import { PlayerService } from 'src/app/services/player.service';
+import { Observable } from 'rxjs';
+import {v4 as uuidv4} from 'uuid';
 
 @Component({
   selector: 'app-add-match-modal',
@@ -11,7 +14,7 @@ import { PlayerService } from 'src/app/services/player-service.service';
 export class AddMatchModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter<any>();
 
-  players: Player[] = [];
+  players$: Observable<any>;
   winner: Player;
   loser: Player;
   winnerScore: number;
@@ -20,15 +23,15 @@ export class AddMatchModalComponent implements OnInit {
   constructor(private matchService: MatchService, private playerService: PlayerService) { }
 
   ngOnInit(): void {
-    this.players = this.playerService.getPlayers();
+    this.players$ = this.playerService.getPlayers();
   }
 
-  setWinner(event: any) {
-    this.winner = event;
+  setWinner(winner: Player) {
+    this.winner = winner;
   }
 
-  setLoser(event: any) {
-    this.loser = event;
+  setLoser(loser: Player) {
+    this.loser = loser;
   }
 
   updateWinnerScore(score: any) {
@@ -37,5 +40,17 @@ export class AddMatchModalComponent implements OnInit {
 
   updateLoserScore(score: any) {
     this.loserScore = score;
+  }
+
+  addMatch() {
+    const match: Match = {
+      id: uuidv4(),
+      winnerId: this.winner?.id,
+      winnerScore: this.winnerScore,
+      loserId: this.loser?.id,
+      loserScore: this.loserScore,
+      date: new Date()
+    }
+    this.closeModal.emit(match);
   }
 }

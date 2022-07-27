@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Player } from 'src/app/models/player';
+import {Component, Input, OnInit} from '@angular/core';
+import {Player} from '../../../../../../shared/player';
 
 @Component({
   selector: 'match-player-display',
   templateUrl: './match-player-display.component.html',
-  styleUrls: ['./match-player-display.component.scss']
+  styleUrls: ['./match-player-display.component.scss'],
 })
 export class MatchPlayerDisplayComponent implements OnInit {
   @Input() player: Player;
@@ -13,5 +13,5 @@ export class MatchPlayerDisplayComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
+

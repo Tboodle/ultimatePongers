@@ -1,24 +1,25 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Match } from 'src/app/models/match';
-import { Player } from 'src/app/models/player';
-import { PlayerService } from 'src/app/services/player-service.service';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import { Match } from '../../../../../../shared/match';
+import { Player } from '../../../../../../shared/player';
 
 @Component({
   selector: 'app-recent-matches',
   templateUrl: './recent-matches.component.html',
-  styleUrls: ['./recent-matches.component.scss']
+  styleUrls: ['./recent-matches.component.scss'],
 })
-export class RecentMatchesComponent implements OnInit {
+export class RecentMatchesComponent {
   @Input() matches: Match[];
   @Input() players: Player[];
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  constructor() {}
 
   getPlayer(id: string): Player {
-    return this.players.find((player) => player.id === id)!;
+    return this.players?.find((player) => player.id === id)!;
   }
-
 }

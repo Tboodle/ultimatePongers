@@ -23,6 +23,7 @@
       "dom"
     ],
     "strictPropertyInitialization": false,
+    "types" : ["node", "lodash", "express", "zone.js"],
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

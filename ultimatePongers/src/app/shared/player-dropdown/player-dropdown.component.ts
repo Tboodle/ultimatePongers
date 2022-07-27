@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Player } from 'src/app/models/player';
+import { Player } from '../../../../../shared/player';
 
 @Component({
   selector: 'player-dropdown',
   templateUrl: './player-dropdown.component.html',
-  styleUrls: ['./player-dropdown.component.scss']
+  styleUrls: ['./player-dropdown.component.scss'],
 })
 export class PlayerDropdownComponent implements OnInit {
-
   @Input() players: Player[];
   @Input() fieldTitle: string;
   @Input() selectedPlayer: any;
@@ -15,11 +14,11 @@ export class PlayerDropdownComponent implements OnInit {
   @Output() scoreEmitter = new EventEmitter<number>();
 
   isOpen = false;
+  score: number = 0;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   toggleDropdown() {
     this.isOpen = !this.isOpen;
@@ -31,7 +30,7 @@ export class PlayerDropdownComponent implements OnInit {
     this.toggleDropdown();
   }
 
-  updateScore(number: number) {
-    this.scoreEmitter.emit(number);
+  updateScore(event: any) {
+    this.scoreEmitter.emit(event.target.value);
   }
 }

@@ -63,7 +63,7 @@
   </div>
   <div class="w-1/6">
     <label id="listbox-label" class="block text-sm font-medium text-gray-700"> Score </label>
-    <input type="number"
+    <input type="number" (keyup)="updateScore($event)"
       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md mt-1"
       placeholder="0">
   </div>

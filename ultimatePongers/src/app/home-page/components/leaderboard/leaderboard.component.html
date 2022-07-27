@@ -5,7 +5,7 @@
         <!-- text information -->
         <div class="p-4">
             <h1 class="text-3xl font-medium text-slate-800 pb-12 px-6">Leaderboard</h1>
-            <table class="table-fixed w-full">
+            <table *ngIf="players?.length; else noPlayers" class="table-fixed w-full">
                 <thead class="text-center text-slate-400">
                     <tr>
                         <th class="w-1/12"></th>
@@ -16,7 +16,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let player of players; let i = index" class="bg-white">
+                     <tr *ngFor="let player of players | sortPlayersByWins; let i = index" class="bg-white">
                         <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap"
                             [ngClass]="{'text-gold': i == 0, 'text-silver': i == 1, 'text-bronze': i == 2, 'text-3xl': i <= 2, 'text-xl': i >= 3}">
                             {{ i + 1 }}
@@ -43,6 +43,11 @@
                     </tr>
                 </tbody>
             </table>
+            <ng-template #noPlayers>
+                <div class ="px-6">
+                    No current players.
+                </div> 
+            </ng-template>
         </div>
     </div>
 </div>

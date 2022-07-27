@@ -1,7 +1,9 @@
 import { Component, ComponentFactoryResolver, ComponentRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
+import { Match } from '../../../shared/match';
 import { AddMatchModalComponent } from './add-match-modal/add-match-modal/add-match-modal.component';
+import { MatchService } from './services/match.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +14,7 @@ export class AppComponent {
   title = 'ultimatePongers';
   addMatchModal: ComponentRef<AddMatchModalComponent>;
 
-  constructor(private router: Router, private vcr: ViewContainerRef) { }
+  constructor(private router: Router, private vcr: ViewContainerRef, private matchService: MatchService) { }
 
   isHomePage() {
     return this.router.url.endsWith('/');
@@ -24,6 +26,6 @@ export class AppComponent {
 
   showAddMatchModal() {
     this.addMatchModal = this.vcr.createComponent(AddMatchModalComponent);
-    this.addMatchModal.instance.closeModal.subscribe((result?) => { console.log(result); this.vcr.clear(); });
+    this.addMatchModal.instance.closeModal.subscribe((match?: Match) => { if (match) { this.matchService.addMatch(match); } this.vcr.clear(); });
   }
 }
