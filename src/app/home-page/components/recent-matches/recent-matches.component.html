@@ -6,12 +6,12 @@
   >
     <!-- text information -->
     <div class="p-4">
-      <h1 class="text-3xl font-medium text-slate-800 pb-12 px-6">
+      <h1 class="text-3xl font-medium text-slate-800 pb-8 px-6">
         Recent Matches
       </h1>
       <div *ngIf="matches?.length; else noMatches">
         <div
-          *ngFor="let match of matches"
+          *ngFor="let match of matches | slice:0:10"
           class="text-sm tracking-tight font-light text-slate-400 leading-6 flex flex-row px-6"
         >
           <div class="text-slate-400 w-1/4">

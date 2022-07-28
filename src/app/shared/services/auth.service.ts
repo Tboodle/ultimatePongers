@@ -6,7 +6,7 @@ import {
   signInWithRedirect,
   User,
 } from 'firebase/auth';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })

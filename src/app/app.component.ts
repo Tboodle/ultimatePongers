@@ -22,9 +22,11 @@ import { Player } from './shared/models/player';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  title = 'ultimatePongers';
+  title = 'BTI360 Ping Pong';
+  currentUser: User;
   addMatchModal: ComponentRef<AddMatchModalComponent>;
   registerModal: ComponentRef<RegisterModalComponent>;
+  profileDropdownOpen = false;
 
   constructor(
     private router: Router,
@@ -38,9 +40,10 @@ export class AppComponent implements OnInit {
     this.authService.authenitcateUser();
     this.authService.user$
       .pipe(
-        switchMap((user: User) =>
-          this.playerService.emailNotRegistered(user.email || '')
-        ),
+        switchMap((user: User) => {
+          this.currentUser = user;
+          return this.playerService.emailNotRegistered(user.email || '')
+        }),
         map((isNewUser: boolean) => {
           if (isNewUser) {
             this.displayRegisterModal();
@@ -80,5 +83,9 @@ export class AppComponent implements OnInit {
 
   registerPlayer(player: Player) {
     this.playerService.registerPlayer(player);
+  }
+
+  toggleProfileDropdown() {
+    // this.profileDropdownOpen = !this.profileDropdownOpen;
   }
 }
