@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { Player } from "../../../../shared/player";
+import { Player } from "../../../../../shared/player";
 
 @Pipe({name: 'sortPlayersByWins'})
 export class SortPlayersByWinsPipe implements PipeTransform {

@@ -5,17 +5,19 @@ import { Injectable } from '@angular/core';
 // import {Player} from '../../../../shared/player';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import {
+  addDoc,
   collection,
   collectionData,
   doc,
   docData,
   Firestore,
   getDoc,
+  query,
 } from '@angular/fire/firestore';
 import { updateDoc } from '@firebase/firestore';
-import { Player } from '../../../../shared/player';
+import { Player } from '../../../../../shared/player';
 
 @Injectable({
   providedIn: 'root',
@@ -47,5 +49,19 @@ export class PlayerService {
       playerData.losses = playerData.losses + 1;
       updateDoc(playerRef, playerData);
     });
+  }
+
+  public emailNotRegistered(email: string): Observable<boolean> {
+    return this.getPlayers().pipe(
+      map(
+        (players: Player[]) =>
+          players.filter((player: Player) => player.email === email).length ===
+          0
+      )
+    );
+  }
+
+  public registerPlayer(player: Player) {
+    return addDoc(this.playerCollection, { ...player });
   }
 }
