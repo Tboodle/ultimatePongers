@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Player } from '../../../../../../shared/player';
+import { Player } from '../../models/player';
 
 @Component({
   selector: 'player-dropdown',

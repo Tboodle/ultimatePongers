@@ -3,8 +3,8 @@ import { MatchService } from 'src/app/shared/services/match.service';
 import { PlayerService } from 'src/app/shared/services/player.service';
 import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { Player } from '../../../../../../../shared/player';
-import { Match } from '../../../../../../../shared/match';
+import { Match } from '../../../models/match';
+import { Player } from 'src/app/shared/models/player';
 
 @Component({
   selector: 'app-add-match-modal',

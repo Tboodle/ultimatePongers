@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
-import {Match} from '../../../../shared/match';
-import {Player} from '../../../../shared/player';
 import {MatchService} from '../shared/services/match.service';
 import {PlayerService} from '../shared/services/player.service';
 

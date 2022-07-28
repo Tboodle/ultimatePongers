@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Player} from '../../../../../../shared/player';
+import { Player } from 'src/app/shared/models/player';
 
 @Component({
   selector: 'match-player-display',

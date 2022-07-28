@@ -17,7 +17,7 @@ import {
   query,
 } from '@angular/fire/firestore';
 import { updateDoc } from '@firebase/firestore';
-import { Player } from '../../../../../shared/player';
+import { Player } from '../models/player';
 
 @Injectable({
   providedIn: 'root',

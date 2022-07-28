@@ -9,13 +9,13 @@ import {
 import { Router } from '@angular/router';
 import { User } from 'firebase/auth';
 import { map, switchMap } from 'rxjs';
-import { Match } from '../../../shared/match';
-import { Player } from '../../../shared/player';
+import { Match } from './shared/models/match';
 import { AddMatchModalComponent } from './shared/modals/add-match-modal/add-match-modal/add-match-modal.component';
 import { RegisterModalComponent } from './shared/modals/register-modal/register-modal.component';
 import { AuthService } from './shared/services/auth.service';
 import { MatchService } from './shared/services/match.service';
 import { PlayerService } from './shared/services/player.service';
+import { Player } from './shared/models/player';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

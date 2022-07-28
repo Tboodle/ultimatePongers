@@ -5,8 +5,8 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { Match } from '../../../../../../shared/match';
-import { Player } from '../../../../../../shared/player';
+import { Match } from 'src/app/shared/models/match';
+import { Player } from 'src/app/shared/models/player';
 
 @Component({
   selector: 'app-recent-matches',

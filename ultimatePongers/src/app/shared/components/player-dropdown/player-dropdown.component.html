@@ -36,8 +36,8 @@
         <li (click)="selectPlayer($event, player)" *ngFor="let player of players"
           class="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9" id="listbox-option-0" role="option">
           <div class="flex items-center">
-            <img
-              src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+            <img 
+              src="{{player?.photoUrl}}"
               alt="" class="flex-shrink-0 h-6 w-6 rounded-full">
             <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
             <span class="font-normal ml-3 block truncate">{{player.name}} </span>

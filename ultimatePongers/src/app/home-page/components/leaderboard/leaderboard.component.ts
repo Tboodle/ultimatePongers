@@ -1,5 +1,5 @@
 import { Component, Input, Pipe, PipeTransform } from '@angular/core';
-import { Player } from '../../../../../../shared/player';
+import { Player } from 'src/app/shared/models/player';
 
 @Component({
   selector: 'app-leaderboard',

@@ -1,9 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { uuidv4 } from '@firebase/util';
-import { Player } from '../../../../../../shared/player';
+import { Player } from '../../models/player';
 import { AuthService } from '../../services/auth.service';
-import { PlayerService } from '../../services/player.service';
 
 @Component({
   selector: 'app-register-modal',

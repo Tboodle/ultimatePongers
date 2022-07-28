@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Match } from '../../../../../shared/match';
+import { Match } from '../models/match';
 import {
   addDoc,
   collection,
