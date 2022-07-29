@@ -24,6 +24,7 @@ export class AuthService {
     getRedirectResult(auth).then((result) => {
       if (result) {
         this.user$.next(result.user);
+        console.log(result.user)
       } else {
         signInWithRedirect(auth, provider);
       }

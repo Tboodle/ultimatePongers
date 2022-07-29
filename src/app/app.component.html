@@ -40,6 +40,7 @@
               <span class="sr-only">Open user menu</span>
               <img
                 class="h-10 w-10 rounded-full"
+                referrerpolicy="no-referrer"
                 src="{{ currentUser?.photoURL }}"
                 alt=""
               />
@@ -66,7 +67,7 @@
           >
             <!-- Active: "bg-gray-100", Not Active: "" -->
             <a
-              href="#"
+              (click)="displayRegisterModal()"
               class="block px-4 py-2 text-sm text-gray-700"
               role="menuitem"
               tabindex="-1"

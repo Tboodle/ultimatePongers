@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 // import {Player} from '../../../../shared/player';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, switchMap, take, tap } from 'rxjs';
 import {
   addDoc,
   collection,
@@ -29,8 +29,7 @@ export class PlayerService {
   }
 
   public getPlayers(): Observable<any> {
-    const collec = collectionData(this.playerCollection, { idField: 'id' });
-    return collec;
+    return collectionData(this.playerCollection, { idField: 'id' });
   }
 
   public addWin(winnerId: string) {
@@ -55,13 +54,36 @@ export class PlayerService {
     return this.getPlayers().pipe(
       map(
         (players: Player[]) =>
-          players.filter((player: Player) => player.email === email).length ===
-          0
+          this.filterPlayersByEmail(players, email).length === 0
       )
     );
   }
 
-  public registerPlayer(player: Player) {
-    return addDoc(this.playerCollection, { ...player });
+  public savePlayer(player: Player): any {
+    return this.getPlayers().pipe(
+      take(1),
+      switchMap((players: Player[]) => {
+        const existingPlayers = this.filterPlayersByEmail(
+          players,
+          player.email
+        );
+        if (existingPlayers.length > 0) {
+          return this.updatePlayerForId(player, existingPlayers[0]);
+        } else {
+          return addDoc(this.playerCollection, { ...player });
+        }
+      })
+    );
+  }
+
+  private filterPlayersByEmail(players: Player[], email: string): Player[] {
+    return players.filter((player: Player) => player.email === email);
+  }
+
+  private updatePlayerForId(updatedPlayer: Player, existingPlayer: Player): any {
+    existingPlayer.name = updatedPlayer.name;
+    existingPlayer.nickName = updatedPlayer.nickName;
+    const playerRef = doc(this.firestore, `players/${existingPlayer.id}`);
+    return updateDoc(playerRef, existingPlayer as any);
   }
 }

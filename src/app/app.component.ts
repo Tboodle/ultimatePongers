@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
       .pipe(
         switchMap((user: User) => {
           this.currentUser = user;
-          return this.playerService.emailNotRegistered(user.email || '')
+          return this.playerService.emailNotRegistered(user.email || '');
         }),
         map((isNewUser: boolean) => {
           if (isNewUser) {
@@ -72,6 +72,7 @@ export class AppComponent implements OnInit {
   }
 
   displayRegisterModal() {
+    this.profileDropdownOpen = false;
     this.registerModal = this.vcr.createComponent(RegisterModalComponent);
     this.registerModal.instance.closeModal.subscribe((player?: Player) => {
       if (player) {
@@ -82,10 +83,10 @@ export class AppComponent implements OnInit {
   }
 
   registerPlayer(player: Player) {
-    this.playerService.registerPlayer(player);
+    this.playerService.savePlayer(player).subscribe();
   }
 
   toggleProfileDropdown() {
-    // this.profileDropdownOpen = !this.profileDropdownOpen;
+    this.profileDropdownOpen = !this.profileDropdownOpen;
   }
 }
