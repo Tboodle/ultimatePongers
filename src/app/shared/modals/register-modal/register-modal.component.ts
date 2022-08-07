@@ -23,6 +23,7 @@ export class RegisterModalComponent implements OnInit {
     nickName: this.newPlayerForm.get('name')?.value,
     wins: 0,
     losses: 0,
+    elo: 500,
   };
 
   constructor(private authService: AuthService) {}

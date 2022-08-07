@@ -11,7 +11,7 @@
       </h1>
       <div *ngIf="matches?.length; else noMatches">
         <div
-          *ngFor="let match of matches | slice:0:10"
+          *ngFor="let match of matches"
           class="text-sm tracking-tight font-light text-slate-400 leading-6 flex flex-row px-6"
         >
           <div class="text-slate-400 w-1/4">

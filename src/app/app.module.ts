@@ -17,7 +17,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideFunctions, getFunctions } from '@angular/fire/functions';
-import { SortPlayersByWinsPipe } from './shared/pipes/sort-players-by-win.pipe';
+import { SortPlayersByEloPipe } from './shared/pipes/sort-players-by-elo.pipe';
 import { AuthService } from './shared/services/auth.service';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -34,7 +34,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     RecentMatchesComponent,
     MatchPlayerDisplayComponent,
     FormatDatePipe,
-    SortPlayersByWinsPipe,
+    SortPlayersByEloPipe,
     AddMatchModalComponent,
     PlayerDropdownComponent,
     HoverClassDirective,

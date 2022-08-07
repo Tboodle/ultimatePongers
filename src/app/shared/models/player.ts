@@ -7,4 +7,5 @@ export interface Player {
   photoUrl?: string;
   wins: number;
   losses: number;
+  elo: number;
 }

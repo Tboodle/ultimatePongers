@@ -1,54 +1,84 @@
 <!-- background -->
 <div class="relative flex flex-col justify-center bg-teal">
-    <!-- card -->
-    <div class="flex flex-col justify-center bg-white rounded-2xl shadow-xl shadow-slate-300/60">
-        <!-- text information -->
-        <div class="p-4">
-            <h1 class="text-3xl font-medium text-slate-800 pb-8 px-6">Leaderboard</h1>
-            <table *ngIf="players?.length; else noPlayers" class="table-fixed w-full px-6">
-                <thead class="text-center text-slate-400">
-                    <tr>
-                        <th class="w-1/12"></th>
-                        <th class="w-5/12"></th>
-                        <th>Win %</th>
-                        <th>Wins</th>
-                        <th>Losses</th>
-                    </tr>
-                </thead>
-                <tbody>
-                     <tr *ngFor="let player of players | sortPlayersByWins; let i = index" class="bg-white">
-                        <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap"
-                            [ngClass]="{'text-gold': i == 0, 'text-silver': i == 1, 'text-bronze': i == 2, 'text-3xl': i <= 2, 'text-xl': i >= 3}">
-                            {{ i + 1 }}
-                        </th>
-                        <td class="px-6 py-4 flex items-center space-x-2">
-                            <img class="inline w-16 h-16 mr-2 rounded-full"
-                                referrerpolicy="no-referrer"
-                                src="{{player.photoUrl}}"
-                                alt="Profile image" />
-                            <div>
-                                <div class="text-2xl mb-2 text-slate-600">{{player.name}}</div>
-                                <div *ngIf="player.nickName" class="text-base text-slate-400">"{{player.nickName}}"</div>
-                            </div>
-                        </td>
-                        <td class="py-4 px-6 text-center text-xl"
-                            [ngClass]="{'text-green-400': player.wins >= player.losses, 'text-red-400': player.wins < player.losses}">
-                            {{ getWinPercentageForPlayer(player) }}
-                        </td>
-                        <td class="py-4 px-6 text-center text-xl">
-                            {{ player.wins }}
-                        </td>
-                        <td class="py-4 px-6 text-center text-xl">
-                            {{ player.losses }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <ng-template #noPlayers>
-                <div class ="px-6">
-                    No current players.
-                </div> 
-            </ng-template>
-        </div>
+  <!-- card -->
+  <div
+    class="flex flex-col justify-center bg-white rounded-2xl shadow-xl shadow-slate-300/60"
+  >
+    <!-- text information -->
+    <div class="p-4">
+      <h1 class="text-3xl font-medium text-slate-800 pb-8 px-6">Leaderboard</h1>
+      <table
+        *ngIf="players?.length; else noPlayers"
+        class="table-fixed w-full px-6"
+      >
+        <thead class="text-center text-slate-400">
+          <tr>
+            <th class="w-1/12"></th>
+            <th class="w-5/12"></th>
+            <th>Rating</th>
+            <th>Win %</th>
+            <th>Wins</th>
+            <th>Losses</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let player of players | sortPlayersByElo; let i = index"
+            class="bg-white"
+          >
+            <th
+              scope="row"
+              class="px-6 py-4 font-medium whitespace-nowrap"
+              [ngClass]="{
+                'text-gold': i == 0,
+                'text-silver': i == 1,
+                'text-bronze': i == 2,
+                'text-3xl': i <= 2,
+                'text-xl': i >= 3
+              }"
+            >
+              {{ i + 1 }}
+            </th>
+            <td class="px-6 py-4 flex items-center space-x-2">
+              <img
+                class="inline w-16 h-16 mr-2 rounded-full"
+                referrerpolicy="no-referrer"
+                src="{{ player.photoUrl }}"
+                alt="Profile image"
+              />
+              <div>
+                <div class="text-2xl mb-2 text-slate-600">
+                  {{ player.name }}
+                </div>
+                <div *ngIf="player.nickName" class="text-base text-slate-400">
+                  "{{ player.nickName }}"
+                </div>
+              </div>
+            </td>
+            <td class="py-4 px-6 text-center text-xl">
+              {{ player.elo }}
+            </td>
+            <td
+              class="py-4 px-6 text-center text-xl"
+              [ngClass]="{
+                'text-green-400': player.wins >= player.losses,
+                'text-red-400': player.wins < player.losses
+              }"
+            >
+              {{ getWinPercentageForPlayer(player) }}
+            </td>
+            <td class="py-4 px-6 text-center text-xl">
+              {{ player.wins }}
+            </td>
+            <td class="py-4 px-6 text-center text-xl">
+              {{ player.losses }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #noPlayers>
+        <div class="px-6">No current players.</div>
+      </ng-template>
     </div>
+  </div>
 </div>

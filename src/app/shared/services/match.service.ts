@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Match } from '../models/match';
 import {
@@ -14,16 +14,18 @@ import { PlayerService } from './player.service';
 @Injectable({
   providedIn: 'root',
 })
-export class MatchService {
+export class MatchService implements OnInit {
   private matchCollection;
   constructor(
     private afs: AngularFirestore,
     private playerService: PlayerService
   ) {
     this.matchCollection = afs.collection<Match>('matches', (ref) =>
-      ref.orderBy('date', 'desc').limit(10)
+      ref.orderBy('date', 'desc').limit(100)
     );
   }
+
+  ngOnInit(): void {}
 
   public getMatches(): Observable<any> {
     return this.matchCollection.valueChanges().pipe(
@@ -38,6 +40,7 @@ export class MatchService {
   public addMatch(match: Match): any {
     this.playerService.addWin(match.winnerId);
     this.playerService.addLoss(match.loserId);
+    this.playerService.updatePlayerElos(match);
     return this.matchCollection.add(match);
   }
 }
