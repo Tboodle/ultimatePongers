@@ -52,7 +52,7 @@ export class PlayerService {
           players,
           player.email
         );
-        if (existingPlayers) {
+        if (existingPlayers?.length) {
           return this.afs.doc(`players/${player.id}`).update(player);
         }
         player.id = this.afs.createId()
