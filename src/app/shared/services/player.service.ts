@@ -55,6 +55,7 @@ export class PlayerService {
         if (existingPlayers) {
           return this.afs.doc(`players\/${player.id}`).update(player);
         }
+        player.id = this.afs.createId()
         return this.afs.doc(`players\/${player.id}`).set(player);
       })
     );

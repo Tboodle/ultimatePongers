@@ -29,7 +29,6 @@ export class RegisterModalComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.newPlayer.id = uuidv4();
     this.authService.user$.subscribe((user) => {
       this.newPlayer.email = user.email || '';
       this.newPlayer.photoUrl = user.photoURL || '';
