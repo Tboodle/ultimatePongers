@@ -19,13 +19,15 @@ import {
 import { updateDoc } from '@firebase/firestore';
 import { Player } from '../models/player';
 import { Match } from '../models/match';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlayerService {
+  ELO_CONST = 40;
   private playerCollection;
-  constructor(private firestore: Firestore) {
+  constructor(private firestore: Firestore, private afs: AngularFirestore) {
     this.playerCollection = collection(firestore, 'players');
   }
 
@@ -68,11 +70,10 @@ export class PlayerService {
           players,
           player.email
         );
-        if (existingPlayers.length > 0) {
-          return this.updatePlayerForId(player, existingPlayers[0]);
-        } else {
-          return addDoc(this.playerCollection, { ...player });
+        if (existingPlayers) {
+          return this.afs.doc(`players\/${player.id}`).update(player);
         }
+        return this.afs.doc(`players\/${player.id}`).set(player);
       })
     );
   }
@@ -83,21 +84,23 @@ export class PlayerService {
     forkJoin([winner$, loser$]).subscribe((players) => {
       const winner = players[0];
       const loser = players[1];
-      const winnerProb = this.winningProbability(winner, loser);
-      const loserProb = this.winningProbability(winner, loser);
-      const eloConst = 40;
-      winner.elo = winner.elo + eloConst * (1 - winnerProb);
-      loser.elo = loser.elo + eloConst * (0 - loserProb);
-      this.updatePlayerForId(winner, winner);
-      this.updatePlayerForId(loser, loser);
-    });
-  }
 
-  private winningProbability(player: Player, opponent: Player) {
-    return (
-      (1.0 * 1.0) /
-      (1 + 1.0 * Math.pow(10, (1.0 * (player.elo - opponent.elo)) / 400))
-    );
+      const winnerRating = Math.pow(10, winner.elo / 400);
+      const loserRating = Math.pow(10, loser.elo / 400);
+  
+      const winnerExpected = winnerRating / (loserRating + winnerRating)
+      const loserExpected = loserRating / (loserRating + winnerRating)
+
+      winner.wins += 1;
+      const newWinnerScore = winner.elo + this.ELO_CONST * (1 - winnerExpected);
+      winner.elo = Math.round(newWinnerScore * 10) / 10;
+      this.afs.doc(`players\/${winner.id}`).update(winner);
+
+      loser.losses += 1;
+      const newLoserScore = loser.elo + this.ELO_CONST * (0 - loserExpected)
+      loser.elo = Math.round(newLoserScore * 10) / 10;
+      this.afs.doc(`players\/${loser.id}`).update(loser);
+    });
   }
 
   private getPlayerForId(id: string) {
@@ -109,15 +112,5 @@ export class PlayerService {
 
   private filterPlayersByEmail(players: Player[], email: string): Player[] {
     return players.filter((player: Player) => player.email === email);
-  }
-
-  private updatePlayerForId(
-    updatedPlayer: Player,
-    existingPlayer: Player
-  ): any {
-    existingPlayer.name = updatedPlayer.name;
-    existingPlayer.nickName = updatedPlayer.nickName;
-    const playerRef = doc(this.firestore, `players/${existingPlayer.id}`);
-    return updateDoc(playerRef, existingPlayer as any);
   }
 }
