@@ -53,10 +53,10 @@ export class PlayerService {
           player.email
         );
         if (existingPlayers) {
-          return this.afs.doc(`players\/${player.id}`).update(player);
+          return this.afs.doc(`players/${player.id}`).update(player);
         }
         player.id = this.afs.createId()
-        return this.afs.doc(`players\/${player.id}`).set(player);
+        return this.afs.doc(`players/${player.id}`).set(player);
       })
     );
   }
