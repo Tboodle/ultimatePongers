@@ -56,7 +56,7 @@ export class PlayerService {
           return this.afs.doc(`players/${player.id}`).update(player);
         }
         player.id = this.afs.createId()
-        return this.afs.doc(`players/${player.id}`).update(player);
+        return this.afs.collection('players').doc(player.id).set(player);
       })
     );
   }
