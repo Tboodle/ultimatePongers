@@ -26,74 +26,68 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class PlayerService {
   ELO_CONST = 40;
-  private playerCollection;
-  constructor(private firestore: Firestore, private afs: AngularFirestore) {
-    this.playerCollection = collection(firestore, 'players');
+  constructor(private afs: AngularFirestore) {}
+
+  getPlayers(): Observable<Player[]> {
+    return this.afs
+      .collection('players')
+      .valueChanges({ idField: 'id' })
+      .pipe(map((players) => players as Player[]));
   }
 
-  public getPlayers(): Observable<any> {
-    return collectionData(this.playerCollection, { idField: 'id' });
+  getPlayerForId(id: string): Observable<Player> {
+    return this.afs
+      .collection('players')
+      .doc(id)
+      .get()
+      .pipe(map((docSnapshot) => docSnapshot.data() as Player));
   }
 
-  public emailNotRegistered(email: string): Observable<boolean> {
-    return this.getPlayers().pipe(
-      map(
-        (players: Player[]) =>
-          this.filterPlayersByEmail(players, email).length === 0
-      )
-    );
+  playerIsRegistered(email: string): Observable<boolean> {
+    return this.afs
+      .collection('players', (ref) => ref.where('email', '==', email))
+      .get()
+      .pipe(
+        map((querySnapshot) => !!(querySnapshot.docs[0]?.data() as Player))
+      );
   }
 
-  public savePlayer(player: Player): any {
-    return this.getPlayers().pipe(
-      take(1),
-      switchMap((players: Player[]) => {
-        const existingPlayers = this.filterPlayersByEmail(
-          players,
-          player.email
-        );
-        if (existingPlayers?.length) {
-          return this.afs.doc(`players/${player.id}`).update(player);
-        }
-        player.id = this.afs.createId()
-        return this.afs.collection('players').doc(player.id).set(player);
-      })
-    );
+  savePlayer(player: Player): void {
+    if (player.id) {
+      this.updatePlayerDoc(player);
+    } else {
+      player.id = this.afs.createId();
+      this.afs.collection('players').doc(player.id).set(player);
+    }
   }
 
-  updatePlayerElos(match: Match) {
+  updatePlayersForMatch(match: Match): void {
     const winner$ = this.getPlayerForId(match.winnerId);
     const loser$ = this.getPlayerForId(match.loserId);
+
     forkJoin([winner$, loser$]).subscribe((players) => {
       const winner = players[0];
       const loser = players[1];
-
       const winnerRating = Math.pow(10, winner.elo / 400);
       const loserRating = Math.pow(10, loser.elo / 400);
-  
-      const winnerExpected = winnerRating / (loserRating + winnerRating)
-      const loserExpected = loserRating / (loserRating + winnerRating)
-
-      winner.wins += 1;
-      const newWinnerScore = winner.elo + this.ELO_CONST * (1 - winnerExpected);
-      winner.elo = Math.round(newWinnerScore * 10) / 10;
-      this.afs.doc(`players\/${winner.id}`).update(winner);
-
-      loser.losses += 1;
-      const newLoserScore = loser.elo + this.ELO_CONST * (0 - loserExpected)
-      loser.elo = Math.round(newLoserScore * 10) / 10;
-      this.afs.doc(`players\/${loser.id}`).update(loser);
+      const winnerModifier = 1 - winnerRating / (loserRating + winnerRating);
+      const loserModifier = 0 - loserRating / (loserRating + winnerRating);
+      this.updatePlayerWithEloModifier(winner, winnerModifier);
+      this.updatePlayerWithEloModifier(loser, loserModifier);
     });
   }
 
-  private getPlayerForId(id: string) {
-    const playerRef = doc(this.firestore, `players/${id}`);
-    return from(getDoc(playerRef)).pipe(
-      map((player) => player.data() as Player)
-    );
+  private updatePlayerWithEloModifier(
+    player: Player,
+    eloModifier: number
+  ): void {
+    const newLoserScore = player.elo + this.ELO_CONST * eloModifier;
+    player.elo = Math.round(newLoserScore * 10) / 10;
+    eloModifier >= 0 ? (player.wins += 1) : (player.losses += 1);
+    this.updatePlayerDoc(player);
   }
 
-  private filterPlayersByEmail(players: Player[], email: string): Player[] {
-    return players.filter((player: Player) => player.email === email);
+  private updatePlayerDoc(player: Player): void {
+    this.afs.collection('players').doc(player.id).update(player);
   }
 }

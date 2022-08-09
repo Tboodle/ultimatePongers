@@ -14,31 +14,24 @@ import { PlayerService } from './player.service';
 @Injectable({
   providedIn: 'root',
 })
-export class MatchService implements OnInit {
-  private matchCollection;
+export class MatchService {
   constructor(
     private afs: AngularFirestore,
     private playerService: PlayerService
-  ) {
-    this.matchCollection = afs.collection<Match>('matches', (ref) =>
-      ref.orderBy('date', 'desc').limit(10)
-    );
-  }
+  ) {}
 
-  ngOnInit(): void {}
-
-  public getMatches(): Observable<any> {
-    return this.matchCollection.valueChanges().pipe(
+  public getMatches(): Observable<Match[]> {
+    return this.afs.collection('matches', ref => ref.orderBy('date', 'desc').limit(10)).valueChanges().pipe(
       map((matches: any[]) => {
         return matches.map((match) => {
           return { ...match, date: new Date(match.date?.seconds * 1000) };
-        });
+        }) as Match[];
       })
     );
   }
 
-  public addMatch(match: Match): any {
-    this.playerService.updatePlayerElos(match);
-    return this.matchCollection.add(match);
+  public addMatch(match: Match): void {
+    this.playerService.updatePlayersForMatch(match);
+    this.afs.collection('matches').add(match);
   }
 }

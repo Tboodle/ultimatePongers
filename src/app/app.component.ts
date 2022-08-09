@@ -42,15 +42,14 @@ export class AppComponent implements OnInit {
       .pipe(
         switchMap((user: User) => {
           this.currentUser = user;
-          return this.playerService.emailNotRegistered(user.email || '');
-        }),
-        map((isNewUser: boolean) => {
-          if (isNewUser) {
-            this.displayRegisterModal();
-          }
+          return this.playerService.playerIsRegistered(user.email || '');
         })
       )
-      .subscribe();
+      .subscribe((isExistingUser: boolean) => {
+        if (!isExistingUser) {
+          this.displayRegisterModal();
+        }
+      });
   }
 
   isHomePage() {
@@ -83,7 +82,7 @@ export class AppComponent implements OnInit {
   }
 
   registerPlayer(player: Player) {
-    this.playerService.savePlayer(player).subscribe();
+    this.playerService.savePlayer(player);
   }
 
   toggleProfileDropdown() {

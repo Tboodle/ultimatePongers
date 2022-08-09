@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
 import {MatchService} from '../shared/services/match.service';
 import {PlayerService} from '../shared/services/player.service';
