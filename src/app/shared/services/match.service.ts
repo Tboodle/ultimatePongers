@@ -21,7 +21,7 @@ export class MatchService implements OnInit {
     private playerService: PlayerService
   ) {
     this.matchCollection = afs.collection<Match>('matches', (ref) =>
-      ref.orderBy('date', 'desc').limit(100)
+      ref.orderBy('date', 'desc').limit(10)
     );
   }
 
