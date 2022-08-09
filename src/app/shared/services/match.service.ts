@@ -38,9 +38,6 @@ export class MatchService implements OnInit {
   }
 
   public addMatch(match: Match): any {
-    this.playerService.addWin(match.winnerId);
-    this.playerService.addLoss(match.loserId);
-    console.log(match);
     this.playerService.updatePlayerElos(match);
     return this.matchCollection.add(match);
   }

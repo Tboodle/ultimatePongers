@@ -35,24 +35,6 @@ export class PlayerService {
     return collectionData(this.playerCollection, { idField: 'id' });
   }
 
-  public addWin(winnerId: string) {
-    const playerRef = doc(this.firestore, `players/${winnerId}`);
-    getDoc(playerRef).then((player) => {
-      const playerData: any = player.data();
-      playerData.wins = playerData.wins + 1;
-      updateDoc(playerRef, playerData);
-    });
-  }
-
-  public addLoss(loserId: string) {
-    const playerRef = doc(this.firestore, `players/${loserId}`);
-    getDoc(playerRef).then((player) => {
-      const playerData: any = player.data();
-      playerData.losses = playerData.losses + 1;
-      updateDoc(playerRef, playerData);
-    });
-  }
-
   public emailNotRegistered(email: string): Observable<boolean> {
     return this.getPlayers().pipe(
       map(
