@@ -42,8 +42,9 @@ export class AppComponent implements OnInit {
       .pipe(
         switchMap((user: User) => {
           this.currentUser = user;
-          return this.playerService.playerIsRegistered(user.email || '');
-        })
+          return this.playerService.getPlayerForEmail(user.email || '');
+        }),
+        map((player: Player) => !!player)
       )
       .subscribe((isExistingUser: boolean) => {
         if (!isExistingUser) {
@@ -75,14 +76,10 @@ export class AppComponent implements OnInit {
     this.registerModal = this.vcr.createComponent(RegisterModalComponent);
     this.registerModal.instance.closeModal.subscribe((player?: Player) => {
       if (player) {
-        this.registerPlayer(player);
+        this.playerService.savePlayer(player);
       }
       this.vcr.clear();
     });
-  }
-
-  registerPlayer(player: Player) {
-    this.playerService.savePlayer(player);
   }
 
   toggleProfileDropdown() {

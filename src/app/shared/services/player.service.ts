@@ -43,22 +43,22 @@ export class PlayerService {
       .pipe(map((docSnapshot) => docSnapshot.data() as Player));
   }
 
-  playerIsRegistered(email: string): Observable<boolean> {
+  getPlayerForEmail(email: string): Observable<Player> {
     return this.afs
       .collection('players', (ref) => ref.where('email', '==', email))
       .get()
-      .pipe(
-        map((querySnapshot) => !!(querySnapshot.docs[0]?.data() as Player))
-      );
+      .pipe(map((querySnapshot) => querySnapshot.docs[0]?.data() as Player));
   }
 
   savePlayer(player: Player): void {
-    if (player.id) {
-      this.updatePlayerDoc(player);
-    } else {
-      player.id = this.afs.createId();
-      this.afs.collection('players').doc(player.id).set(player);
-    }
+    this.getPlayerForEmail(player.email).subscribe((existingPlayer: Player) => {
+      if (existingPlayer) {
+        this.updatePlayerDoc(player);
+      } else {
+        player.id = this.afs.createId();
+        this.afs.collection('players').doc(player.id).set(player);
+      }
+    });
   }
 
   updatePlayersForMatch(match: Match): void {

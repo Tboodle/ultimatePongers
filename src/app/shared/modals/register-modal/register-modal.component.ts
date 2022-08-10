@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./register-modal.component.scss'],
 })
 export class RegisterModalComponent implements OnInit {
-  @Output() closeModal = new EventEmitter<any>();
+  @Output() closeModal = new EventEmitter<Player>();
 
   newPlayerForm = new FormGroup({
     name: new FormControl(''),
