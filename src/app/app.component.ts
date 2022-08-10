@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     private matchService: MatchService,
     private playerService: PlayerService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.authService.authenitcateUser();

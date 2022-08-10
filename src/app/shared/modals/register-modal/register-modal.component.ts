@@ -26,7 +26,7 @@ export class RegisterModalComponent implements OnInit {
     elo: 400,
   };
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.authService.user$.subscribe((user) => {

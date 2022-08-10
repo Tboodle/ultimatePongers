@@ -26,7 +26,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class PlayerService {
   ELO_CONST = 40;
-  constructor(private afs: AngularFirestore) {}
+  constructor(private afs: AngularFirestore) { }
 
   getPlayers(): Observable<Player[]> {
     return this.afs
@@ -53,7 +53,7 @@ export class PlayerService {
   savePlayer(player: Player): void {
     this.getPlayerForEmail(player.email).subscribe((existingPlayer: Player) => {
       if (existingPlayer) {
-        this.updatePlayerDoc(player);
+        this.updatePlayerDoc({ ...existingPlayer, name: player.name, nickName: player.nickName });
       } else {
         player.id = this.afs.createId();
         this.afs.collection('players').doc(player.id).set(player);
