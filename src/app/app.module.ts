@@ -24,6 +24,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { RegisterModalComponent } from './shared/modals/register-modal/register-modal.component';
 import { PlayerDropdownComponent } from './shared/components/player-dropdown/player-dropdown.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/new-match-animation.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     PlayerDropdownComponent,
     HoverClassDirective,
     RegisterModalComponent,
+    NewMatchAnimationComponent,
   ],
   imports: [
     BrowserModule,
