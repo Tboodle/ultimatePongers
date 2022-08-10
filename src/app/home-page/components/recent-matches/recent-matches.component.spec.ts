@@ -8,9 +8,8 @@ describe('RecentMatchesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RecentMatchesComponent ]
-    })
-    .compileComponents();
+      declarations: [RecentMatchesComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

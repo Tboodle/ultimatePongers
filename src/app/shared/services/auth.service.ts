@@ -12,7 +12,6 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
   user$: BehaviorSubject<User> = new BehaviorSubject<User>({} as User);
-  constructor() {}
 
   authenitcateUser() {
     const auth = getAuth();

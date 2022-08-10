@@ -1,13 +1,7 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Match } from '../models/match';
-import {
-  addDoc,
-  collection,
-  collectionData,
-  collectionGroup,
-  Firestore,
-} from '@angular/fire/firestore';
+
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { PlayerService } from './player.service';
 
@@ -15,19 +9,19 @@ import { PlayerService } from './player.service';
   providedIn: 'root',
 })
 export class MatchService {
-  constructor(
-    private afs: AngularFirestore,
-    private playerService: PlayerService
-  ) {}
+  constructor(private afs: AngularFirestore, private playerService: PlayerService) {}
 
   public getMatches(): Observable<Match[]> {
-    return this.afs.collection('matches', ref => ref.orderBy('date', 'desc').limit(10)).valueChanges().pipe(
-      map((matches: any[]) => {
-        return matches.map((match) => {
-          return { ...match, date: new Date(match.date?.seconds * 1000) };
-        }) as Match[];
-      })
-    );
+    return this.afs
+      .collection('matches', (ref) => ref.orderBy('date', 'desc').limit(10))
+      .valueChanges()
+      .pipe(
+        map((matches: any[]) => {
+          return matches.map((match) => {
+            return { ...match, date: new Date(match.date?.seconds * 1000) };
+          }) as Match[];
+        }),
+      );
   }
 
   public addMatch(match: Match): void {

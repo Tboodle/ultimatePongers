@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Player } from '../../models/player';
 
 @Component({
@@ -6,7 +6,7 @@ import { Player } from '../../models/player';
   templateUrl: './player-dropdown.component.html',
   styleUrls: ['./player-dropdown.component.scss'],
 })
-export class PlayerDropdownComponent implements OnInit {
+export class PlayerDropdownComponent {
   @Input() players: Player[];
   @Input() fieldTitle: string;
   @Input() selectedPlayer: any;
@@ -14,11 +14,8 @@ export class PlayerDropdownComponent implements OnInit {
   @Output() scoreEmitter = new EventEmitter<number>();
 
   isOpen = false;
+
   score: number = 0;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   toggleDropdown() {
     this.isOpen = !this.isOpen;

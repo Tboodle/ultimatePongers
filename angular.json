@@ -113,9 +113,21 @@
             "firebaseProject": "ultimate-pongers",
             "firebaseHostingSite": "ultimate-pongers"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "ultimatePongers"
+  "defaultProject": "ultimatePongers",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

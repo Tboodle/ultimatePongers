@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { uuidv4 } from '@firebase/util';
 import { Player } from '../../models/player';
 import { AuthService } from '../../services/auth.service';
 
@@ -16,6 +15,7 @@ export class RegisterModalComponent implements OnInit {
     name: new FormControl(''),
     nickName: new FormControl(''),
   });
+
   newPlayer: Player = {
     id: '',
     name: this.newPlayerForm.get('name')?.value,
@@ -26,7 +26,7 @@ export class RegisterModalComponent implements OnInit {
     elo: 400,
   };
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.user$.subscribe((user) => {
