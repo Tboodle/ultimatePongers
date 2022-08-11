@@ -1,8 +1,8 @@
 export interface Match {
-    id: string;
-    loserId: string;
-    winnerId: string;
-    winnerScore: number;
-    loserScore: number;
-    date: Date;
+  id: string;
+  loserId: string;
+  winnerId: string;
+  winnerScore: number;
+  loserScore: number;
+  date: Date;
 }

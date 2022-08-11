@@ -30,9 +30,9 @@
               scope="row"
               class="px-6 py-4 font-medium whitespace-nowrap"
               [ngClass]="{
-                'text-gold': i == 0,
-                'text-silver': i == 1,
-                'text-bronze': i == 2,
+                'text-gold': i === 0,
+                'text-silver': i === 1,
+                'text-bronze': i === 2,
                 'text-3xl': i <= 2,
                 'text-xl': i >= 3
               }"

@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'formatDate',
 })
 export class FormatDatePipe implements PipeTransform {
-  transform(date: any, ...args: unknown[]): string {
+  transform(date: any): string {
     return formatDate(date, 'short', 'en-US');
   }
 }

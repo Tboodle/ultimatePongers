@@ -1,4 +1,4 @@
-import { Component, Input, Pipe, PipeTransform } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Player } from 'src/app/shared/models/player';
 
 @Component({
@@ -9,7 +9,6 @@ import { Player } from 'src/app/shared/models/player';
 export class LeaderboardComponent {
   @Input() players: Player[];
 
-  constructor() {}
   getWinPercentageForPlayer(player: Player): string {
     const totalMatches = player.wins + player.losses;
 

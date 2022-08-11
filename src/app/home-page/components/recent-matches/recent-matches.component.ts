@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Match } from 'src/app/shared/models/match';
 import { Player } from 'src/app/shared/models/player';
 
@@ -15,9 +9,8 @@ import { Player } from 'src/app/shared/models/player';
 })
 export class RecentMatchesComponent {
   @Input() matches: Match[];
-  @Input() players: Player[];
 
-  constructor() {}
+  @Input() players: Player[];
 
   getPlayer(id: string): Player {
     return this.players?.find((player) => player.id === id)!;

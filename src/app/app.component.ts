@@ -1,11 +1,4 @@
-import {
-  Component,
-  ComponentFactoryResolver,
-  ComponentRef,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'firebase/auth';
 import { map, switchMap } from 'rxjs';
@@ -23,9 +16,13 @@ import { Player } from './shared/models/player';
 })
 export class AppComponent implements OnInit {
   title = 'BTI360 Ping Pong';
+
   currentUser: User;
+
   addMatchModal: ComponentRef<AddMatchModalComponent>;
+
   registerModal: ComponentRef<RegisterModalComponent>;
+
   profileDropdownOpen = false;
 
   constructor(
@@ -46,7 +43,7 @@ export class AppComponent implements OnInit {
           this.currentUser = user;
           return this.playerService.getPlayerForEmail(user.email || '');
         }),
-        map((player: Player) => !!player)
+        map((player: Player) => !!player),
       )
       .subscribe((isExistingUser: boolean) => {
         if (!isExistingUser) {

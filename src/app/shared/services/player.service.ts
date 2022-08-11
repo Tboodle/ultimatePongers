@@ -3,20 +3,8 @@
 /* eslint-disable require-jsdoc */
 import { Injectable } from '@angular/core';
 // import {Player} from '../../../../shared/player';
-import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { forkJoin, from, map, Observable, switchMap, take, tap } from 'rxjs';
-import {
-  addDoc,
-  collection,
-  collectionData,
-  doc,
-  docData,
-  Firestore,
-  getDoc,
-  query,
-} from '@angular/fire/firestore';
-import { updateDoc } from '@firebase/firestore';
+import { forkJoin, map, Observable } from 'rxjs';
+
 import { Player } from '../models/player';
 import { Match } from '../models/match';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -26,6 +14,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class PlayerService {
   ELO_CONST = 40;
+
   constructor(private afs: AngularFirestore) {}
 
   getPlayers(): Observable<Player[]> {
@@ -53,7 +42,7 @@ export class PlayerService {
   savePlayer(player: Player): void {
     this.getPlayerForEmail(player.email).subscribe((existingPlayer: Player) => {
       if (existingPlayer) {
-        this.updatePlayerDoc(player);
+        this.updatePlayerDoc({ ...existingPlayer, name: player.name, nickName: player.nickName });
       } else {
         player.id = this.afs.createId();
         this.afs.collection('players').doc(player.id).set(player);
@@ -77,13 +66,14 @@ export class PlayerService {
     });
   }
 
-  private updatePlayerWithEloModifier(
-    player: Player,
-    eloModifier: number
-  ): void {
+  private updatePlayerWithEloModifier(player: Player, eloModifier: number): void {
     const newLoserScore = player.elo + this.ELO_CONST * eloModifier;
     player.elo = Math.round(newLoserScore * 10) / 10;
-    eloModifier >= 0 ? (player.wins += 1) : (player.losses += 1);
+    if (eloModifier >= 0) {
+      player.wins += 1;
+    } else {
+      player.losses += 1;
+    }
     this.updatePlayerDoc(player);
   }
 

@@ -12,7 +12,7 @@
       <div *ngIf="matches?.length; else noMatches">
         <div
           *ngFor="let match of matches"
-          class="text-sm tracking-tight font-light text-slate-400 leading-6 flex flex-row px-6"
+          class="text-sm tracking-tight font-light text-slate-400 leading-6 flex flex-row px-6 mb-3"
         >
           <div class="text-slate-400 w-1/4">
             {{ match.date | formatDate }}

@@ -15,15 +15,16 @@ export class AddMatchModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter<any>();
 
   players$: Observable<any>;
+
   winner: Player;
+
   loser: Player;
+
   winnerScore: number;
+
   loserScore: number;
 
-  constructor(
-    private matchService: MatchService,
-    private playerService: PlayerService
-  ) {}
+  constructor(private matchService: MatchService, private playerService: PlayerService) {}
 
   ngOnInit(): void {
     this.players$ = this.playerService.getPlayers();

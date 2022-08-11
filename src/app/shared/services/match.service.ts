@@ -1,18 +1,7 @@
-import {
-  ComponentRef,
-  Injectable,
-  OnInit,
-  ViewContainerRef,
-} from '@angular/core';
+import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
 import { forkJoin, map, Observable, skip, tap } from 'rxjs';
 import { Match } from '../models/match';
-import {
-  addDoc,
-  collection,
-  collectionData,
-  collectionGroup,
-  Firestore,
-} from '@angular/fire/firestore';
+
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { PlayerService } from './player.service';
 import { Player } from '../models/player';
@@ -25,10 +14,7 @@ export class MatchService {
   appViewRef: ViewContainerRef;
   newMatchAnimation: ComponentRef<NewMatchAnimationComponent>;
 
-  constructor(
-    private afs: AngularFirestore,
-    private playerService: PlayerService
-  ) {}
+  constructor(private afs: AngularFirestore, private playerService: PlayerService) {}
 
   public getMatches(): Observable<Match[]> {
     const sortedMatches$ = this.afs
@@ -39,14 +25,14 @@ export class MatchService {
           return matches.map((match) => {
             return { ...match, date: new Date(match.date?.seconds * 1000) };
           }) as Match[];
-        })
+        }),
       );
 
     sortedMatches$.pipe(
       skip(1),
       tap((matches: Match[]) => {
         this.startNewMatchAnimation(matches[0]);
-      })
+      }),
     );
 
     return sortedMatches$;
@@ -65,15 +51,11 @@ export class MatchService {
       const winner = players[0];
       const loser = players[1];
 
-      this.newMatchAnimation = this.appViewRef.createComponent(
-        NewMatchAnimationComponent
-      );
+      this.newMatchAnimation = this.appViewRef.createComponent(NewMatchAnimationComponent);
       this.newMatchAnimation.instance.match = match;
       this.newMatchAnimation.instance.winner = winner;
       this.newMatchAnimation.instance.loser = loser;
-      this.newMatchAnimation.instance.closeModal.subscribe(() =>
-        this.appViewRef.clear()
-      );
+      this.newMatchAnimation.instance.closeModal.subscribe(() => this.appViewRef.clear());
     });
   }
 }
