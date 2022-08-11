@@ -1,5 +1,5 @@
 import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
-import { forkJoin, map, Observable, skip, tap } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import { Match } from '../models/match';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -25,8 +25,8 @@ export class MatchService {
             const newMatch = docEvents[0].payload.doc.data() as Match;
             this.startNewMatchAnimation(newMatch);
           } else {
-            // const newMatch = docEvents[0].payload.doc.data() as Match;
-            // this.startNewMatchAnimation(newMatch);
+            const newMatch = docEvents[0].payload.doc.data() as Match;
+            this.startNewMatchAnimation(newMatch);
           }
         }),
       )
