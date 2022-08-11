@@ -10,7 +10,6 @@ import { RecentMatchesComponent } from './home-page/components/recent-matches/re
 import { MatchPlayerDisplayComponent } from './home-page/components/match-player-display/match-player-display.component';
 import { FormatDatePipe } from './shared/pipes/format-date.pipe';
 import { AddMatchModalComponent } from './shared/modals/add-match-modal/add-match-modal/add-match-modal.component';
-import { HoverClassDirective } from './directives/hover-class.directive';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -25,6 +24,7 @@ import { RegisterModalComponent } from './shared/modals/register-modal/register-
 import { PlayerDropdownComponent } from './shared/components/player-dropdown/player-dropdown.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/new-match-animation.component';
+import { PlayerProfileComponent } from './shared/components/player-profile/player-profile.component';
 
 @NgModule({
   declarations: [
@@ -38,9 +38,9 @@ import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/
     SortPlayersByEloPipe,
     AddMatchModalComponent,
     PlayerDropdownComponent,
-    HoverClassDirective,
     RegisterModalComponent,
     NewMatchAnimationComponent,
+    PlayerProfileComponent,
   ],
   imports: [
     BrowserModule,

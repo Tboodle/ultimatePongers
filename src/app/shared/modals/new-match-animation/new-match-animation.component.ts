@@ -14,8 +14,6 @@ export class NewMatchAnimationComponent implements OnInit {
 
   @Output() closeModal = new EventEmitter<Player>();
 
-  constructor() {}
-
   ngOnInit(): void {
     setTimeout(() => this.closeModal.emit(), 2000);
   }

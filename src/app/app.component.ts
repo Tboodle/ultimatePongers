@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
     private vcr: ViewContainerRef,
     private matchService: MatchService,
     private playerService: PlayerService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     this.matchService.appViewRef = vcr;
   }

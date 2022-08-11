@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewMatchAnimationComponent } from './new-match-animation.component';
+import { PlayerProfileComponent } from './player-profile.component';
 
-describe('NewMatchAnimationComponent', () => {
-  let component: NewMatchAnimationComponent;
-  let fixture: ComponentFixture<NewMatchAnimationComponent>;
+describe('PlayerProfileComponent', () => {
+  let component: PlayerProfileComponent;
+  let fixture: ComponentFixture<PlayerProfileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NewMatchAnimationComponent],
+      declarations: [PlayerProfileComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewMatchAnimationComponent);
+    fixture = TestBed.createComponent(PlayerProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
