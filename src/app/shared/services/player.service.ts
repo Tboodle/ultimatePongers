@@ -54,7 +54,7 @@ export class PlayerService {
     const winner$ = this.getPlayerForId(match.winnerId);
     const loser$ = this.getPlayerForId(match.loserId);
 
-    forkJoin([winner$, loser$]).subscribe((players) => {
+    forkJoin([winner$, loser$]).subscribe((players: Player[]) => {
       const winner = players[0];
       const loser = players[1];
       const winnerRating = Math.pow(10, winner.elo / 400);

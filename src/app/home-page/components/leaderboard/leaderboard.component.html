@@ -40,20 +40,7 @@
               {{ i + 1 }}
             </th>
             <td class="px-6 py-4 flex items-center space-x-2">
-              <img
-                class="inline w-16 h-16 mr-2 rounded-full"
-                referrerpolicy="no-referrer"
-                src="{{ player.photoUrl }}"
-                alt="Profile image"
-              />
-              <div>
-                <div class="text-2xl mb-2 text-slate-600">
-                  {{ player.name }}
-                </div>
-                <div *ngIf="player.nickName" class="text-base text-slate-400">
-                  "{{ player.nickName }}"
-                </div>
-              </div>
+              <player-profile [player]="player"></player-profile>
             </td>
             <td class="py-4 px-6 text-center text-xl">
               {{ player.elo }}

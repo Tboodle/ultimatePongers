@@ -1,0 +1,16 @@
+<div id="canvas" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdrop-blur-md"></div>
+  <div class="fixed z-10 inset-0 overflow-y-auto">
+    <div class="flex items-end justify-center h-full pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div class="h-full w-full">
+        <div id="player1" class="absolute w-fit">
+          <player-profile [player]="winner" [cardView]="true"></player-profile>
+        </div>
+        <div id="versus" class="text-5xl text-white m-auto absolute">Vs.</div>
+        <div id="player2" class="absolute w-fit">
+          <player-profile [player]="loser" [cardView]="true"></player-profile>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
