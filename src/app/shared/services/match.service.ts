@@ -13,29 +13,35 @@ import { NewMatchAnimationComponent } from '../modals/new-match-animation/new-ma
 export class MatchService {
   appViewRef: ViewContainerRef;
   newMatchAnimation: ComponentRef<NewMatchAnimationComponent>;
+  firstMatchCallLoaded = false;
 
-  constructor(private afs: AngularFirestore, private playerService: PlayerService) {}
+  constructor(private afs: AngularFirestore, private playerService: PlayerService) {
+    afs
+      .collection('matches', (ref) => ref.orderBy('date', 'desc').limit(10))
+      .stateChanges(['added'])
+      .pipe(
+        map((docEvents: any[]) => {
+          if (docEvents.length === 1) {
+            const newMatch = docEvents[0].payload.doc.data() as Match;
+            this.startNewMatchAnimation(newMatch);
+          }
+        }),
+      )
+      .subscribe();
+  }
 
   public getMatches(): Observable<Match[]> {
-    const sortedMatches$ = this.afs
+    return this.afs
       .collection('matches', (ref) => ref.orderBy('date', 'desc').limit(10))
       .valueChanges()
       .pipe(
-        map((matches: any[]) => {
-          return matches.map((match) => {
-            return { ...match, date: new Date(match.date?.seconds * 1000) };
-          }) as Match[];
-        }),
+        map(
+          (matches: any[]) =>
+            matches.map((match) => {
+              return { ...match, date: new Date(match.date?.seconds * 1000) };
+            }) as Match[],
+        ),
       );
-
-    sortedMatches$.pipe(
-      skip(1),
-      tap((matches: Match[]) => {
-        this.startNewMatchAnimation(matches[0]);
-      }),
-    );
-
-    return sortedMatches$;
   }
 
   public addMatch(match: Match): void {
