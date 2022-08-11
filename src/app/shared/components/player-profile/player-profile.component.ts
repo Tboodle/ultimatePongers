@@ -8,4 +8,5 @@ import { Player } from '../../models/player';
 })
 export class PlayerProfileComponent {
   @Input() player: Player;
+  @Input() cardView: boolean = false;
 }
