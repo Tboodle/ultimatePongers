@@ -25,8 +25,8 @@ export class MatchService {
             const newMatch = docEvents[0].payload.doc.data() as Match;
             this.startNewMatchAnimation(newMatch);
           } else {
-            const newMatch = docEvents[0].payload.doc.data() as Match;
-            this.startNewMatchAnimation(newMatch);
+            // const newMatch = docEvents[0].payload.doc.data() as Match;
+            // this.startNewMatchAnimation(newMatch);
           }
         }),
       )
