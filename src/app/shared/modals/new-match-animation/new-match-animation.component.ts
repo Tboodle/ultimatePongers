@@ -60,7 +60,7 @@ export class NewMatchAnimationComponent implements OnInit {
     vsTimeline.to('#score', {
       delay: 1,
       duration: 1,
-      opacity: 0,
+      opacity: 1,
     });
     player1Timeline.to('#player1', {
       delay: 3,
