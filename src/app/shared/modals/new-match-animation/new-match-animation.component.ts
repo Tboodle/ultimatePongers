@@ -13,29 +13,33 @@ export class NewMatchAnimationComponent implements OnInit {
   match: Match;
   winner: Player;
   loser: Player;
+  middleText = 'Vs';
 
   @Output() closeModal = new EventEmitter<Player>();
 
   ngOnInit(): void {
-    gsap.timeline();
+    const vsTimeline = gsap.timeline();
+    const player1Timeline = gsap.timeline();
+    const player2Timeline = gsap.timeline();
 
     //INITIAL
     gsap.set('#versus', { opacity: 0, xPercent: -50, yPercent: -50, top: '50%', left: '50%' });
+    gsap.set('#score', { opacity: 0, xPercent: -50, yPercent: -50, top: '50%', left: '50%' });
     gsap.set('#player1', { opacity: 0, xPercent: -50, yPercent: -50, top: '50%', left: '0%' });
     gsap.set('#player2', { opacity: 0, xPercent: -50, yPercent: -50, top: '50%', left: '100%' });
 
     //STEP 1
-    gsap.to('#versus', {
+    vsTimeline.to('#versus', {
       duration: 2,
       opacity: 1,
     });
-    gsap.to('#player1', {
+    player1Timeline.to('#player1', {
       duration: 2,
       opacity: 1,
       left: '25%',
       ease: 'power3.inOut',
     });
-    gsap.to('#player2', {
+    player2Timeline.to('#player2', {
       duration: 2,
       opacity: 1,
       left: '75%',
@@ -43,53 +47,66 @@ export class NewMatchAnimationComponent implements OnInit {
     });
 
     //STEP 2
-    gsap.to('#versus', {
-      delay: 3,
-      duration: 2,
+    vsTimeline.to('#versus', {
+      duration: 1,
       opacity: 0,
     });
-    gsap.to('#player1', {
+    vsTimeline.to('#score', {
+      duration: 1,
+      opacity: 1,
+    });
+
+    //STEP 3
+    vsTimeline.to('#score', {
+      delay: 1,
+      duration: 1,
+      opacity: 0,
+    });
+    player1Timeline.to('#player1', {
       delay: 3,
       duration: 2,
       left: '50%',
       top: '40%',
       ease: 'power3.inOut',
     });
-    gsap.to('#player2', {
+    player2Timeline.to('#player2', {
       delay: 3,
       duration: 2,
-      opacity: 1,
       left: '50%',
       top: '60%',
       ease: 'power3.inOut',
     });
 
-    //STEP 3
+    //STEP 4
+    vsTimeline.then(() => {
+      this.playConfetti();
+    });
+  }
+
+  private playConfetti() {
+    const end = Date.now() + 2500;
     const colors = ['#FF2000', '#FE5607'];
-    setTimeout(() => {
-      var end = Date.now() + 2500;
-      (function frame() {
-        confetti({
-          particleCount: 2,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 },
-          colors,
-        });
-        confetti({
-          particleCount: 2,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 },
-          colors,
-        });
+    (function frame() {
+      confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors,
+      });
+      confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors,
+      });
 
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
-      })();
-    }, 5000);
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    })();
 
-    setTimeout(() => this.closeModal.emit(), 8000);
+    setTimeout(() => this.closeModal.emit(), 3000);
   }
 }
