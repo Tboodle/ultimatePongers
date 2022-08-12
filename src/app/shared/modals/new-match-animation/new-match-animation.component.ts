@@ -57,11 +57,6 @@ export class NewMatchAnimationComponent implements OnInit {
     });
 
     //STEP 3
-    vsTimeline.to('#score', {
-      delay: 1,
-      duration: 1,
-      opacity: 1,
-    });
     player1Timeline.to('#player1', {
       delay: 3,
       duration: 2,
@@ -78,7 +73,7 @@ export class NewMatchAnimationComponent implements OnInit {
     });
 
     //STEP 4
-    vsTimeline.then(() => {
+    player1Timeline.then(() => {
       this.playConfetti();
     });
   }
