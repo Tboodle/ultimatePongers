@@ -20,9 +20,9 @@ export class AuthService {
       hd: 'bti360.com',
     });
 
-    getRedirectResult(auth).then((result) => {
-      if (result) {
-        this.user$.next(result.user);
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.user$.next(user);
       } else {
         signInWithRedirect(auth, provider);
       }
