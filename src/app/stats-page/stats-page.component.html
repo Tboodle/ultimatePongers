@@ -62,6 +62,7 @@
       <stat-graph-card class="lg:col-span-2"></stat-graph-card>
       <matchup-card
         [matchups]="matchups$ | async"
+        [players]="players$ | async"
         class="lg:col-start-3 lg:col-span-1"
       ></matchup-card>
     </div>

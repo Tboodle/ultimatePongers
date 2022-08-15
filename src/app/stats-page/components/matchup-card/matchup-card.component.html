@@ -5,38 +5,30 @@
     <!-- Activity Feed -->
     <div class="mt-6 flow-root">
       <ul role="list" class="-mb-8">
-        <li *ngFor="let matchup of matchups; let i = index">
-          <div class="relative pb-8">
-            <div class="relative flex space-x-3">
+        <li *ngFor="let matchup of matchups">
+          <div *ngIf="getOpponentForMatchup(matchup); let opponent" class="relative pb-8">
+            <div class="relative grid grid-cols-4 w-full">
               <div>
-                <span
-                  class="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white"
-                >
-                  <!-- Heroicon name: solid/user -->
-                  <svg
-                    class="w-5 h-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </span>
+                <img
+                  class="inline w-12 h-12 mr-2 rounded-full col-span-1"
+                  src="{{ opponent.photoUrl }}"
+                  title="{{ opponent.name }}"
+                />
               </div>
-              <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                <div>
-                  <p class="text-sm text-gray-500">
-                    Applied to
-                    <a href="#" class="font-medium text-gray-900">Front End Developer</a>
-                  </p>
+              <div class="flex w-full col-span-3">
+                <div
+                  class="pl-1 border border-blue-500 bg-blue-500 text-white my-auto w-[calc({{
+                    calculateWinWidth(matchup)
+                  }})]"
+                >
+                  {{ matchup.player1Wins }}
                 </div>
-                <div class="text-right text-sm whitespace-nowrap text-gray-500">
-                  <time datetime="2020-09-20">Sep 20</time>
+                <div
+                  class="pr-1 flex justify-end border border-red-500 bg-red-500 text-white test-right my-auto w-[calc({{
+                    calculateLossWidth(matchup)
+                  }})]"
+                >
+                  {{ matchup.player2Wins }}
                 </div>
               </div>
             </div>

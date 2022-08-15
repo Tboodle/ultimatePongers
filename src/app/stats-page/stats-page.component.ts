@@ -14,6 +14,7 @@ import { PlayerService } from '../shared/services/player.service';
   styleUrls: ['./stats-page.component.scss'],
 })
 export class StatsPageComponent implements OnInit {
+  players$: Observable<any>;
   currentPlayer$: Observable<any>;
   matchups$: Observable<any>;
   matches$: Observable<any>;
@@ -25,6 +26,7 @@ export class StatsPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.players$ = this.playerService.getPlayers();
     this.currentPlayer$ = this.authService.user$.pipe(
       switchMap((user: User) => {
         return this.playerService.getPlayerForEmail(user.email || '');
@@ -38,35 +40,44 @@ export class StatsPageComponent implements OnInit {
   }
 
   private getMatchupsFromMatches(player: Player, matches: Match[]): Matchup[] {
-    const opponents: Map<string, Matchup> = new Map();
-
-    console.log(matches);
-
+    const matchupMap: Map<string, Matchup> = new Map();
     matches.forEach((match) => {
       if (match.winnerId === player.id) {
-        const matchup = opponents.get(match.loserId);
-        if (matchup) {
-          matchup.matches.concat(match);
-          matchup.player1Wins += 1;
-          matchup.player1Points += match.winnerScore;
-          matchup.player2Points += match.loserScore;
-        } else {
-          opponents.set(match.loserId, this.generateMatchup(player.id, match.loserId));
-        }
+        this.updateMatchupWithMatch(matchupMap, match, player, match.loserId);
       } else {
-        const matchup = opponents.get(match.winnerId);
-        if (matchup) {
-          matchup.matches.concat(match);
-          matchup.player2Wins += 1;
-          matchup.player1Points += match.loserScore;
-          matchup.player2Points += match.winnerScore;
-        } else {
-          opponents.set(match.winnerId, this.generateMatchup(player.id, match.winnerId));
-        }
+        this.updateMatchupWithMatch(matchupMap, match, player, match.winnerId);
       }
     });
+    return [...matchupMap.values()];
+  }
 
-    return [...opponents.values()];
+  private updateMatchupWithMatch(
+    matchupMap: Map<string, Matchup>,
+    match: Match,
+    player: Player,
+    opponentId: string,
+  ) {
+    const matchup = matchupMap.get(opponentId);
+    if (matchup) {
+      this.updateMatchupFieldsForMatch(matchup, match);
+    } else {
+      matchupMap.set(opponentId, this.generateMatchup(player.id, opponentId));
+      const newMatchup = matchupMap.get(opponentId);
+      this.updateMatchupFieldsForMatch(newMatchup as Matchup, match);
+    }
+  }
+
+  private updateMatchupFieldsForMatch(matchup: Matchup, match: Match) {
+    matchup.matches.concat(match);
+    if (matchup.player1Id === match.winnerId) {
+      matchup.player1Wins += 1;
+      matchup.player2Points += match.loserScore as number;
+      matchup.player1Points += match.winnerScore as number;
+    } else {
+      matchup.player2Wins += 1;
+      matchup.player1Points += match.loserScore as number;
+      matchup.player2Points += match.winnerScore as number;
+    }
   }
 
   private generateMatchup(player1Id: string, player2Id: string): Matchup {
