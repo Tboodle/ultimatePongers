@@ -15,18 +15,11 @@ export class MatchupCardComponent {
     return this.players.find((player) => player.id === matchup.player2Id);
   }
 
-  calculateWinWidth(matchup: Matchup) {
-    console.log(
-      Math.round((matchup.player1Wins / (matchup.player1Wins + matchup.player2Wins)) * 100) + '%',
-    );
-    return (
-      Math.round((matchup.player1Wins / (matchup.player1Wins + matchup.player2Wins)) * 100) + '%'
-    );
+  calculateWinPercentage(matchup: Matchup) {
+    return Math.round((matchup.player1Wins / (matchup.player1Wins + matchup.player2Wins)) * 100);
   }
 
-  calculateLossWidth(matchup: Matchup) {
-    return (
-      Math.round((matchup.player2Wins / (matchup.player1Wins + matchup.player2Wins)) * 100) + '%'
-    );
+  calculateLossPercentage(matchup: Matchup) {
+    return Math.round((matchup.player2Wins / (matchup.player1Wins + matchup.player2Wins)) * 100);
   }
 }

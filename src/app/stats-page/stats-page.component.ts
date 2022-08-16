@@ -48,7 +48,11 @@ export class StatsPageComponent implements OnInit {
         this.updateMatchupWithMatch(matchupMap, match, player, match.winnerId);
       }
     });
-    return [...matchupMap.values()];
+
+    return ([...matchupMap.values()] as Matchup[]).sort(
+      (matchup1: Matchup, matchup2: Matchup) =>
+        matchup2.player1Wins + matchup2.player1Wins - (matchup1.player1Wins + matchup1.player1Wins),
+    );
   }
 
   private updateMatchupWithMatch(

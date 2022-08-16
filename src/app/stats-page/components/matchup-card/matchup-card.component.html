@@ -1,14 +1,14 @@
 <section aria-labelledby="timeline-title">
   <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
-    <h2 id="timeline-title" class="text-lg font-medium text-gray-900">Matchup Summary</h2>
+    <div id="timeline-title" class="text-xl font-medium text-slate-800">Matchup Summary</div>
 
     <!-- Activity Feed -->
-    <div class="mt-6 flow-root">
+    <div *ngIf="matchups && players" class="my-6 flow-root">
       <ul role="list" class="-mb-8">
         <li *ngFor="let matchup of matchups">
-          <div *ngIf="getOpponentForMatchup(matchup); let opponent" class="relative pb-8">
-            <div class="relative grid grid-cols-4 w-full">
-              <div>
+          <div *ngIf="getOpponentForMatchup(matchup); let opponent" class="relative pb-4">
+            <div class="relative grid grid-cols-5 w-full">
+              <div class="flex w-full col-span-1">
                 <img
                   class="inline w-12 h-12 mr-2 rounded-full col-span-1"
                   src="{{ opponent.photoUrl }}"
@@ -17,19 +17,24 @@
               </div>
               <div class="flex w-full col-span-3">
                 <div
-                  class="pl-1 border border-blue-500 bg-blue-500 text-white my-auto w-[calc({{
-                    calculateWinWidth(matchup)
-                  }})]"
+                  class="pl-1 border border-blue-500 bg-blue-500 text-white my-auto rounded-l-lg"
+                  [style.width.%]="calculateWinPercentage(matchup)"
+                  [style.display]="calculateWinPercentage(matchup) === 0 ? 'none' : 'flex'"
+                  [ngClass]="{ 'rounded-r-lg': calculateLossPercentage(matchup) === 0 }"
                 >
-                  {{ matchup.player1Wins }}
+                  {{ matchup.player1Wins }}W
                 </div>
                 <div
-                  class="pr-1 flex justify-end border border-red-500 bg-red-500 text-white test-right my-auto w-[calc({{
-                    calculateLossWidth(matchup)
-                  }})]"
+                  class="pr-1 flex justify-end border border-red-500 bg-red-500 text-white my-auto rounded-r-lg"
+                  [style.width.%]="calculateLossPercentage(matchup)"
+                  [style.display]="calculateLossPercentage(matchup) === 0 ? 'none' : 'flex'"
+                  [ngClass]="{ 'rounded-l-lg': calculateWinPercentage(matchup) === 0 }"
                 >
-                  {{ matchup.player2Wins }}
+                  {{ matchup.player2Wins }}L
                 </div>
+              </div>
+              <div class="flex w-full col-span-1 my-auto justify-center text-md text-slate-600">
+                {{ calculateWinPercentage(matchup) }}%
               </div>
             </div>
           </div>

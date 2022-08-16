@@ -57,13 +57,13 @@
     </div>
 
     <div
-      class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3"
+      class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-5"
     >
-      <stat-graph-card class="lg:col-span-2"></stat-graph-card>
+      <stat-graph-card class="lg:col-span-3"></stat-graph-card>
       <matchup-card
         [matchups]="matchups$ | async"
         [players]="players$ | async"
-        class="lg:col-start-3 lg:col-span-1"
+        class="lg:col-start-4 lg:col-span-2"
       ></matchup-card>
     </div>
   </main>
