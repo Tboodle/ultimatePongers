@@ -1,45 +1,50 @@
 <section aria-labelledby="timeline-title">
-  <div class="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
-    <div id="timeline-title" class="text-xl font-medium text-slate-800">Matchup Summary</div>
-
-    <!-- Activity Feed -->
-    <div *ngIf="matchups && players" class="my-6 flow-root">
-      <ul role="list" class="-mb-8">
-        <li *ngFor="let matchup of matchups">
-          <div *ngIf="getOpponentForMatchup(matchup); let opponent" class="relative pb-4">
-            <div class="relative grid grid-cols-5 w-full">
-              <div class="flex w-full col-span-1">
-                <img
-                  class="inline w-12 h-12 mr-2 rounded-full col-span-1"
-                  src="{{ opponent.photoUrl }}"
-                  title="{{ opponent.name }}"
-                />
-              </div>
-              <div class="flex w-full col-span-3">
-                <div
-                  class="pl-1 border border-blue-500 bg-blue-500 text-white my-auto rounded-l-lg"
-                  [style.width.%]="calculateWinPercentage(matchup)"
-                  [style.display]="calculateWinPercentage(matchup) === 0 ? 'none' : 'flex'"
-                  [ngClass]="{ 'rounded-r-lg': calculateLossPercentage(matchup) === 0 }"
-                >
-                  {{ matchup.player1Wins }}W
+  <div class="bg-white shadow sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <h2 id="applicant-information-title" class="text-lg leading-6 font-medium text-gray-900">
+        Matchup Summary
+      </h2>
+      <p class="mt-1 max-w-2xl text-sm text-gray-500">Overall records against other teammates.</p>
+    </div>
+    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+      <div *ngIf="matchups && players" class="mb-4 flow-root">
+        <ul role="list" class="-mb-8">
+          <li *ngFor="let matchup of matchups">
+            <div *ngIf="getOpponentForMatchup(matchup); let opponent" class="relative pb-6">
+              <div class="relative grid grid-cols-5 w-full">
+                <div class="flex w-full col-span-1">
+                  <img
+                    class="inline w-12 h-12 mr-2 rounded-full col-span-1"
+                    src="{{ opponent.photoUrl }}"
+                    title="{{ opponent.name }}"
+                  />
                 </div>
-                <div
-                  class="pr-1 flex justify-end border border-red-500 bg-red-500 text-white my-auto rounded-r-lg"
-                  [style.width.%]="calculateLossPercentage(matchup)"
-                  [style.display]="calculateLossPercentage(matchup) === 0 ? 'none' : 'flex'"
-                  [ngClass]="{ 'rounded-l-lg': calculateWinPercentage(matchup) === 0 }"
-                >
-                  {{ matchup.player2Wins }}L
+                <div class="flex w-full col-span-3">
+                  <div
+                    class="pl-1 border border-blue-500 bg-blue-500 text-white my-auto rounded-l-lg"
+                    [style.width.%]="calculateWinPercentage(matchup)"
+                    [style.display]="calculateWinPercentage(matchup) === 0 ? 'none' : 'flex'"
+                    [ngClass]="{ 'rounded-r-lg': calculateLossPercentage(matchup) === 0 }"
+                  >
+                    {{ matchup.player1Wins }}W
+                  </div>
+                  <div
+                    class="pr-1 flex justify-end border border-red-500 bg-red-500 text-white my-auto rounded-r-lg"
+                    [style.width.%]="calculateLossPercentage(matchup)"
+                    [style.display]="calculateLossPercentage(matchup) === 0 ? 'none' : 'flex'"
+                    [ngClass]="{ 'rounded-l-lg': calculateWinPercentage(matchup) === 0 }"
+                  >
+                    {{ matchup.player2Wins }}L
+                  </div>
                 </div>
-              </div>
-              <div class="flex w-full col-span-1 my-auto justify-center text-md text-slate-600">
-                {{ calculateWinPercentage(matchup) }}%
+                <div class="flex w-full col-span-1 my-auto justify-center text-md text-slate-600">
+                  {{ calculateWinPercentage(matchup) }}%
+                </div>
               </div>
             </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>

@@ -1,5 +1,5 @@
 import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
-import { forkJoin, map, mergeMap, Observable, tap } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import { Match } from '../models/match';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -48,6 +48,7 @@ export class MatchService {
 
   public addMatch(match: Match): void {
     this.playerService.updatePlayersForMatch(match);
+    console.log(match);
     this.afs.collection('matches').add(match);
   }
 

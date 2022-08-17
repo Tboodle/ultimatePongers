@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from 'firebase/auth';
 import { map, Observable, switchMap, tap } from 'rxjs';
 import { Match } from '../shared/models/match';
@@ -32,9 +32,10 @@ export class StatsPageComponent implements OnInit {
         return this.playerService.getPlayerForEmail(user.email || '');
       }),
       tap((player: Player) => {
-        this.matchups$ = this.matchService
-          .getMatchesForPlayer(player)
-          .pipe(map((matches) => this.getMatchupsFromMatches(player, matches)));
+        this.matches$ = this.matchService.getMatchesForPlayer(player);
+        this.matchups$ = this.matches$.pipe(
+          map((matches) => this.getMatchupsFromMatches(player, matches)),
+        );
       }),
     );
   }
