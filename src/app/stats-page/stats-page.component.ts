@@ -19,6 +19,21 @@ export class StatsPageComponent implements OnInit {
   matchups$: Observable<any>;
   matches$: Observable<any>;
 
+  matches: Match[] = [
+    {
+      id: '1',
+      date: { seconds: new Date().valueOf() / 1000 },
+      loserId: '1',
+      winnerId: 'kGq3afom8JUdUeMC7axv',
+      loserScore: 1,
+      winnerScore: 21,
+      winnerStartElo: 400,
+      loserStartElo: 400,
+      winnerEndElo: 420,
+      loserEndElo: 380,
+    },
+  ];
+
   constructor(
     private authService: AuthService,
     private playerService: PlayerService,
@@ -52,7 +67,7 @@ export class StatsPageComponent implements OnInit {
 
     return ([...matchupMap.values()] as Matchup[]).sort(
       (matchup1: Matchup, matchup2: Matchup) =>
-        matchup2.player1Wins + matchup2.player1Wins - (matchup1.player1Wins + matchup1.player1Wins),
+        matchup1.player1Wins + matchup1.player1Wins - (matchup2.player1Wins + matchup2.player2Wins),
     );
   }
 

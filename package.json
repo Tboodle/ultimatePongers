@@ -27,6 +27,7 @@
     "@types/gsap": "^3.0.0",
     "animejs": "^3.2.1",
     "canvas-confetti": "^1.5.1",
+    "chart.js": "^3.9.1",
     "d3": "^7.6.1",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.5.0",

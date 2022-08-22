@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnChanges } from '@angular/core';
 import { Match } from 'src/app/shared/models/match';
-import * as d3 from 'd3';
 import { Player } from 'src/app/shared/models/player';
+import { Chart, ChartItem } from 'chart.js';
 
 @Component({
   selector: 'stat-graph-card',
@@ -12,7 +12,7 @@ export class StatGraphCardComponent implements OnChanges {
   @Input() matches: Match[];
   @Input() player: Player;
 
-  noRatedMatches = false;
+  noRatedMatches: boolean = true;
   constructor(private el: ElementRef) {}
 
   ngOnChanges(): void {
@@ -20,73 +20,24 @@ export class StatGraphCardComponent implements OnChanges {
       ?.filter((match) => match.winnerEndElo)
       .sort((match1, match2) => match2.date.valueOf() - match1.date.valueOf())
       .slice(-10);
+
     if (filteredMatches) {
-      // set the dimensions and margins of the graph
-      var margin = { top: 10, right: 30, bottom: 30, left: 20 };
-
-      // append the svg object to the body of the page
-      var svg = d3
-        .select('#elo-graph')
-        .append('svg')
-        .attr('viewBox', '0 0 ' + 1000 + ' ' + 450)
-        .attr('preserveAspectRatio', 'xMinYMin')
-        .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-      const data = this.formatGraphData();
-      var x = d3
-        .scaleTime()
-        .domain([data[0].date, data[data.length - 1].date])
-        .range([0, this.el.nativeElement.offsetWidth]);
-      svg
-        .append('g')
-        .attr('transform', 'translate(0,' + this.el.nativeElement.offsetHeight + ')')
-        .call(d3.axisBottom(x));
-
-      // Add Y axis
-      var y = d3
-        .scaleLinear()
-        .domain([
-          Math.min.apply(
-            Math,
-            data.map((point) => point.value),
-          ),
-          Math.max.apply(
-            Math,
-            data.map((point) => point.value),
-          ),
-        ])
-        .range([this.el.nativeElement.offsetHeight, 0]);
-      svg.append('g').call(d3.axisLeft(y));
-
-      // Add the line
-      svg
-        .append('path')
-        .datum(data)
-        .attr('fill', 'none')
-        .attr('stroke', 'steelblue')
-        .attr('stroke-width', 1.5);
-      // .attr(
-      //   'd',
-      //   d3
-      //     .line()
-      //     .x((point) => x(point.date))
-      //     .y((point) => y(point.value)),
-      // );
+      const canvas = document.getElementById('line-chart');
+      let speedData = {
+        labels: ['0s', '10s', '20s', '30s', '40s', '50s', '60s'],
+        datasets: [
+          {
+            label: 'Car Speed (mph)',
+            data: [0, 59, 75, 20, 20, 55, 40],
+          },
+        ],
+      };
+      let lineChart = new Chart((canvas as HTMLCanvasElement) || ({} as HTMLCanvasElement), {
+        type: 'line',
+        data: speedData,
+      });
     } else {
       this.noRatedMatches = true;
     }
-  }
-
-  private formatGraphData(): { date: any; value: number }[] {
-    return this.matches.map((match: any) => {
-      return {
-        date: d3.timeParse('%Y-%m-%d')(
-          new Date(match.date?.seconds * 1000).toISOString().split('T')[0],
-        ),
-        value:
-          this.player.id === match.winnerId ? match?.winnerEndElo ?? 0 : match?.loserEndElo ?? 0,
-      };
-    });
   }
 }

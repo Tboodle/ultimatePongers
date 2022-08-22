@@ -8,5 +8,5 @@ export interface Match {
   winnerEndElo?: number;
   loserStartElo?: number;
   loserEndElo?: number;
-  date: Date;
+  date: any;
 }
