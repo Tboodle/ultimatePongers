@@ -50,10 +50,13 @@ export class StatsPageComponent implements OnInit {
       }
     });
 
-    return ([...matchupMap.values()] as Matchup[]).sort(
+    const test = ([...matchupMap.values()] as Matchup[]).sort(
       (matchup1: Matchup, matchup2: Matchup) =>
-        matchup1.player1Wins + matchup1.player1Wins - (matchup2.player1Wins + matchup2.player2Wins),
+        matchup2.player1Wins + matchup2.player2Wins - matchup1.player1Wins - matchup1.player2Wins,
     );
+
+    console.log(test);
+    return test;
   }
 
   private updateMatchupWithMatch(
