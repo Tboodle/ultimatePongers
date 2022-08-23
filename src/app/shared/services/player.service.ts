@@ -61,12 +61,17 @@ export class PlayerService {
       const loserRating = Math.pow(10, loser.elo / 400);
       const winnerModifier = 1 - winnerRating / (loserRating + winnerRating);
       const loserModifier = 0 - loserRating / (loserRating + winnerRating);
-      this.updatePlayerWithEloModifier(winner, winnerModifier);
-      this.updatePlayerWithEloModifier(loser, loserModifier);
+
+      //Gross
+      const updatedWinnerElo = this.updatePlayerWithEloModifier(winner, winnerModifier);
+      const updatedLoserElo = this.updatePlayerWithEloModifier(loser, loserModifier);
+      match.winnerEndElo = updatedWinnerElo;
+      match.loserEndElo = updatedLoserElo;
+      //End Gross
     });
   }
 
-  private updatePlayerWithEloModifier(player: Player, eloModifier: number): void {
+  private updatePlayerWithEloModifier(player: Player, eloModifier: number): number {
     const newLoserScore = player.elo + this.ELO_CONST * eloModifier;
     player.elo = Math.round(newLoserScore * 10) / 10;
     if (eloModifier >= 0) {
@@ -75,6 +80,7 @@ export class PlayerService {
       player.losses += 1;
     }
     this.updatePlayerDoc(player);
+    return player.elo;
   }
 
   private updatePlayerDoc(player: Player): void {

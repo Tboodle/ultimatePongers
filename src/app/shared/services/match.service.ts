@@ -13,7 +13,6 @@ import { NewMatchAnimationComponent } from '../modals/new-match-animation/new-ma
 export class MatchService {
   appViewRef: ViewContainerRef;
   newMatchAnimation: ComponentRef<NewMatchAnimationComponent>;
-  firstMatchCallLoaded = false;
 
   constructor(private afs: AngularFirestore, private playerService: PlayerService) {
     afs
@@ -50,6 +49,20 @@ export class MatchService {
   public addMatch(match: Match): void {
     this.playerService.updatePlayersForMatch(match);
     this.afs.collection('matches').add(match);
+  }
+
+  public getMatchesForPlayer(player: Player): Observable<Match[]> {
+    const wins$: Observable<Match[]> = this.afs
+      .collection('matches', (ref) => ref.where('winnerId', '==', player.id))
+      .get()
+      .pipe(map((winResponse) => winResponse.docs.map((doc) => doc.data()) as Match[]));
+
+    const losses$: Observable<Match[]> = this.afs
+      .collection('matches', (ref) => ref.where('loserId', '==', player.id))
+      .get()
+      .pipe(map((winResponse) => winResponse.docs.map((doc) => doc.data()) as Match[]));
+
+    return forkJoin([wins$, losses$]).pipe(map(([wins, losses]) => wins.concat(losses)));
   }
 
   private startNewMatchAnimation(match: Match) {

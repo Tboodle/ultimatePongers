@@ -51,8 +51,10 @@ export class AddMatchModalComponent implements OnInit {
       id: uuidv4(),
       winnerId: this.winner?.id,
       winnerScore: this.winnerScore,
+      winnerStartElo: this.winner.elo,
       loserId: this.loser?.id,
       loserScore: this.loserScore,
+      loserStartElo: this.loser.elo,
       date: new Date(),
     };
     this.closeModal.emit(match);

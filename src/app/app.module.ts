@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import { CompetitorsPageComponent } from './competitors-page/competitors-page.component';
 import { LeaderboardComponent } from './home-page/components/leaderboard/leaderboard.component';
 import { RecentMatchesComponent } from './home-page/components/recent-matches/recent-matches.component';
 import { MatchPlayerDisplayComponent } from './home-page/components/match-player-display/match-player-display.component';
@@ -25,12 +24,14 @@ import { PlayerDropdownComponent } from './shared/components/player-dropdown/pla
 import { ReactiveFormsModule } from '@angular/forms';
 import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/new-match-animation.component';
 import { PlayerProfileComponent } from './shared/components/player-profile/player-profile.component';
+import { StatsPageComponent } from './stats-page/stats-page.component';
+import { MatchupCardComponent } from './stats-page/components/matchup-card/matchup-card.component';
+import { StatGraphCardComponent } from './stats-page/components/stat-graph-card/stat-graph-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
-    CompetitorsPageComponent,
     LeaderboardComponent,
     RecentMatchesComponent,
     MatchPlayerDisplayComponent,
@@ -41,6 +42,9 @@ import { PlayerProfileComponent } from './shared/components/player-profile/playe
     RegisterModalComponent,
     NewMatchAnimationComponent,
     PlayerProfileComponent,
+    StatsPageComponent,
+    MatchupCardComponent,
+    StatGraphCardComponent,
   ],
   imports: [
     BrowserModule,

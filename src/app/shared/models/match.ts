@@ -4,5 +4,9 @@ export interface Match {
   winnerId: string;
   winnerScore: number;
   loserScore: number;
-  date: Date;
+  winnerStartElo?: number;
+  winnerEndElo?: number;
+  loserStartElo?: number;
+  loserEndElo?: number;
+  date: any;
 }

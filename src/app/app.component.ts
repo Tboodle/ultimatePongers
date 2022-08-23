@@ -56,8 +56,8 @@ export class AppComponent implements OnInit {
     return this.router.url.endsWith('/');
   }
 
-  isCompetitorsPage() {
-    return this.router.url.endsWith('/competitors');
+  isStatsPage() {
+    return this.router.url.endsWith('/stats');
   }
 
   displayAddMatchModal() {
