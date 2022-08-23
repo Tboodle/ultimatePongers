@@ -48,7 +48,6 @@ export class MatchService {
 
   public addMatch(match: Match): void {
     this.playerService.updatePlayersForMatch(match);
-    console.log(match);
     this.afs.collection('matches').add(match);
   }
 

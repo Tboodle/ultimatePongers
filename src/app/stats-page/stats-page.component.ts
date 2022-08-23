@@ -19,21 +19,6 @@ export class StatsPageComponent implements OnInit {
   matchups$: Observable<any>;
   matches$: Observable<any>;
 
-  matches: Match[] = [
-    {
-      id: '1',
-      date: { seconds: new Date().valueOf() / 1000 },
-      loserId: '1',
-      winnerId: 'kGq3afom8JUdUeMC7axv',
-      loserScore: 1,
-      winnerScore: 21,
-      winnerStartElo: 400,
-      loserStartElo: 400,
-      winnerEndElo: 420,
-      loserEndElo: 380,
-    },
-  ];
-
   constructor(
     private authService: AuthService,
     private playerService: PlayerService,
