@@ -47,8 +47,9 @@ export class MatchService {
   }
 
   public addMatch(match: Match): void {
-    this.playerService.updatePlayersForMatch(match);
-    this.afs.collection('matches').add(match);
+    this.playerService.updatePlayersForMatch(match).subscribe((updatedMatch: Match) => {
+      this.afs.collection('matches').add(updatedMatch);
+    });
   }
 
   public getMatchesForPlayer(player: Player): Observable<Match[]> {

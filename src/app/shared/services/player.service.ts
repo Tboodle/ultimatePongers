@@ -50,25 +50,28 @@ export class PlayerService {
     });
   }
 
-  updatePlayersForMatch(match: Match): void {
+  updatePlayersForMatch(match: Match): Observable<Match> {
     const winner$ = this.getPlayerForId(match.winnerId);
     const loser$ = this.getPlayerForId(match.loserId);
 
-    forkJoin([winner$, loser$]).subscribe((players: Player[]) => {
-      const winner = players[0];
-      const loser = players[1];
-      const winnerRating = Math.pow(10, winner.elo / 400);
-      const loserRating = Math.pow(10, loser.elo / 400);
-      const winnerModifier = 1 - winnerRating / (loserRating + winnerRating);
-      const loserModifier = 0 - loserRating / (loserRating + winnerRating);
+    return forkJoin([winner$, loser$]).pipe(
+      map((players: Player[]) => {
+        const winner = players[0];
+        const loser = players[1];
+        const winnerRating = Math.pow(10, winner.elo / 400);
+        const loserRating = Math.pow(10, loser.elo / 400);
+        const winnerModifier = 1 - winnerRating / (loserRating + winnerRating);
+        const loserModifier = 0 - loserRating / (loserRating + winnerRating);
 
-      //Gross
-      const updatedWinnerElo = this.updatePlayerWithEloModifier(winner, winnerModifier);
-      const updatedLoserElo = this.updatePlayerWithEloModifier(loser, loserModifier);
-      match.winnerEndElo = updatedWinnerElo;
-      match.loserEndElo = updatedLoserElo;
-      //End Gross
-    });
+        //Gross
+        const updatedWinnerElo = this.updatePlayerWithEloModifier(winner, winnerModifier);
+        const updatedLoserElo = this.updatePlayerWithEloModifier(loser, loserModifier);
+        match.winnerEndElo = updatedWinnerElo;
+        match.loserEndElo = updatedLoserElo;
+        return match;
+        //End Gross
+      }),
+    );
   }
 
   private updatePlayerWithEloModifier(player: Player, eloModifier: number): number {

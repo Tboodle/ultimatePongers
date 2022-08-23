@@ -18,10 +18,13 @@ export class StatGraphCardComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
+    console.log(this.matches);
     const filteredMatches = this.matches
       ?.filter((match) => match.winnerEndElo)
       .sort((match1, match2) => match2.date.valueOf() - match1.date.valueOf())
       .slice(-10);
+
+    console.log(filteredMatches);
 
     if (filteredMatches?.length > 0 && this.player) {
       this.populateEloChart(filteredMatches);
