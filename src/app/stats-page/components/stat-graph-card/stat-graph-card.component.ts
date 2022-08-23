@@ -20,11 +20,7 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   }
 
   ngOnChanges(): void {
-    const filteredMatches = this.matches
-      ?.filter((match) => match.winnerEndElo)
-      .sort((match1, match2) => match2.date.valueOf() - match1.date.valueOf())
-      .slice(-10);
-
+    const filteredMatches = this.matches?.filter((match) => match.winnerEndElo);
     if (filteredMatches?.length > 0 && this.player) {
       this.noRatedMatches = false;
     } else {
@@ -33,10 +29,7 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    const filteredMatches = this.matches
-      ?.filter((match) => match.winnerEndElo)
-      .sort((match1, match2) => match2.date.valueOf() - match1.date.valueOf())
-      .slice(-10);
+    const filteredMatches = this.matches?.filter((match) => match.winnerEndElo).slice(-10);
     if (!this.noRatedMatches) {
       this.populateEloChart(filteredMatches);
     }
@@ -48,8 +41,8 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
     const playerElos = filteredMatches.map((match) => this.getPlayerEloForMatch(match) || 99999999);
     const minElo = Math.min(...playerElos);
     const maxElo = Math.max(...playerElos);
-    const yScaleMin = Math.round((minElo * 0.9) / 50) * 50;
-    const yScaleMax = Math.round((maxElo * 1.1) / 50) * 50;
+    const yScaleMin = Math.round((minElo * 0.9) / 10) * 10;
+    const yScaleMax = Math.round((maxElo * 1.1) / 10) * 10;
 
     if (!this.chart) {
       this.chart = new Chart(canvas, {

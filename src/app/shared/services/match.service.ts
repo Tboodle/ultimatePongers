@@ -63,7 +63,13 @@ export class MatchService {
       .get()
       .pipe(map((winResponse) => winResponse.docs.map((doc) => doc.data()) as Match[]));
 
-    return forkJoin([wins$, losses$]).pipe(map(([wins, losses]) => wins.concat(losses)));
+    return forkJoin([wins$, losses$]).pipe(
+      map(([wins, losses]) =>
+        wins
+          .concat(losses)
+          .sort((matchA: Match, matchB: Match) => matchA.date.seconds - matchB.date.seconds),
+      ),
+    );
   }
 
   private startNewMatchAnimation(match: Match) {
