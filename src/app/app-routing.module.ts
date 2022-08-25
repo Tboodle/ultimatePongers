@@ -9,7 +9,7 @@ const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'stats',
+    path: 'player/:id',
     component: StatsPageComponent,
   },
 ];

@@ -16,6 +16,7 @@ import { Player } from './shared/models/player';
 })
 export class AppComponent implements OnInit {
   title = 'BTI360 Ping Pong';
+  playerId: string;
 
   currentUser: User;
 
@@ -43,7 +44,10 @@ export class AppComponent implements OnInit {
           this.currentUser = user;
           return this.playerService.getPlayerForEmail(user.email || '');
         }),
-        map((player: Player) => !!player),
+        map((player: Player) => {
+          this.playerId = player.id;
+          return !!player;
+        }),
       )
       .subscribe((isExistingUser: boolean) => {
         if (!isExistingUser) {

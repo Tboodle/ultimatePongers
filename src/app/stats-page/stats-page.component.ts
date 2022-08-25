@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { User } from 'firebase/auth';
 import { map, Observable, switchMap, tap } from 'rxjs';
 import { Match } from '../shared/models/match';
@@ -23,21 +24,22 @@ export class StatsPageComponent implements OnInit {
     private authService: AuthService,
     private playerService: PlayerService,
     private matchService: MatchService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.players$ = this.playerService.getPlayers();
-    this.currentPlayer$ = this.authService.user$.pipe(
-      switchMap((user: User) => {
-        return this.playerService.getPlayerForEmail(user.email || '');
-      }),
-      tap((player: Player) => {
-        this.matches$ = this.matchService.getMatchesForPlayer(player);
-        this.matchups$ = this.matches$.pipe(
-          map((matches) => this.getMatchupsFromMatches(player, matches)),
-        );
-      }),
-    );
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.players$ = this.playerService.getPlayers();
+      this.currentPlayer$ = this.playerService.getPlayerForId(id).pipe(
+        tap((player: Player) => {
+          this.matches$ = this.matchService.getMatchesForId(id);
+          this.matchups$ = this.matches$.pipe(
+            map((matches) => this.getMatchupsFromMatches(player, matches)),
+          );
+        }),
+      );
+    }
   }
 
   private getMatchupsFromMatches(player: Player, matches: Match[]): Matchup[] {

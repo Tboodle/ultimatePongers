@@ -52,14 +52,14 @@ export class MatchService {
     });
   }
 
-  public getMatchesForPlayer(player: Player): Observable<Match[]> {
+  public getMatchesForId(id: string): Observable<Match[]> {
     const wins$: Observable<Match[]> = this.afs
-      .collection('matches', (ref) => ref.where('winnerId', '==', player.id))
+      .collection('matches', (ref) => ref.where('winnerId', '==', id))
       .get()
       .pipe(map((winResponse) => winResponse.docs.map((doc) => doc.data()) as Match[]));
 
     const losses$: Observable<Match[]> = this.afs
-      .collection('matches', (ref) => ref.where('loserId', '==', player.id))
+      .collection('matches', (ref) => ref.where('loserId', '==', id))
       .get()
       .pipe(map((winResponse) => winResponse.docs.map((doc) => doc.data()) as Match[]));
 

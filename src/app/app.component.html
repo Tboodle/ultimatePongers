@@ -18,7 +18,7 @@
           </a>
 
           <a
-            href="/stats"
+            [routerLink]="['/player', playerId]"
             class="text-base font-medium text-white hover:text-indigo-50"
             [ngClass]="{ active: isStatsPage() }"
           >
