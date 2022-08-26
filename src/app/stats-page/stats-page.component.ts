@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { User } from 'firebase/auth';
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { Match } from '../shared/models/match';
 import { Matchup } from '../shared/models/matchup';
 import { Player } from '../shared/models/player';
-import { AuthService } from '../shared/services/auth.service';
 import { MatchService } from '../shared/services/match.service';
 import { PlayerService } from '../shared/services/player.service';
 
@@ -21,7 +19,6 @@ export class StatsPageComponent implements OnInit {
   matches$: Observable<any>;
 
   constructor(
-    private authService: AuthService,
     private playerService: PlayerService,
     private matchService: MatchService,
     private route: ActivatedRoute,
@@ -31,15 +28,23 @@ export class StatsPageComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.players$ = this.playerService.getPlayers();
-      this.currentPlayer$ = this.playerService.getPlayerForId(id).pipe(
-        tap((player: Player) => {
-          this.matches$ = this.matchService.getMatchesForId(id);
-          this.matchups$ = this.matches$.pipe(
-            map((matches) => this.getMatchupsFromMatches(player, matches)),
-          );
-        }),
-      );
+      this.fetchCurrentPlayerInfo(id);
     }
+  }
+
+  fetchNewPlayer(player: Player) {
+    this.fetchCurrentPlayerInfo(player.id);
+  }
+
+  private fetchCurrentPlayerInfo(id: string) {
+    this.currentPlayer$ = this.playerService.getPlayerForId(id).pipe(
+      tap((player: Player) => {
+        this.matches$ = this.matchService.getMatchesForId(id);
+        this.matchups$ = this.matches$.pipe(
+          map((matches) => this.getMatchupsFromMatches(player, matches)),
+        );
+      }),
+    );
   }
 
   private getMatchupsFromMatches(player: Player, matches: Match[]): Matchup[] {

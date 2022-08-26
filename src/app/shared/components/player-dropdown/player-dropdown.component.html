@@ -13,10 +13,7 @@
         aria-expanded="true"
         aria-labelledby="listbox-label"
       >
-        <span
-          *ngIf="selectedPlayer; else noneSelected"
-          class="flex items-center"
-        >
+        <span *ngIf="selectedPlayer; else noneSelected" class="flex items-center">
           <img
             referrerpolicy="no-referrer"
             src="{{ selectedPlayer?.photoUrl }}"
@@ -31,9 +28,7 @@
             <span class="ml-3 block truncate">Select a player</span>
           </span>
         </ng-template>
-        <span
-          class="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
-        >
+        <span class="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
           <!-- Heroicon name: solid/selector -->
           <svg
             class="h-5 w-5 text-gray-400"
@@ -73,9 +68,7 @@
               class="flex-shrink-0 h-6 w-6 rounded-full"
             />
             <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
-            <span class="font-normal ml-3 block truncate"
-              >{{ player.name }}
-            </span>
+            <span class="font-normal ml-3 block truncate">{{ player.name }} </span>
           </div>
 
           <!--
@@ -106,10 +99,8 @@
       </ul>
     </div>
   </div>
-  <div class="w-1/6">
-    <label id="listbox-label" class="block text-sm font-medium text-gray-700">
-      Score
-    </label>
+  <div *ngIf="scoreEnabled" class="w-1/6">
+    <label id="listbox-label" class="block text-sm font-medium text-gray-700"> Score </label>
     <input
       type="number"
       (keyup)="updateScore($event)"

@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, Input, OnChanges } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Match } from 'src/app/shared/models/match';
 import { Player } from 'src/app/shared/models/player';
 import { Chart, registerables } from 'chart.js';
@@ -14,23 +14,28 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
 
   noRatedMatches: boolean = true;
   chart: Chart;
+  chartShouldUpdate = false;
 
   constructor() {
     Chart.register(...registerables);
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     const filteredMatches = this.matches?.filter((match) => match.winnerEndElo);
     if (filteredMatches?.length > 0 && this.player) {
       this.noRatedMatches = false;
     } else {
       this.noRatedMatches = true;
     }
+
+    if (changes['matches']) {
+      this.chartShouldUpdate = !this.noRatedMatches;
+    }
   }
 
   ngAfterViewChecked(): void {
     const filteredMatches = this.matches?.filter((match) => match.winnerEndElo).slice(-10);
-    if (!this.noRatedMatches) {
+    if (this.chartShouldUpdate) {
       this.populateEloChart(filteredMatches);
     }
   }
@@ -43,26 +48,26 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
     const maxElo = Math.max(...playerElos);
     const yScaleMin = Math.round((minElo * 0.9) / 10) * 10;
     const yScaleMax = Math.round((maxElo * 1.1) / 10) * 10;
-
-    if (!this.chart) {
-      this.chart = new Chart(canvas, {
-        type: 'line',
-        data: data,
-        options: {
-          scales: {
-            y: {
-              min: yScaleMin,
-              max: yScaleMax,
-            },
-          },
-          plugins: {
-            legend: {
-              display: false,
-            },
-          },
+    const options = {
+      scales: {
+        y: {
+          min: yScaleMin,
+          max: yScaleMax,
         },
-      });
-    }
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    };
+
+    this.chart = new Chart(canvas, {
+      type: 'line',
+      data,
+      options,
+    });
+    this.chartShouldUpdate = false;
   }
 
   private generateDataFromMatches(filteredMatches: Match[]) {

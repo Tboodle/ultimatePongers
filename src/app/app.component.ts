@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
   }
 
   isStatsPage() {
-    return this.router.url.endsWith('/stats');
+    return this.router.url.includes('/player/');
   }
 
   displayAddMatchModal() {

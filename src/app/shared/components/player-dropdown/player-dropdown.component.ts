@@ -10,6 +10,7 @@ export class PlayerDropdownComponent {
   @Input() players: Player[];
   @Input() fieldTitle: string;
   @Input() selectedPlayer: any;
+  @Input() scoreEnabled = true;
   @Output() selectionEmitter = new EventEmitter<any>();
   @Output() scoreEmitter = new EventEmitter<number>();
 
