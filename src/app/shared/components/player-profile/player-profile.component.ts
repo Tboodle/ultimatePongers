@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Player } from '../../models/player';
 
 @Component({
@@ -9,4 +9,11 @@ import { Player } from '../../models/player';
 export class PlayerProfileComponent {
   @Input() player: Player;
   @Input() cardView: boolean = false;
+  @Input() navigationEnabled = false;
+
+  @Output() statNavigationEvent = new EventEmitter<string>();
+
+  navigateToStatsPageForPlayer(player: Player) {
+    this.statNavigationEvent.emit(player.id);
+  }
 }

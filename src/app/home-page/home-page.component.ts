@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MatchService } from '../shared/services/match.service';
 import { PlayerService } from '../shared/services/player.service';
@@ -13,10 +14,18 @@ export class HomePageComponent implements OnInit {
 
   matches$: Observable<any>;
 
-  constructor(private playerService: PlayerService, private matchService: MatchService) {}
+  constructor(
+    private playerService: PlayerService,
+    private matchService: MatchService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.players$ = this.playerService.getPlayers();
     this.matches$ = this.matchService.getMatches();
+  }
+
+  navigateToStatsForPlayer(playerId: string) {
+    this.router.navigateByUrl(`/player/${playerId}`);
   }
 }

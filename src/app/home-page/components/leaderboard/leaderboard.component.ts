@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Player } from 'src/app/shared/models/player';
 
 @Component({
@@ -8,6 +8,7 @@ import { Player } from 'src/app/shared/models/player';
 })
 export class LeaderboardComponent {
   @Input() players: Player[];
+  @Output() statNavigationEvent = new EventEmitter<string>();
 
   getWinPercentageForPlayer(player: Player): string {
     const totalMatches = player.wins + player.losses;
