@@ -27,6 +27,11 @@ import { PlayerProfileComponent } from './shared/components/player-profile/playe
 import { StatsPageComponent } from './stats-page/stats-page.component';
 import { MatchupCardComponent } from './stats-page/components/matchup-card/matchup-card.component';
 import { StatGraphCardComponent } from './stats-page/components/stat-graph-card/stat-graph-card.component';
+import {
+  AngularFireAnalyticsModule,
+  UserTrackingService,
+  ScreenTrackingService,
+} from '@angular/fire/compat/analytics';
 
 @NgModule({
   declarations: [
@@ -57,8 +62,9 @@ import { StatGraphCardComponent } from './stats-page/components/stat-graph-card/
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
+    AngularFireAnalyticsModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService, UserTrackingService, ScreenTrackingService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
