@@ -12,7 +12,9 @@
   <div class="flex flex-col justify-center">
     <div
       class="text-2xl mb-2 text-slate-600"
-      [ngClass]="{ 'hover:underline hover:text-slate-500': navigationEnabled }"
+      [ngClass]="{
+        'hover:text-slate-500 hover:cursor-pointer active:text-bti-orange-400': navigationEnabled
+      }"
       (click)="navigateToStatsPageForPlayer(player)"
     >
       {{ player.name }}
