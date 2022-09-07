@@ -32,6 +32,8 @@ import {
   UserTrackingService,
   ScreenTrackingService,
 } from '@angular/fire/compat/analytics';
+import { DashboardTabComponent } from './stats-page/components/dashboard-tab/dashboard-tab.component';
+import { MatchesTabComponent } from './stats-page/components/matches-tab/matches-tab.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import {
     StatsPageComponent,
     MatchupCardComponent,
     StatGraphCardComponent,
+    DashboardTabComponent,
+    MatchesTabComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-export interface Match {
+export interface  Match {
   id: string;
   loserId: string;
   winnerId: string;

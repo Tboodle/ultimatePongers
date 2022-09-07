@@ -67,7 +67,13 @@ export class MatchService {
       map(([wins, losses]) =>
         wins
           .concat(losses)
-          .sort((matchA: Match, matchB: Match) => matchA.date.seconds - matchB.date.seconds),
+          .sort((matchA: Match, matchB: Match) => matchB.date.seconds - matchA.date.seconds),
+      ),
+      map(
+        (matches: any[]) =>
+          matches.map((match) => {
+            return { ...match, date: new Date(match.date?.seconds * 1000) };
+          }) as Match[],
       ),
     );
   }

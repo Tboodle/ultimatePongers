@@ -17,6 +17,7 @@ export class StatsPageComponent implements OnInit {
   currentPlayer$: Observable<any>;
   matchups$: Observable<any>;
   matches$: Observable<any>;
+  dashboardIsActive = true;
 
   constructor(
     private playerService: PlayerService,
@@ -34,6 +35,14 @@ export class StatsPageComponent implements OnInit {
 
   fetchNewPlayer(player: Player) {
     this.fetchCurrentPlayerInfo(player.id);
+  }
+
+  setDashboardAsActive() {
+    this.dashboardIsActive = true;
+  }
+
+  setMatchesAsActive() {
+    this.dashboardIsActive = false;
   }
 
   private fetchCurrentPlayerInfo(id: string) {
