@@ -1,25 +1,73 @@
-<div class="mt-8 w-[80%] mx-auto grid grid-cols-1">
-  <div class="bg-white shadow sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6">
-      <h2 id="applicant-information-title" class="text-lg leading-6 font-medium text-gray-900">
-        Match History
-      </h2>
-    </div>
-    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-      <div *ngIf="matches && players" class="mb-4 flow-root">
-        <ul role="list" class="-mb-8">
-          <li *ngFor="let match of matches">
-            <div class="grid grid-cols-2 gap-6">
-              <div>
-                {{ match?.date | formatDate }}
+<div class="mx-auto w-[80%]">
+  <div class="px-4 py-5 sm:px-6">
+    <h2 id="applicant-information-title" class="text-lg leading-6 font-medium text-gray-900">
+      Match History
+    </h2>
+  </div>
+  <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+    <div *ngIf="matches && players" class="mb-4 flow-root">
+      <ul role="list" class="-mb-8">
+        <li *ngFor="let match of matches">
+          <div class="mt-8 mx-auto grid grid-cols-1">
+            <div
+              class="shadow sm:rounded-xl grid grid-cols-5 p-6 gap-3"
+              [ngClass]="currentPlayer.id === match.winnerId ? 'bg-blue-200' : 'bg-red-200'"
+            >
+              <div class="grid grid-rows-3 col-span-1">
+                <div>
+                  {{ currentPlayer.id === match.winnerId ? 'WIN' : 'LOSS' }}
+                </div>
+                <div>{{ match.winnerScore }} - {{ match.loserScore }}</div>
+                <div class="text-slate-400">
+                  {{ match.date | formatDate }}
+                </div>
               </div>
-              <div>
-                {{ getOpponentForMatch(match)?.name }}
+              <div class="grid grid-cols-1 col-span-3">
+                <div>
+                  <player-profile
+                    [player]="
+                      getPlayerForId(
+                        currentPlayer.id === match.winnerId ? match.loserId : match.winnerId
+                      )
+                    "
+                  ></player-profile>
+                </div>
+                <div></div>
               </div>
+              <div
+                *ngIf="
+                  match?.winnerStartElo &&
+                    match?.winnerEndElo &&
+                    match?.loserStartElo &&
+                    match?.loserEndElo;
+                  else noEloStats
+                "
+                class="grid grid-rows-2 col-span-1"
+              >
+                <div>
+                  {{ currentPlayer.id === match.winnerId ? match.winnerEndElo : match.loserEndElo }}
+                </div>
+                <div
+                  class="text-slate-400"
+                  [ngClass]="currentPlayer.id === match.winnerId ? 'text-blue-500' : 'text-red-500'"
+                >
+                  <fa-icon
+                    [icon]="currentPlayer.id === match.winnerId ? faArrowTrendUp : faArrowTrendDown"
+                    class="mr-1"
+                  ></fa-icon>
+                  {{
+                    (currentPlayer.id === match.winnerId
+                      ? (match?.winnerEndElo || 0) - (match?.winnerStartElo || 0)
+                      : (match?.loserStartElo || 0) - (match?.loserEndElo || 0)
+                    ).toFixed(1)
+                  }}
+                </div>
+              </div>
+              <ng-template #noEloStats> - </ng-template>
             </div>
-          </li>
-        </ul>
-      </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

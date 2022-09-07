@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { Match } from 'src/app/shared/models/match';
 import { Matchup } from 'src/app/shared/models/matchup';
 import { Player } from 'src/app/shared/models/player';
+import { faArrowTrendUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowTrendDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'matches-tab',
@@ -14,10 +16,14 @@ export class MatchesTabComponent {
   @Input() matches: Match[];
   @Input() matchups: Matchup[];
 
-  getOpponentForMatch(match: Match) {
-    return this.players.find(
-      (player) =>
-        player.id === (match.winnerId === this.currentPlayer.id ? match.loserId : match.winnerId),
-    );
+  faArrowTrendUp = faArrowTrendUp;
+  faArrowTrendDown = faArrowTrendDown;
+
+  getOpponentForMatch(match: Match): Player {
+    return this.getPlayerForId(this.currentPlayer.id ? match.loserId : match.winnerId);
+  }
+
+  getPlayerForId(id: string): Player {
+    return this.players?.find((player) => player.id === id)!;
   }
 }

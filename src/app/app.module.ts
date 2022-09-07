@@ -34,6 +34,7 @@ import {
 } from '@angular/fire/compat/analytics';
 import { DashboardTabComponent } from './stats-page/components/dashboard-tab/dashboard-tab.component';
 import { MatchesTabComponent } from './stats-page/components/matches-tab/matches-tab.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { MatchesTabComponent } from './stats-page/components/matches-tab/matches
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
     AngularFireAnalyticsModule,
+    FontAwesomeModule,
   ],
   providers: [AuthService, UserTrackingService, ScreenTrackingService],
   bootstrap: [AppComponent],
