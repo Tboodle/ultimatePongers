@@ -56,7 +56,7 @@
                   {{ currentPlayer.id === match.winnerId ? match.winnerEndElo : match.loserEndElo }}
                 </div>
                 <div
-                  class="text-slate-400 text-lg"
+                  class="text-slate-400 lg:text-base md:text-sm sm:text-sm"
                   [ngClass]="currentPlayer.id === match.winnerId ? 'text-blue-800' : 'text-red-800'"
                 >
                   (<fa-icon
