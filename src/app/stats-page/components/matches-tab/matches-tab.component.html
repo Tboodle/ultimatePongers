@@ -1,28 +1,29 @@
-<div class="mx-auto w-[80%]">
-  <div class="px-4 py-5 sm:px-6">
-    <h2 id="applicant-information-title" class="text-lg leading-6 font-medium text-gray-900">
-      Match History
-    </h2>
-  </div>
-  <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+<div class="mx-auto w-[80%] px-6">
+  <div class="px-4 py-5 sm:px-6 max-w-3xl lg:max-w-7xl">
     <div *ngIf="matches && players" class="mb-4 flow-root">
       <ul role="list" class="-mb-8">
         <li *ngFor="let match of matches">
-          <div class="mt-8 mx-auto grid grid-cols-1">
+          <div class="mt-8 mx-auto grid grid-cols-1 xl:w-4/5">
             <div
-              class="shadow sm:rounded-xl grid grid-cols-5 p-6 gap-3"
+              class="shadow sm:rounded-xl grid grid-cols-10 p-4"
               [ngClass]="currentPlayer.id === match.winnerId ? 'bg-blue-200' : 'bg-red-200'"
             >
-              <div class="grid grid-rows-3 col-span-1">
-                <div>
+              <div
+                class="grid grid-rcols-1 col-start-1 col-span-2 justify-items-start content-center"
+              >
+                <div
+                  class="text-2xl"
+                  [ngClass]="currentPlayer.id === match.winnerId ? 'text-blue-800' : 'text-red-800'"
+                >
                   {{ currentPlayer.id === match.winnerId ? 'WIN' : 'LOSS' }}
                 </div>
-                <div>{{ match.winnerScore }} - {{ match.loserScore }}</div>
-                <div class="text-slate-400">
+                <div class="text-slate-400 justify-items-end">
                   {{ match.date | formatDate }}
                 </div>
               </div>
-              <div class="grid grid-cols-1 col-span-3">
+              <div
+                class="grid grid-cols-1 col-start-3 col-span-4 justify-items-start content-center mr-8"
+              >
                 <div>
                   <player-profile
                     [player]="
@@ -35,23 +36,29 @@
                 <div></div>
               </div>
               <div
+                class="grid grid-cols-3 justify-items-center col-start-7 col-span-2 content-center text-3xl"
+              >
+                <div class="text-blue-800">{{ match.winnerScore }}</div>
+                <div class="text-slate-800">-</div>
+                <div class="text-red-800">{{ match.loserScore }}</div>
+              </div>
+              <div
                 *ngIf="
                   match?.winnerStartElo &&
-                    match?.winnerEndElo &&
-                    match?.loserStartElo &&
-                    match?.loserEndElo;
-                  else noEloStats
+                  match?.winnerEndElo &&
+                  match?.loserStartElo &&
+                  match?.loserEndElo
                 "
-                class="grid grid-rows-2 col-span-1"
+                class="grid grid-cols-1 col-start-10 col-span-1 justify-items-end content-center"
               >
-                <div>
+                <div class="text-2xl">
                   {{ currentPlayer.id === match.winnerId ? match.winnerEndElo : match.loserEndElo }}
                 </div>
                 <div
-                  class="text-slate-400"
-                  [ngClass]="currentPlayer.id === match.winnerId ? 'text-blue-500' : 'text-red-500'"
+                  class="text-slate-400 text-lg"
+                  [ngClass]="currentPlayer.id === match.winnerId ? 'text-blue-800' : 'text-red-800'"
                 >
-                  <fa-icon
+                  (<fa-icon
                     [icon]="currentPlayer.id === match.winnerId ? faArrowTrendUp : faArrowTrendDown"
                     class="mr-1"
                   ></fa-icon>
@@ -60,10 +67,9 @@
                       ? (match?.winnerEndElo || 0) - (match?.winnerStartElo || 0)
                       : (match?.loserStartElo || 0) - (match?.loserEndElo || 0)
                     ).toFixed(1)
-                  }}
+                  }})
                 </div>
               </div>
-              <ng-template #noEloStats> - </ng-template>
             </div>
           </div>
         </li>
