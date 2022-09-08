@@ -1,0 +1,14 @@
+<div
+  class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-5"
+>
+  <stat-graph-card
+    [matches]="matches"
+    [player]="currentPlayer"
+    class="lg:col-span-3 h-full"
+  ></stat-graph-card>
+  <matchup-card
+    [matchups]="matchups"
+    [players]="players"
+    class="lg:col-start-4 lg:col-span-2"
+  ></matchup-card>
+</div>
