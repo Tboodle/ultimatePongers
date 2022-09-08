@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Player } from '../../models/player';
 
 @Component({
@@ -10,10 +11,9 @@ export class PlayerProfileComponent {
   @Input() player: Player;
   @Input() cardView: boolean = false;
   @Input() navigationEnabled = false;
+  constructor(private router: Router) {}
 
-  @Output() statNavigationEvent = new EventEmitter<string>();
-
-  navigateToStatsPageForPlayer(player: Player) {
-    this.statNavigationEvent.emit(player.id);
+  navigateToStatsPageForPlayer() {
+    this.router.navigateByUrl(`/player/${this.player.id}`);
   }
 }

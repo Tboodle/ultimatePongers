@@ -4,7 +4,6 @@
 >
   <app-leaderboard
     [players]="players$ | async"
-    (statNavigationEvent)="navigateToStatsForPlayer($event)"
   >
   </app-leaderboard>
   <app-recent-matches [matches]="matches$ | async" [players]="players$ | async">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable, tap } from 'rxjs';
 import { Match } from '../shared/models/match';
@@ -12,7 +12,8 @@ import { PlayerService } from '../shared/services/player.service';
   templateUrl: './stats-page.component.html',
   styleUrls: ['./stats-page.component.scss'],
 })
-export class StatsPageComponent implements OnInit {
+export class StatsPageComponent implements OnInit, AfterContentChecked {
+  fetchedId: string;
   players$: Observable<any>;
   currentPlayer$: Observable<any>;
   matchups$: Observable<any>;
@@ -28,8 +29,14 @@ export class StatsPageComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.players$ = this.playerService.getPlayers();
-      this.fetchCurrentPlayerInfo(id);
+      this.getPlayerInfoForNewRoute(id);
+    }
+  }
+
+  ngAfterContentChecked(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id && this.fetchedId !== id) {
+      this.getPlayerInfoForNewRoute(id);
     }
   }
 
@@ -43,6 +50,12 @@ export class StatsPageComponent implements OnInit {
 
   setMatchesAsActive() {
     this.dashboardIsActive = false;
+  }
+
+  private getPlayerInfoForNewRoute(id: string) {
+    this.players$ = this.playerService.getPlayers();
+    this.fetchCurrentPlayerInfo(id);
+    this.fetchedId = id;
   }
 
   private fetchCurrentPlayerInfo(id: string) {

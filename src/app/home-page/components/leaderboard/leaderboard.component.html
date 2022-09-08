@@ -32,7 +32,7 @@
               {{ i + 1 }}
             </th>
             <td class="px-6 py-4 flex items-center space-x-2">
-              <player-profile [player]="player" [navigationEnabled]="true" (statNavigationEvent)="statNavigationEvent.emit($event)"></player-profile>
+              <player-profile [player]="player" [navigationEnabled]="true"></player-profile>
             </td>
             <td class="py-4 px-6 text-center text-xl">
               {{ player.elo }}

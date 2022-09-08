@@ -24,8 +24,4 @@ export class HomePageComponent implements OnInit {
     this.players$ = this.playerService.getPlayers();
     this.matches$ = this.matchService.getMatches();
   }
-
-  navigateToStatsForPlayer(playerId: string) {
-    this.router.navigateByUrl(`/player/${playerId}`);
-  }
 }
