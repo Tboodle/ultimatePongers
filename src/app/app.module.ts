@@ -35,6 +35,8 @@ import {
 import { DashboardTabComponent } from './stats-page/components/dashboard-tab/dashboard-tab.component';
 import { MatchesTabComponent } from './stats-page/components/matches-tab/matches-tab.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatchCardComponent } from './stats-page/components/match-card/match-card.component';
+import { MatchHistoryHeaderComponent } from './stats-page/components/match-history-header/match-history-header.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     StatGraphCardComponent,
     DashboardTabComponent,
     MatchesTabComponent,
+    MatchCardComponent,
+    MatchHistoryHeaderComponent,
   ],
   imports: [
     BrowserModule,

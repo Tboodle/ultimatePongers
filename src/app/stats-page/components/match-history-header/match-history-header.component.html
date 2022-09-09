@@ -1,0 +1,70 @@
+<div class="mt-8 mx-auto grid grid-cols-1 lg:w-4/5">
+  <div class="shadow sm:rounded-xl grid grid-rows-3 p-2 bg-white">
+    <div class="grid grid-rows-1 h-fit border-b-2 pt-1 pb-4 px-2 row-span-1">
+      <player-dropdown
+        class="w-3/4 lg:w-2/3"
+        [players]="players"
+        [fieldTitle]="'Choose an opponent:'"
+        [scoreEnabled]="false"
+        [flatView]="true"
+        [selectedPlayer]="opponent || allPlayerOption"
+        (selectionEmitter)="setOpponent($event)"
+      ></player-dropdown>
+    </div>
+    <div class="grid grid-cols-5 xl:grid-cols-3 p-4 row-span-2 gap-8">
+      <div class="col-span-1 grid grid-rows-3 text-slate-600 text-sm md:text-base lg:text-lg gap-4">
+        <div class="grid grid-cols-2 content-center">
+          <div>Games:</div>
+          <div class="grid justify-items-end">{{ wins + losses }}</div>
+        </div>
+        <div class="grid grid-cols-2 content-center">
+          <div>Wins:</div>
+          <div class="text-blue-800 grid justify-items-end">{{ wins }}</div>
+        </div>
+        <div class="grid grid-cols-2 content-center">
+          <div>Losses:</div>
+          <div class="text-red-800 grid justify-items-end">{{ losses }}</div>
+        </div>
+      </div>
+      <div
+        class="col-span-2 xl:col-span-1 grid grid-rows-2 text-slate-600 text-sm md:text-base lg:text-lg"
+      >
+        <div class="grid grid-cols-2 content-center">
+          <div>Points For:</div>
+          <div class="text-blue-800 grid justify-items-end">{{ pointsFor }}</div>
+        </div>
+        <div class="grid grid-cols-2 content-center">
+          <div>Points Against:</div>
+          <div class="text-red-800 grid justify-items-end">{{ pointsAgainst }}</div>
+        </div>
+      </div>
+      <div
+        *ngIf="!opponent || opponent === allPlayerOption; else allPlayerEloStats"
+        class="col-span-2 xl:col-span-1 grid grid-rows-2 text-slate-600 text-sm md:text-base lg:text-lg"
+      >
+        <div class="grid grid-cols-2 content-center">
+          <div>Highest Rating:</div>
+          <div class="text-blue-800 grid justify-items-end">{{ highestElo }}</div>
+        </div>
+        <div class="grid grid-cols-2 content-center">
+          <div>Lowest Rating:</div>
+          <div class="text-red-800 grid justify-items-end">{{ lowestElo }}</div>
+        </div>
+      </div>
+      <ng-template #allPlayerEloStats>
+        <div
+          class="grid grid-cols-4 col-span-2 lg:col-span-1 text-slate-600 text-lg content-center"
+        >
+          <div class="col-span-3">Net Rating Gain:</div>
+          <div
+            class="grid grid-cols-2 col-span-1 grid justify-items-end"
+            [ngClass]="eloDiff > 0 ? 'text-blue-800' : 'text-red-800'"
+          >
+            <fa-icon [icon]="eloDiff > 0 ? faArrowTrendUp : faArrowTrendDown" class="mr-3"></fa-icon
+            >{{ ((eloDiff > 0 ? 1 : -1) * eloDiff).toFixed(1) }}
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

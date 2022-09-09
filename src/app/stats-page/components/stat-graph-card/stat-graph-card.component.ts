@@ -34,7 +34,10 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    const filteredMatches = this.matches?.filter((match) => match.winnerEndElo).slice(-10);
+    const filteredMatches = this.matches
+      ?.filter((match) => match.winnerEndElo)
+      .reverse()
+      .slice(-10);
     if (this.chartShouldUpdate) {
       this.populateEloChart(filteredMatches);
     }

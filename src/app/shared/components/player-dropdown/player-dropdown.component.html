@@ -1,10 +1,17 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
-<div class="flex space-x-8">
-  <div class="mb-4 w-5/6">
-    <label id="listbox-label" class="block text-sm font-medium text-gray-700">
+<div class="flex">
+  <div
+    class="mb-4 w-5/6"
+    [ngClass]="{ 'grid grid-cols-5 justify-items-start content-center mb-0': flatView }"
+  >
+    <div
+      id="listbox-label"
+      class="block text-sm font-medium text-gray-700"
+      [ngClass]="{ 'grid content-center col-span-2': flatView }"
+    >
       {{ fieldTitle }}
-    </label>
-    <div class="mt-1 relative">
+    </div>
+    <div class="mt-1 relative" [ngClass]="{ 'justify-items-start w-full col-span-3': flatView }">
       <button
         type="button"
         (click)="toggleDropdown()"
@@ -15,6 +22,7 @@
       >
         <span *ngIf="selectedPlayer; else noneSelected" class="flex items-center">
           <img
+            *ngIf="selectedPlayer?.photoUrl"
             referrerpolicy="no-referrer"
             src="{{ selectedPlayer?.photoUrl }}"
             alt=""
@@ -62,6 +70,7 @@
         >
           <div class="flex items-center">
             <img
+              *ngIf="player?.photoUrl"
               referrerpolicy="no-referrer"
               src="{{ player?.photoUrl }}"
               alt=""

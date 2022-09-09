@@ -11,6 +11,7 @@ export class PlayerDropdownComponent {
   @Input() fieldTitle: string;
   @Input() selectedPlayer: any;
   @Input() scoreEnabled = true;
+  @Input() flatView = false;
   @Output() selectionEmitter = new EventEmitter<any>();
   @Output() scoreEmitter = new EventEmitter<number>();
 

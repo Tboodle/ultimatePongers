@@ -1,5 +1,5 @@
 import { AfterContentChecked, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, tap } from 'rxjs';
 import { Match } from '../shared/models/match';
 import { Matchup } from '../shared/models/matchup';
@@ -24,6 +24,7 @@ export class StatsPageComponent implements OnInit, AfterContentChecked {
     private playerService: PlayerService,
     private matchService: MatchService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +42,7 @@ export class StatsPageComponent implements OnInit, AfterContentChecked {
   }
 
   fetchNewPlayer(player: Player) {
-    this.fetchCurrentPlayerInfo(player.id);
+    this.navigateToStatsPageForPlayer(player.id);
   }
 
   setDashboardAsActive() {
@@ -50,6 +51,10 @@ export class StatsPageComponent implements OnInit, AfterContentChecked {
 
   setMatchesAsActive() {
     this.dashboardIsActive = false;
+  }
+
+  navigateToStatsPageForPlayer(id: string) {
+    this.router.navigateByUrl(`/player/${id}`);
   }
 
   private getPlayerInfoForNewRoute(id: string) {
