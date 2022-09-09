@@ -43,6 +43,9 @@ export class MatchHistoryHeaderComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.players = this.players.filter((player) => player.id !== this.currentPlayer.id);
+    if (this.players[0] !== this.allPlayerOption) {
+      this.players.splice(0, 0, this.allPlayerOption);
+    }
     this.setStatsForMatches();
   }
 
