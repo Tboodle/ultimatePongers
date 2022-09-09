@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Match } from 'src/app/shared/models/match';
 import { Player } from 'src/app/shared/models/player';
 import { faArrowTrendUp } from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +9,7 @@ import { faArrowTrendDown } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './match-history-header.component.html',
   styleUrls: ['./match-history-header.component.scss'],
 })
-export class MatchHistoryHeaderComponent implements OnChanges {
+export class MatchHistoryHeaderComponent implements OnInit, OnChanges {
   @Input() currentPlayer: Player;
   @Input() players: Player[];
   @Input() matches: Match[];
@@ -35,9 +35,14 @@ export class MatchHistoryHeaderComponent implements OnChanges {
     elo: 0,
   };
 
-  ngOnChanges(): void {
+  ngOnInit(): void {
     this.opponent = this.allPlayerOption;
     this.players.splice(0, 0, this.allPlayerOption);
+    this.setStatsForMatches();
+  }
+
+  ngOnChanges(): void {
+    this.players = this.players.filter((player) => player.id !== this.currentPlayer.id);
     this.setStatsForMatches();
   }
 
@@ -85,6 +90,7 @@ export class MatchHistoryHeaderComponent implements OnChanges {
     this.pointsAgainst += Number(match.winnerScore);
     if (match.loserEndElo && match.loserStartElo) {
       this.eloDiff += match.loserEndElo - match.loserStartElo;
+      this.highestElo = match.loserEndElo > this.highestElo ? match.loserEndElo : this.highestElo;
       this.lowestElo = match.loserEndElo < this.lowestElo ? match.loserEndElo : this.lowestElo;
     }
   }
@@ -96,6 +102,7 @@ export class MatchHistoryHeaderComponent implements OnChanges {
     if (match.winnerEndElo && match.winnerStartElo) {
       this.eloDiff += match.winnerEndElo - match.winnerStartElo;
       this.highestElo = match.winnerEndElo > this.highestElo ? match.winnerEndElo : this.highestElo;
+      this.lowestElo = match.winnerEndElo < this.lowestElo ? match.winnerEndElo : this.lowestElo;
     }
   }
 }

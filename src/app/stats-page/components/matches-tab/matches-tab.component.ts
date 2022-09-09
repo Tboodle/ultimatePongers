@@ -14,9 +14,17 @@ export class MatchesTabComponent {
   @Input() matches: Match[];
   @Input() matchups: Matchup[];
 
+  filteredMatches: Match[];
+
   getOpponentForMatch(match: Match): Player {
     return this.getPlayerForId(
       this.currentPlayer.id === match.winnerId ? match.loserId : match.winnerId,
+    );
+  }
+
+  opponentSelected(opponent: Player) {
+    this.filteredMatches = this.matches.filter(
+      (match) => match.winnerId === opponent.id || match.loserId === opponent.id,
     );
   }
 

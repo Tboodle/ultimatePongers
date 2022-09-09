@@ -1,10 +1,19 @@
 <div class="mx-auto px-6">
   <div class="mx-auto px-4 py-5 sm:px-6 max-w-3xl lg:max-w-7xl">
     <div *ngIf="matches && players" class="mb-4 flow-root">
-      <match-history-header [currentPlayer]="currentPlayer" [players]="players" [matches]="matches"></match-history-header>
+      <match-history-header
+        [currentPlayer]="currentPlayer"
+        [players]="players"
+        [matches]="filteredMatches || matches"
+        (opponentSelected)="opponentSelected($event)"
+      ></match-history-header>
       <ul role="list" class="-mb-8">
-        <li *ngFor="let match of matches">
-          <match-card [match]="match" [currentPlayer]="currentPlayer" [opponent]="getOpponentForMatch(match)"></match-card>
+        <li *ngFor="let match of filteredMatches || matches">
+          <match-card
+            [match]="match"
+            [currentPlayer]="currentPlayer"
+            [opponent]="getOpponentForMatch(match)"
+          ></match-card>
         </li>
       </ul>
     </div>
