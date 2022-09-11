@@ -23,9 +23,13 @@ export class MatchesTabComponent {
   }
 
   opponentSelected(opponent: Player) {
-    this.filteredMatches = this.matches.filter(
-      (match) => match.winnerId === opponent.id || match.loserId === opponent.id,
-    );
+    if (opponent.id !== '-1') {
+      this.filteredMatches = this.matches.filter(
+        (match) => match.winnerId === opponent.id || match.loserId === opponent.id,
+      );
+    } else {
+      this.filteredMatches = this.matches;
+    }
   }
 
   private getPlayerForId(id: string): Player {
