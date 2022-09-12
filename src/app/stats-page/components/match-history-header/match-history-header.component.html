@@ -53,11 +53,11 @@
       </div>
       <ng-template #allPlayerEloStats>
         <div
-          class="grid grid-cols-4 col-span-2 lg:col-span-1 text-slate-600 text-sm md:text-base lg:text-lg content-center"
+          class="grid col-span-2 grid-cols-4 xl:col-span-1 text-slate-600 text-sm md:text-base lg:text-lg content-center"
         >
-          <div class="col-span-3">Net Rating Gain:</div>
+          <div class="col-span-2">Net Rating Gain:</div>
           <div
-            class="grid grid-cols-2 col-span-1 grid justify-items-end"
+            class="grid grid-cols-2 col-span-2 grid justify-items-end"
             [ngClass]="eloDiff > 0 ? 'text-blue-800' : 'text-red-800'"
           >
             <fa-icon [icon]="eloDiff > 0 ? faArrowTrendUp : faArrowTrendDown" class="mr-3"></fa-icon

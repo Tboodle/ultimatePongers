@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { Match } from 'src/app/shared/models/match';
 import { Player } from 'src/app/shared/models/player';
 import { faArrowTrendUp } from '@fortawesome/free-solid-svg-icons';
@@ -43,6 +51,7 @@ export class MatchHistoryHeaderComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.players = this.players.filter((player) => player.id !== this.currentPlayer.id);
+    this.resetStats();
     this.setStatsForMatches();
   }
 
@@ -62,8 +71,6 @@ export class MatchHistoryHeaderComponent implements OnInit, OnChanges {
   setOpponent(player: Player) {
     this.opponentSelected.emit(player);
     this.opponent = player;
-    this.resetStats();
-    this.setStatsForMatches();
   }
 
   private resetStats() {
