@@ -49,13 +49,23 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
     const playerElos = filteredMatches.map((match) => this.getPlayerEloForMatch(match) || 99999999);
     const minElo = Math.min(...playerElos);
     const maxElo = Math.max(...playerElos);
-    const yScaleMin = Math.round((minElo * 0.9) / 10) * 10;
-    const yScaleMax = Math.round((maxElo * 1.1) / 10) * 10;
+    const yScaleMin = Math.floor((minElo * 0.9) / 50) * 50;
+    const yScaleMax = Math.floor((maxElo * 1.1) / 50) * 50;
     const options = {
       scales: {
         y: {
           min: yScaleMin,
           max: yScaleMax,
+          title: {
+            display: true,
+            text: 'Rating',
+          },
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Games Back',
+          },
         },
       },
       plugins: {
@@ -89,7 +99,7 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
     };
 
     filteredMatches.forEach((match, index) => {
-      data.labels[index] = filteredMatches.length - index;
+      data.labels[index] = filteredMatches.length - index - 1;
       data.datasets[0].data[index] = this.getPlayerEloForMatch(match) || 0;
     });
     return data;
