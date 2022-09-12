@@ -11,10 +11,24 @@ import { Chart, registerables } from 'chart.js';
 export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   @Input() matches: Match[];
   @Input() player: Player;
+  @Input() players: Player[];
 
+
+  filteredMatches: Match[];
   noRatedMatches: boolean = true;
   chart: Chart;
   chartShouldUpdate = false;
+  generateTooltipForDataPoint = (data: any) => {
+    console.log(data);
+    const match = this.filteredMatches[data[0].dataIndex];
+    const currentPlayerWon = this.player.id === match.winnerId;
+    return match.date.toLocaleString() + 
+    '\n' + (currentPlayerWon ? 'Win' : 'Loss') + ' vs ' + 
+    this.players.find((matchPlayer) => 
+      matchPlayer.id === (currentPlayerWon ? match.loserId : match.winnerId))?.name + 
+    '\n' + (currentPlayerWon ? match.winnerScore : match.loserScore) + 
+    ' - ' + (currentPlayerWon ? match.loserScore : match.winnerScore)
+  }
 
   constructor() {
     Chart.register(...registerables);
@@ -34,28 +48,28 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    const filteredMatches = this.matches
+    this.filteredMatches = this.matches
       ?.filter((match) => match.winnerEndElo)
       .reverse()
       .slice(-10);
     if (this.chartShouldUpdate) {
-      this.populateEloChart(filteredMatches);
+      this.populateEloChart();
     }
   }
 
-  private populateEloChart(filteredMatches: Match[]) {
+  private populateEloChart() {
     const canvas = document.getElementById('chart') as HTMLCanvasElement;
-    const data = this.generateDataFromMatches(filteredMatches);
-    const playerElos = filteredMatches.map((match) => this.getPlayerEloForMatch(match) || 99999999);
+    const data = this.generateDataFromFilteredMatches();
+    const playerElos = this.filteredMatches.map((match) => this.getPlayerEloForMatch(match) || 99999999);
     const minElo = Math.min(...playerElos);
     const maxElo = Math.max(...playerElos);
-    const yScaleMin = Math.floor((minElo * 0.9) / 50) * 50;
-    const yScaleMax = Math.floor((maxElo * 1.1) / 50) * 50;
+    const yScaleMin = Math.floor((minElo * 0.9) / 10) * 10;
+    const yScaleMax = Math.floor((maxElo * 1.1) / 10) * 10;
     const options = {
       scales: {
         y: {
-          min: yScaleMin,
-          max: yScaleMax,
+          suggestedMin: yScaleMin,
+          suggestedMax: yScaleMax,
           title: {
             display: true,
             text: 'Rating',
@@ -72,6 +86,11 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
         legend: {
           display: false,
         },
+        tooltip: {
+          callbacks: {
+            title: this.generateTooltipForDataPoint
+          }
+        }
       },
     };
 
@@ -83,7 +102,7 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
     this.chartShouldUpdate = false;
   }
 
-  private generateDataFromMatches(filteredMatches: Match[]) {
+  private generateDataFromFilteredMatches() {
     const btiOrange = '#FE7839';
     const data = {
       labels: [0],
@@ -98,8 +117,8 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
       ],
     };
 
-    filteredMatches.forEach((match, index) => {
-      data.labels[index] = filteredMatches.length - index - 1;
+    this.filteredMatches.forEach((match, index) => {
+      data.labels[index] = this.filteredMatches.length - index - 1;
       data.datasets[0].data[index] = this.getPlayerEloForMatch(match) || 0;
     });
     return data;
