@@ -47,6 +47,7 @@ export class PlayerDropdownComponent implements OnChanges, AfterViewChecked {
 
   closeDropdown() {
     this.isOpen = false;
+    this.filteredPlayers = this.players;
   }
 
   unfocusTypeahead() {
