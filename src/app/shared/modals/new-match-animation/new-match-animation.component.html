@@ -23,3 +23,11 @@
     </div>
   </div>
 </div>
+<youtube-player
+  *ngIf="winner.victorySongId"
+  [playerVars]="playerConfig"
+  [width]="1"
+  [height]="1"
+  [videoId]="winner.victorySongId"
+  (ready)="handleYoutubeLoad($event)"
+></youtube-player>

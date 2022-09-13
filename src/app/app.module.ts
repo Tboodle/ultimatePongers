@@ -37,6 +37,7 @@ import { MatchesTabComponent } from './stats-page/components/matches-tab/matches
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatchCardComponent } from './stats-page/components/match-card/match-card.component';
 import { MatchHistoryHeaderComponent } from './stats-page/components/match-history-header/match-history-header.component';
+import { YouTubePlayerModule } from '@angular/youtube-player';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { MatchHistoryHeaderComponent } from './stats-page/components/match-histo
     provideFunctions(() => getFunctions()),
     AngularFireAnalyticsModule,
     FontAwesomeModule,
+    YouTubePlayerModule,
   ],
   providers: [AuthService, UserTrackingService, ScreenTrackingService],
   bootstrap: [AppComponent],

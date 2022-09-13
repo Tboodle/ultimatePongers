@@ -14,6 +14,11 @@ export class NewMatchAnimationComponent implements OnInit {
   winner: Player;
   loser: Player;
   middleText = 'Vs';
+  playerConfig = {
+    controls: 0,
+    autoplay: 1,
+    volume: 0.1,
+  };
 
   @Output() closeModal = new EventEmitter<Player>();
 
@@ -73,9 +78,23 @@ export class NewMatchAnimationComponent implements OnInit {
     });
 
     //STEP 4
-    player1Timeline.then(() => {
-      this.playConfetti();
-    });
+    player1Timeline
+      .call(() => this.loadYoutubeScript(), [], 2)
+      .then(() => {
+        this.playConfetti();
+      });
+  }
+
+  loadYoutubeScript(): void {
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.body.appendChild(tag);
+  }
+
+  handleYoutubeLoad(readyEvent: any) {
+    const player = readyEvent.target;
+    player.seekTo(this.winner?.victorySongStart || 0);
+    player.setVolume(20);
   }
 
   private playConfetti() {
