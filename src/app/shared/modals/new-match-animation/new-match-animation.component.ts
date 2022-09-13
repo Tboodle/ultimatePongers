@@ -102,6 +102,6 @@ export class NewMatchAnimationComponent implements OnInit {
       }
     })();
 
-    // setTimeout(() => this.closeModal.emit(), 3000);
+    setTimeout(() => this.closeModal.emit(), 3000);
   }
 }
