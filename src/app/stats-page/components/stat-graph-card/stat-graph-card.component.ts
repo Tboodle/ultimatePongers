@@ -19,7 +19,6 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   chart: Chart;
   chartShouldUpdate = false;
   generateTooltipForDataPoint = (data: any) => {
-    console.log(data);
     const match = this.filteredMatches[data[0].dataIndex];
     const currentPlayerWon = this.player.id === match.winnerId;
     return match.date.toLocaleString() + 
