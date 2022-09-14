@@ -9,6 +9,26 @@
   <div class="fixed z-10 inset-0 overflow-y-auto">
     <div class="flex items-end justify-center h-full pt-4 px-4 pb-20 text-center sm:block sm:p-0">
       <div class="h-full w-full">
+        <div class="hidden sm:block absolute top-0 right-0 pt-6 pr-6">
+          <button
+            type="button"
+            (click)="endAnimation()"
+            class="bg-white rounded-md text-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <span class="sr-only">Close</span>
+            <svg
+              class="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
         <div id="player1" class="absolute w-fit">
           <player-profile [player]="winner" [cardView]="true"></player-profile>
         </div>

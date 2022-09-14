@@ -15,13 +15,9 @@ export class AddMatchModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter<any>();
 
   players$: Observable<any>;
-
   winner: Player;
-
   loser: Player;
-
-  winnerScore: number;
-
+  winnerScore = 21;
   loserScore: number;
 
   constructor(private matchService: MatchService, private playerService: PlayerService) {}

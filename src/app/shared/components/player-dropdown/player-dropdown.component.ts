@@ -20,6 +20,7 @@ export class PlayerDropdownComponent implements OnChanges, AfterViewChecked {
   @Input() fieldTitle: string;
   @Input() selectedPlayer: any;
   @Input() scoreEnabled = true;
+  @Input() score = 0;
   @Input() flatView = false;
   @Output() selectionEmitter = new EventEmitter<any>();
   @Output() scoreEmitter = new EventEmitter<number>();
@@ -28,8 +29,6 @@ export class PlayerDropdownComponent implements OnChanges, AfterViewChecked {
 
   isOpen = false;
   filteredPlayers: Player[];
-
-  score: number = 0;
 
   ngOnChanges(): void {
     this.filteredPlayers = this.players;

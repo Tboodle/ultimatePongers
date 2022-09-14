@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { Match } from '../../models/match';
 import { Player } from '../../models/player';
 import { gsap } from 'gsap';
@@ -13,6 +13,7 @@ export class NewMatchAnimationComponent implements OnInit {
   match: Match;
   winner: Player;
   loser: Player;
+  closed = false;
   middleText = 'Vs';
   playerConfig = {
     controls: 0,
@@ -81,8 +82,19 @@ export class NewMatchAnimationComponent implements OnInit {
     player1Timeline
       .call(() => this.loadYoutubeScript(), [], 2)
       .then(() => {
-        this.playConfetti();
+        console.log(this.closed);
+        if (!this.closed) {
+          this.playConfetti();
+          setTimeout(() => this.closeModal.emit(), 3000);
+        }
       });
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  endAnimation() {
+    this.closed = true;
+    this.playConfetti();
+    this.closeModal.emit();
   }
 
   loadYoutubeScript(): void {
@@ -120,7 +132,5 @@ export class NewMatchAnimationComponent implements OnInit {
         requestAnimationFrame(frame);
       }
     })();
-
-    setTimeout(() => this.closeModal.emit(), 3000);
   }
 }
