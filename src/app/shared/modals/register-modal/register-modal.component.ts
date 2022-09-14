@@ -44,7 +44,10 @@ export class RegisterModalComponent implements OnInit {
         this.newPlayerForm.get('nickName')?.setValue(player.nickName || '');
         this.newPlayerForm
           .get('song')
-          ?.setValue(player.victorySongId ? this.youtubeBaseUrl + player.victorySongId : '');
+          ?.setValue(
+            (player.victorySongId ? this.youtubeBaseUrl + player.victorySongId : '') +
+              (player.victorySongStart ? '&t=' + player.victorySongStart : ''),
+          );
         this.newPlayerForm.get('songTime')?.setValue(player.victorySongStart || 0);
       });
   }
@@ -53,9 +56,9 @@ export class RegisterModalComponent implements OnInit {
     const songUrl = this.newPlayerForm.get('song')?.value;
     let songId: string;
     if (songUrl.includes('youtu.be/')) {
-      songId = songUrl.split('.be/').slice(0, 11);
+      songId = songUrl.split('.be/')[1].slice(0, 11);
     } else {
-      songId = songUrl.split('v=').slice(0, 11);
+      songId = songUrl.split('v=')[1].slice(0, 11);
     }
     this.closeModal.emit({
       ...this.newPlayer,
@@ -64,5 +67,15 @@ export class RegisterModalComponent implements OnInit {
       victorySongId: songId,
       victorySongStart: this.newPlayerForm.get('songTime')?.value,
     });
+  }
+
+  guessStartingTime() {
+    const songUrl = this.newPlayerForm.get('song')?.value;
+    if (songUrl) {
+      const timeValue = songUrl.split('t=')[1]?.split('&')[0];
+      if (timeValue) {
+        this.newPlayerForm.get('songTime')?.setValue(Number(timeValue));
+      }
+    }
   }
 }
