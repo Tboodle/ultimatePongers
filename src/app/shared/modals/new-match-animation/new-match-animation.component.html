@@ -19,15 +19,14 @@
         <div id="player2" class="absolute w-fit">
           <player-profile [player]="loser" [cardView]="true"></player-profile>
         </div>
+        <youtube-player
+          *ngIf="winner.victorySongId"
+          [playerVars]="playerConfig"
+          [videoId]="winner.victorySongId"
+          (ready)="handleYoutubeLoad($event)"
+          class="hidden"
+        ></youtube-player>
       </div>
     </div>
   </div>
 </div>
-<youtube-player
-  *ngIf="winner.victorySongId"
-  [playerVars]="playerConfig"
-  [width]="1"
-  [height]="1"
-  [videoId]="winner.victorySongId"
-  (ready)="handleYoutubeLoad($event)"
-></youtube-player>

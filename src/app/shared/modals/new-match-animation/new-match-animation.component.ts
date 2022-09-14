@@ -17,7 +17,7 @@ export class NewMatchAnimationComponent implements OnInit {
   playerConfig = {
     controls: 0,
     autoplay: 1,
-    volume: 0.1,
+    volume: 0.2,
   };
 
   @Output() closeModal = new EventEmitter<Player>();
