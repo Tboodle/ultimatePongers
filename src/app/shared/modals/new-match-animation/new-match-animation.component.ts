@@ -82,7 +82,6 @@ export class NewMatchAnimationComponent implements OnInit {
     player1Timeline
       .call(() => this.loadYoutubeScript(), [], 2)
       .then(() => {
-        console.log(this.closed);
         if (!this.closed) {
           this.playConfetti();
           setTimeout(() => this.closeModal.emit(), 3000);

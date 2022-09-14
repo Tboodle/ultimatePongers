@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { MatchService } from 'src/app/shared/services/match.service';
 import { PlayerService } from 'src/app/shared/services/player.service';
 import { Observable } from 'rxjs';
@@ -24,6 +24,11 @@ export class AddMatchModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.players$ = this.playerService.getPlayers();
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  exitModal() {
+    this.closeModal.emit();
   }
 
   setWinner(winner: any) {

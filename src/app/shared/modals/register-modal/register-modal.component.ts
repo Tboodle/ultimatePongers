@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { map, switchMap } from 'rxjs';
 import { Player } from '../../models/player';
@@ -50,6 +50,11 @@ export class RegisterModalComponent implements OnInit {
           );
         this.newPlayerForm.get('songTime')?.setValue(player.victorySongStart || 0);
       });
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  exitModal() {
+    this.closeModal.emit();
   }
 
   registerPlayer() {
