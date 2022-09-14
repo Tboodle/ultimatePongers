@@ -1,17 +1,10 @@
-<div
-  class="relative z-10"
-  aria-labelledby="modal-title"
-  role="dialog"
-  aria-modal="true"
->
+<div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
   <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
   <div class="fixed z-10 inset-0 overflow-y-auto">
     <div
       class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
     >
-      <span
-        class="hidden sm:inline-block sm:align-middle sm:h-screen"
-        aria-hidden="true"
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"
         >&#8203;</span
       >
       <div
@@ -33,20 +26,13 @@
               stroke="currentColor"
               aria-hidden="true"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
         <div class="">
           <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <h3
-              class="text-lg leading-6 font-medium text-slate-800 mb-4"
-              id="modal-title"
-            >
+            <h3 class="text-lg leading-6 font-medium text-slate-800 mb-4" id="modal-title">
               Create Your Profile
             </h3>
             <div class="flex space-x-8">
@@ -58,14 +44,9 @@
                 >
                   <div class="space-y-8 divide-y divide-gray-200">
                     <div>
-                      <div
-                        class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
-                      >
+                      <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                         <div class="sm:col-span-4">
-                          <label
-                            for="username"
-                            class="block text-sm font-medium text-gray-700"
-                          >
+                          <label for="username" class="block text-sm font-medium text-gray-700">
                             Email
                           </label>
                           <div class="mt-1 flex">
@@ -77,10 +58,7 @@
                           </div>
                         </div>
                         <div class="sm:col-span-6">
-                          <label
-                            for="name-field"
-                            class="block text-sm font-medium text-gray-700"
-                          >
+                          <label for="name-field" class="block text-sm font-medium text-gray-700">
                             Full Name
                           </label>
                           <div class="mt-1 flex rounded-md shadow-sm">
@@ -109,6 +87,33 @@
                               class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md rounded-l-md sm:text-sm border-gray-300"
                             />
                           </div>
+                        </div>
+                        <div class="sm:col-span-6">
+                          <label for="song-field" class="block text-sm font-medium text-gray-700">
+                            Victory Song Link (Youtube only)
+                          </label>
+                          <div class="mt-1 flex rounded-md shadow-sm">
+                            <input
+                              type="text"
+                              id="song-field"
+                              autocomplete="song"
+                              formControlName="song"
+                              class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md rounded-l-md sm:text-sm border-gray-300"
+                            />
+                          </div>
+                        </div>
+                        <div class="sm:col-span-6">
+                          <label id="listbox-label" class="block text-sm font-medium text-gray-700">
+                            Song Starting Time (s)
+                          </label>
+                          <input
+                            type="text"
+                            id="songTime-field"
+                            autocomplete="songTime"
+                            formControlName="songTime"
+                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md mt-1 w-[20%]"
+                            placeholder="0"
+                          />
                         </div>
                       </div>
                     </div>

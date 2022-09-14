@@ -42,7 +42,13 @@ export class PlayerService {
   savePlayer(player: Player): void {
     this.getPlayerForEmail(player.email).subscribe((existingPlayer: Player) => {
       if (existingPlayer) {
-        this.updatePlayerDoc({ ...existingPlayer, name: player.name, nickName: player.nickName });
+        this.updatePlayerDoc({
+          ...existingPlayer,
+          name: player.name,
+          nickName: player.nickName,
+          victorySongId: player.victorySongId,
+          victorySongStart: player.victorySongStart,
+        });
       } else {
         player.id = this.afs.createId();
         this.afs.collection('players').doc(player.id).set(player);
