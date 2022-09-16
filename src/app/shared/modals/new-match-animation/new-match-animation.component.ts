@@ -3,6 +3,8 @@ import { Match } from '../../models/match';
 import { Player } from '../../models/player';
 import { gsap } from 'gsap';
 import confetti from 'canvas-confetti';
+import { PlayerFacade } from '../../data/player/player.facade';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-new-match-animation',
@@ -23,7 +25,20 @@ export class NewMatchAnimationComponent implements OnInit {
 
   @Output() closeModal = new EventEmitter<Player>();
 
+  constructor(private playerFacade: PlayerFacade) {}
+
   ngOnInit(): void {
+    const winner$ = this.playerFacade.getPlayerForId(this.match.id);
+    const loser$ = this.playerFacade.getPlayerForId(this.loser.id);
+
+    forkJoin([winner$, loser$]).subscribe((players: Player[]) => {
+      this.winner = players[0];
+      this.loser = players[1];
+      this.playAnimation();
+    });
+  }
+
+  private playAnimation() {
     const vsTimeline = gsap.timeline();
     const player1Timeline = gsap.timeline();
     const player2Timeline = gsap.timeline();

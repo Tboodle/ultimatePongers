@@ -1,14 +1,14 @@
 import { Component, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'firebase/auth';
-import { map, switchMap } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs';
 import { Match } from './shared/models/match';
 import { AddMatchModalComponent } from './shared/modals/add-match-modal/add-match-modal/add-match-modal.component';
 import { RegisterModalComponent } from './shared/modals/register-modal/register-modal.component';
-import { AuthService } from './shared/services/auth.service';
-import { MatchService } from './shared/services/match.service';
-import { PlayerService } from './shared/services/player.service';
+import { AuthService } from './shared/data/auth/auth.service';
 import { Player } from './shared/models/player';
+import { MatchFacade } from './shared/data/match/match.facade';
+import { PlayerFacade } from './shared/data/player/player.facade';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -29,23 +29,30 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private vcr: ViewContainerRef,
-    private matchService: MatchService,
-    private playerService: PlayerService,
+    private matchFacade: MatchFacade,
+    private playerFacade: PlayerFacade,
     private authService: AuthService,
   ) {
-    this.matchService.appViewRef = vcr;
+    this.matchFacade.appViewRef = vcr;
   }
 
   ngOnInit() {
     this.authService.authenitcateUser();
+    this.matchFacade.fetchMatches();
+    this.playerFacade.fetchPlayers();
     this.authService.user$
       .pipe(
-        switchMap((user: User) => {
+        filter((user) => !!user),
+        tap((user: User) => {
           this.currentUser = user;
-          return this.playerService.getPlayerForEmail(user.email || '');
+        }),
+        switchMap(() => this.playerFacade.players$),
+        filter((players) => players?.length > 0),
+        switchMap(() => {
+          return this.playerFacade.getPlayerForEmail(this.currentUser.email || '');
         }),
         map((player: Player) => {
-          this.playerId = player.id;
+          this.playerId = player?.id;
           return !!player;
         }),
       )
@@ -68,7 +75,7 @@ export class AppComponent implements OnInit {
     this.addMatchModal = this.vcr.createComponent(AddMatchModalComponent);
     this.addMatchModal.instance.closeModal.subscribe((match?: Match) => {
       if (match) {
-        this.matchService.addMatch(match);
+        this.matchFacade.addMatch(match);
       }
       this.vcr.clear();
     });
@@ -79,7 +86,7 @@ export class AppComponent implements OnInit {
     this.registerModal = this.vcr.createComponent(RegisterModalComponent);
     this.registerModal.instance.closeModal.subscribe((player?: Player) => {
       if (player) {
-        this.playerService.savePlayer(player);
+        this.playerFacade.savePlayer(player);
       }
       this.vcr.clear();
     });

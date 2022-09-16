@@ -16,7 +16,7 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideFunctions, getFunctions } from '@angular/fire/functions';
 import { SortPlayersByEloPipe } from './shared/pipes/sort-players-by-elo.pipe';
-import { AuthService } from './shared/services/auth.service';
+import { AuthService } from './shared/data/auth/auth.service';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { RegisterModalComponent } from './shared/modals/register-modal/register-modal.component';
@@ -38,6 +38,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatchCardComponent } from './stats-page/components/match-card/match-card.component';
 import { MatchHistoryHeaderComponent } from './stats-page/components/match-history-header/match-history-header.component';
 import { YouTubePlayerModule } from '@angular/youtube-player';
+import { NgxsModule } from '@ngxs/store';
+import { MatchState } from './shared/data/match/match.state';
+import { PlayerState } from './shared/data/player/player.state';
 
 @NgModule({
   declarations: [
@@ -75,6 +78,9 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     AngularFireAnalyticsModule,
     FontAwesomeModule,
     YouTubePlayerModule,
+    NgxsModule.forRoot([MatchState, PlayerState], {
+      developmentMode: !environment.production,
+    }),
   ],
   providers: [AuthService, UserTrackingService, ScreenTrackingService],
   bootstrap: [AppComponent],

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { MatchService } from '../shared/services/match.service';
-import { PlayerService } from '../shared/services/player.service';
+import { MatchFacade } from '../shared/data/match/match.facade';
+import { PlayerFacade } from '../shared/data/player/player.facade';
 
 @Component({
   selector: 'app-home-page',
@@ -14,14 +13,10 @@ export class HomePageComponent implements OnInit {
 
   matches$: Observable<any>;
 
-  constructor(
-    private playerService: PlayerService,
-    private matchService: MatchService,
-    private router: Router,
-  ) {}
+  constructor(private playerFacade: PlayerFacade, private matchFacade: MatchFacade) {}
 
   ngOnInit(): void {
-    this.players$ = this.playerService.getPlayers();
-    this.matches$ = this.matchService.getMatches();
+    this.players$ = this.playerFacade.players$;
+    this.matches$ = this.matchFacade.matches$;
   }
 }

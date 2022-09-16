@@ -1,0 +1,62 @@
+/* eslint-disable new-cap */
+/* eslint-disable max-len */
+/* eslint-disable require-jsdoc */
+import { Injectable } from '@angular/core';
+// import {Player} from '../../../../shared/player';
+import { map, Observable, of } from 'rxjs';
+
+import { Player } from '../../models/player';
+import { Match } from '../../models/match';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class PlayerService {
+  ELO_CONST = 40;
+
+  constructor(private afs: AngularFirestore) {}
+
+  getPlayers(): Observable<Player[]> {
+    return this.afs
+      .collection('players')
+      .valueChanges({ idField: 'id' })
+      .pipe(map((players) => players as Player[]));
+  }
+
+  savePlayer(player: Player): void {
+    this.updatePlayerDoc({
+      ...player,
+      name: player.name,
+      nickName: player.nickName,
+      victorySongId: player.victorySongId,
+      victorySongStart: player.victorySongStart,
+    });
+  }
+
+  createPlayer(player: Player) {
+    player.id = this.afs.createId();
+    this.afs.collection('players').doc(player.id).set(player);
+  }
+
+  updatePlayersForMatch(players: Player[], match: Match): Observable<Player[]> {
+    console.log(players, match);
+    const winner = { ...players.find((player) => player.id === match.winnerId) } as Player;
+    const loser = { ...players.find((player) => player.id === match.loserId) } as Player;
+    console.log(winner, loser);
+    if (winner && loser && match.winnerEndElo && match.loserEndElo) {
+      winner.elo = match.winnerEndElo;
+      winner.wins += 1;
+      loser.elo = match.loserEndElo;
+      loser.losses += 1;
+      this.updatePlayerDoc(winner);
+      this.updatePlayerDoc(loser);
+      return of([winner, loser]);
+    }
+    return of([]);
+  }
+
+  private updatePlayerDoc(player: Player): void {
+    this.afs.collection('players').doc(player.id).update(player);
+  }
+}
