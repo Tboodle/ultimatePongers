@@ -65,7 +65,6 @@ export class PlayerState {
   savePlayer(ctx: StateContext<PlayerStateModel>, action: UpdatePlayerAction) {
     const state = ctx.getState();
     const playerExists = state.players.find((player) => player.id === action.player.id);
-    console.log(action);
     if (playerExists) {
       this.playerService.savePlayer(action.player);
     } else {
