@@ -1,11 +1,11 @@
 import { AfterContentChecked, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, tap } from 'rxjs';
+import { MatchFacade } from '../shared/data/match/match.facade';
+import { PlayerFacade } from '../shared/data/player/player.facade';
 import { Match } from '../shared/models/match';
 import { Matchup } from '../shared/models/matchup';
 import { Player } from '../shared/models/player';
-import { MatchService } from '../shared/services/match.service';
-import { PlayerService } from '../shared/services/player.service';
 
 @Component({
   selector: 'app-stats-page',
@@ -21,8 +21,8 @@ export class StatsPageComponent implements OnInit, AfterContentChecked {
   dashboardIsActive = true;
 
   constructor(
-    private playerService: PlayerService,
-    private matchService: MatchService,
+    private playerFacade: PlayerFacade,
+    private matchFacade: MatchFacade,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
@@ -58,15 +58,18 @@ export class StatsPageComponent implements OnInit, AfterContentChecked {
   }
 
   private getPlayerInfoForNewRoute(id: string) {
-    this.players$ = this.playerService.getPlayers();
+    this.players$ = this.playerFacade.players$;
     this.fetchCurrentPlayerInfo(id);
     this.fetchedId = id;
   }
 
   private fetchCurrentPlayerInfo(id: string) {
-    this.currentPlayer$ = this.playerService.getPlayerForId(id).pipe(
+    this.matchFacade.fetchMatchesForId(id);
+    this.currentPlayer$ = this.playerFacade.getPlayerForId(id).pipe(
       tap((player: Player) => {
-        this.matches$ = this.matchService.getMatchesForId(id);
+        this.matches$ = this.matchFacade.matchesByPlayerId$.pipe(
+          map((matchesByPlayerId) => matchesByPlayerId[id]),
+        );
         this.matchups$ = this.matches$.pipe(
           map((matches) => this.getMatchupsFromMatches(player, matches)),
         );
@@ -76,7 +79,7 @@ export class StatsPageComponent implements OnInit, AfterContentChecked {
 
   private getMatchupsFromMatches(player: Player, matches: Match[]): Matchup[] {
     const matchupMap: Map<string, Matchup> = new Map();
-    matches.forEach((match) => {
+    matches?.forEach((match) => {
       if (match.winnerId === player.id) {
         this.updateMatchupWithMatch(matchupMap, match, player, match.loserId);
       } else {

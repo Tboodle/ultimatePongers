@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
-import {
-  getAuth,
-  getRedirectResult,
-  GoogleAuthProvider,
-  signInWithRedirect,
-  User,
-} from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user$: BehaviorSubject<User> = new BehaviorSubject<User>({} as User);
+  user$: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
 
   authenitcateUser() {
     const auth = getAuth();

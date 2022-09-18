@@ -1,10 +1,10 @@
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
-import { MatchService } from 'src/app/shared/services/match.service';
-import { PlayerService } from 'src/app/shared/services/player.service';
 import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Match } from '../../../models/match';
 import { Player } from 'src/app/shared/models/player';
+import { MatchFacade } from 'src/app/shared/data/match/match.facade';
+import { PlayerFacade } from 'src/app/shared/data/player/player.facade';
 
 @Component({
   selector: 'app-add-match-modal',
@@ -20,10 +20,10 @@ export class AddMatchModalComponent implements OnInit {
   winnerScore = 21;
   loserScore: number;
 
-  constructor(private matchService: MatchService, private playerService: PlayerService) {}
+  constructor(private matchFacade: MatchFacade, private playerFacade: PlayerFacade) {}
 
   ngOnInit(): void {
-    this.players$ = this.playerService.getPlayers();
+    this.players$ = this.playerFacade.players$;
   }
 
   @HostListener('document:keydown.escape', ['$event'])
