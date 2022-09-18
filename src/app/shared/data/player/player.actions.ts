@@ -12,7 +12,7 @@ export class UpdatePlayersForMatchAction {
 
 export class SetCurrentPlayerAction {
   static readonly type = '[Player] Set Current Player';
-  constructor(public email: string) {}
+  constructor(public player: Player) {}
 }
 
 export class UpdatePlayerAction {

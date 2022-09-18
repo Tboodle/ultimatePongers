@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { Player } from '../../models/player';
-import { FetchPlayersAction, UpdatePlayerAction } from './player.actions';
+import { FetchPlayersAction, SetCurrentPlayerAction, UpdatePlayerAction } from './player.actions';
 import { PlayerState } from './player.state';
 
 @Injectable({
@@ -31,5 +31,9 @@ export class PlayerFacade {
 
   savePlayer(player: Player) {
     this.store.dispatch(new UpdatePlayerAction(player));
+  }
+
+  setCurrentPlayer(player: Player) {
+    return this.store.dispatch(new SetCurrentPlayerAction(player));
   }
 }

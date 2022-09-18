@@ -3,6 +3,7 @@ import { forkJoin, from, map, Observable } from 'rxjs';
 import { Match } from '../../models/match';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -51,5 +52,22 @@ export class MatchService {
 
   public addMatch(match: Match): Observable<any> {
     return from(this.afs.collection('matches').add(match));
+  }
+
+  public watchForNewMatch(): Observable<Match> {
+    return this.afs
+      .collection('matches', (ref) => ref.orderBy('date', 'desc').limit(10))
+      .stateChanges(['added'])
+      .pipe(
+        map((docEvents: any[]) => {
+          if (docEvents.length === 1) {
+            return docEvents[0].payload.doc.data() as Match;
+          } else {
+            return {} as Match;
+            // return (newMatch = docEvents[0].payload.doc.data() as Match);
+            // this.startNewMatchAnimation(newMatch);
+          }
+        }),
+      );
   }
 }

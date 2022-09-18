@@ -56,17 +56,16 @@ export class PlayerState {
 
   @Action(SetCurrentPlayerAction)
   setCurrentPlayer(ctx: StateContext<PlayerStateModel>, action: SetCurrentPlayerAction) {
-    const state = ctx.getState();
-    const currentPlayer = state.players.find((player) => player.email === action.email);
     ctx.patchState({
-      currentPlayer,
+      currentPlayer: action.player,
     });
   }
 
   @Action(UpdatePlayerAction)
   savePlayer(ctx: StateContext<PlayerStateModel>, action: UpdatePlayerAction) {
     const state = ctx.getState();
-    const playerExists = !!state.players.find((player) => player.id === action.player.id);
+    const playerExists = state.players.find((player) => player.id === action.player.id);
+    console.log(action);
     if (playerExists) {
       this.playerService.savePlayer(action.player);
     } else {

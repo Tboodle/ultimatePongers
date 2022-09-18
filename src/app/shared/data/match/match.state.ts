@@ -1,15 +1,21 @@
-import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { tap } from 'rxjs';
-import { NewMatchAnimationComponent } from '../../modals/new-match-animation/new-match-animation.component';
+import { pipe } from 'gsap';
+import { filter } from 'rxjs';
 import { Match } from '../../models/match';
 import { UpdatePlayersForMatchAction } from '../player/player.actions';
-import { AddMatchAction, FetchMachesForPlayerIdAction, FetchMatchesAction } from './match.actions';
+import {
+  AddMatchAction,
+  FetchMachesForPlayerIdAction,
+  FetchMatchesAction,
+  WatchForNewMatchAction,
+} from './match.actions';
 import { MatchService } from './match.service';
 
 export interface MatchStateModel {
   recentMatches: Match[];
   matchesByPlayerId: { [key: string]: any };
+  newMatch?: Match;
 }
 
 @State<MatchStateModel>({
@@ -17,13 +23,12 @@ export interface MatchStateModel {
   defaults: {
     recentMatches: [],
     matchesByPlayerId: {},
+    newMatch: undefined,
   },
 })
 @Injectable()
 export class MatchState {
   ELO_CONST = 40;
-  appViewRef: ViewContainerRef;
-  newMatchAnimation: ComponentRef<NewMatchAnimationComponent>;
 
   constructor(private store: Store, private matchService: MatchService) {}
 
@@ -37,36 +42,26 @@ export class MatchState {
     return state.matchesByPlayerId;
   }
 
+  @Selector()
+  static getNewMatch(state: MatchStateModel) {
+    return state.newMatch;
+  }
+
   @Action(FetchMatchesAction)
   fetchMatches(ctx: StateContext<MatchStateModel>) {
     const state = ctx.getState();
-    this.matchService
-      .getMatches()
-      .pipe(
-        tap((matches: Match[]) => {
-          if (matches.length === 1) {
-            console.log('new match');
-            const newMatch = matches[0];
-            this.startNewMatchAnimation(newMatch);
-          } else {
-            // const newMatch = docEvents[0].payload.doc.data() as Match;
-            // this.startNewMatchAnimation(newMatch);
-          }
-        }),
-      )
-      .subscribe((matches: Match[]) => {
-        ctx.patchState({
-          recentMatches: matches.concat(state.recentMatches),
-        });
+    this.matchService.getMatches().subscribe((matches: Match[]) => {
+      ctx.patchState({
+        recentMatches: matches.concat(state.recentMatches),
       });
+    });
   }
 
   @Action(AddMatchAction)
   addMatch(ctx: StateContext<MatchStateModel>, action: AddMatchAction) {
     const state = ctx.getState();
     const updatedMatch = this.setMatchEndElos(action.match);
-    this.matchService.addMatch(updatedMatch).subscribe((response) => {
-      console.log(response);
+    this.matchService.addMatch(updatedMatch).subscribe(() => {
       this.store.dispatch(new UpdatePlayersForMatchAction(updatedMatch));
       ctx.patchState({
         recentMatches: [...state.recentMatches, updatedMatch],
@@ -84,6 +79,18 @@ export class MatchState {
     });
   }
 
+  @Action(WatchForNewMatchAction)
+  watchForNewMatch(ctx: StateContext<MatchStateModel>) {
+    this.matchService
+      .watchForNewMatch()
+      .pipe(
+        filter((match) => {
+          return !!match?.id;
+        }),
+      )
+      .subscribe((newMatch) => ctx.patchState({ newMatch }));
+  }
+
   private setMatchEndElos(match: Match): Match {
     if (match.winnerStartElo && match.loserStartElo) {
       const winnerRatio = Math.pow(10, match.winnerStartElo / 400);
@@ -96,11 +103,5 @@ export class MatchState {
       match.loserEndElo = Math.round(newLoserElo * 10) / 10;
     }
     return match;
-  }
-
-  private startNewMatchAnimation(match: Match) {
-    this.newMatchAnimation = this.appViewRef.createComponent(NewMatchAnimationComponent);
-    this.newMatchAnimation.instance.match = match;
-    this.newMatchAnimation.instance.closeModal.subscribe(() => this.appViewRef.clear());
   }
 }

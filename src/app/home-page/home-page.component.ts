@@ -10,7 +10,6 @@ import { PlayerFacade } from '../shared/data/player/player.facade';
 })
 export class HomePageComponent implements OnInit {
   players$: Observable<any>;
-
   matches$: Observable<any>;
 
   constructor(private playerFacade: PlayerFacade, private matchFacade: MatchFacade) {}

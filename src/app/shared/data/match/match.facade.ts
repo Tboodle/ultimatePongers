@@ -1,24 +1,30 @@
-import { Injectable, ViewContainerRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Match } from '../../models/match';
 import { UpdatePlayersForMatchAction } from '../player/player.actions';
-import { AddMatchAction, FetchMachesForPlayerIdAction, FetchMatchesAction } from './match.actions';
+import {
+  AddMatchAction,
+  FetchMachesForPlayerIdAction,
+  FetchMatchesAction,
+  WatchForNewMatchAction,
+} from './match.actions';
 import { MatchState } from './match.state';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MatchFacade {
-  appViewRef: ViewContainerRef;
   @Select(MatchState.getMatches) matches$: Observable<Match[]>;
 
   @Select(MatchState.getMatchesByPlayerId) matchesByPlayerId$: Observable<{
     [id: string]: Match[];
   }>;
 
-  constructor(private store: Store, private matchState: MatchState) {
-    matchState.appViewRef = this.appViewRef;
+  @Select(MatchState.getNewMatch) newMatch$: Observable<Match>;
+
+  constructor(private store: Store) {
+    this.store.dispatch(new WatchForNewMatchAction());
   }
 
   fetchMatches(): Observable<any> {

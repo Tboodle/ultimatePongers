@@ -13,3 +13,7 @@ export class AddMatchAction {
   static readonly type = '[Match] Add Match';
   constructor(public match: Match) {}
 }
+
+export class WatchForNewMatchAction {
+  static readonly type = '[Match] Watch For New Match';
+}

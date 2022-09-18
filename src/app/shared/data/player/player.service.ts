@@ -40,10 +40,8 @@ export class PlayerService {
   }
 
   updatePlayersForMatch(players: Player[], match: Match): Observable<Player[]> {
-    console.log(players, match);
     const winner = { ...players.find((player) => player.id === match.winnerId) } as Player;
     const loser = { ...players.find((player) => player.id === match.loserId) } as Player;
-    console.log(winner, loser);
     if (winner && loser && match.winnerEndElo && match.loserEndElo) {
       winner.elo = match.winnerEndElo;
       winner.wins += 1;

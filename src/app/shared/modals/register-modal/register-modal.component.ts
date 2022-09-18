@@ -23,9 +23,9 @@ export class RegisterModalComponent implements OnInit {
   });
   newPlayer: Player = {
     id: '',
-    name: this.newPlayerForm.get('name')?.value,
+    name: '',
     email: '',
-    nickName: this.newPlayerForm.get('name')?.value,
+    nickName: '',
     wins: 0,
     losses: 0,
     elo: 400,
@@ -43,17 +43,26 @@ export class RegisterModalComponent implements OnInit {
         }),
       )
       .subscribe((player: Player) => {
-        this.newPlayer.email = player?.email || this.user.email || '';
-        this.newPlayer.photoUrl = player?.photoUrl || this.user.photoURL || '';
-        this.newPlayerForm.get('name')?.setValue(player?.name || this.user.displayName || '');
-        this.newPlayerForm.get('nickName')?.setValue(player?.nickName || '');
+        if (player) {
+          this.newPlayer = player;
+        } else {
+          this.newPlayer.email = this.user?.email || '';
+          this.newPlayer.name = this.user?.displayName || '';
+          this.newPlayer.photoUrl = this.user?.photoURL || '';
+        }
+        this.newPlayerForm.get('email')?.setValue(this.newPlayer.email);
+        this.newPlayerForm.get('name')?.setValue(this.newPlayer.name);
+        this.newPlayerForm.get('phoyoUrl')?.setValue(this.newPlayer.photoUrl);
+        this.newPlayerForm.get('nickName')?.setValue(this.newPlayer?.nickName || '');
         this.newPlayerForm
           .get('song')
           ?.setValue(
-            (player?.victorySongId ? this.youtubeBaseUrl + player?.victorySongId : '') +
-              (player?.victorySongStart ? '&t=' + player?.victorySongStart : ''),
+            (this.newPlayer?.victorySongId
+              ? this.youtubeBaseUrl + this.newPlayer?.victorySongId
+              : '') +
+              (this.newPlayer?.victorySongStart ? '&t=' + this.newPlayer?.victorySongStart : ''),
           );
-        this.newPlayerForm.get('songTime')?.setValue(player?.victorySongStart || 0);
+        this.newPlayerForm.get('songTime')?.setValue(this.newPlayer?.victorySongStart || 0);
       });
   }
 
