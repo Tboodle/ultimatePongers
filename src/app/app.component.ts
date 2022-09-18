@@ -91,7 +91,6 @@ export class AppComponent implements OnInit {
     this.registerModal = this.vcr.createComponent(RegisterModalComponent);
     this.registerModal.instance.closeModal.subscribe((player?: Player) => {
       if (player) {
-        console.log(player);
         this.playerFacade.savePlayer(player);
       }
       this.vcr.clear();
@@ -103,12 +102,8 @@ export class AppComponent implements OnInit {
   }
 
   private startNewMatchAnimation(match: Match) {
-    const winner$: Observable<Player> = this.playerFacade
-      .getPlayerForId(match.winnerId)
-      .pipe(tap((a) => console.log(a)));
-    const loser$: Observable<Player> = this.playerFacade
-      .getPlayerForId(match.loserId)
-      .pipe(tap((a) => console.log(a)));
+    const winner$: Observable<Player> = this.playerFacade.getPlayerForId(match.winnerId);
+    const loser$: Observable<Player> = this.playerFacade.getPlayerForId(match.loserId);
     combineLatest([winner$, loser$])
       .pipe(take(1))
       .subscribe((players) => {

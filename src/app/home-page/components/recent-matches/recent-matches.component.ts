@@ -15,4 +15,36 @@ export class RecentMatchesComponent {
   getPlayer(id: string): Player {
     return this.players?.find((player) => player.id === id)!;
   }
+
+  getLeftPlayer(match: Match): Player {
+    if (match?.winnerStartElo && match?.loserStartElo) {
+      return match.winnerStartElo > match.loserStartElo
+        ? this.getPlayer(match.winnerId)
+        : this.getPlayer(match.loserId);
+    }
+    return this.getPlayer(match.winnerId);
+  }
+
+  getRightPlayer(match: Match): Player {
+    if (match?.winnerStartElo && match?.loserStartElo) {
+      return match.winnerStartElo < match.loserStartElo
+        ? this.getPlayer(match.winnerId)
+        : this.getPlayer(match.loserId);
+    }
+    return this.getPlayer(match.loserId);
+  }
+
+  getLeftScore(match: Match): number {
+    if (match?.winnerStartElo && match?.loserStartElo) {
+      return match.winnerStartElo > match.loserStartElo ? match.winnerScore : match.loserScore;
+    }
+    return match.winnerScore;
+  }
+
+  getRightScore(match: Match): number {
+    if (match?.winnerStartElo && match?.loserStartElo) {
+      return match.winnerStartElo < match.loserStartElo ? match.winnerScore : match.loserScore;
+    }
+    return match.loserScore;
+  }
 }
