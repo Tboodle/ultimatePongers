@@ -23,9 +23,13 @@
     <div
       class="grid grid-cols-3 justify-items-center col-start-7 col-span-2 content-center text-3xl"
     >
-      <div class="text-blue-800">{{ match.winnerScore }}</div>
+      <div [ngClass]="currentPlayer.id === match.winnerId ? 'text-blue-800' : 'text-red-800'">
+        {{ currentPlayer.id === match.winnerId ? match.winnerScore : match.loserScore }}
+      </div>
       <div class="text-slate-800">-</div>
-      <div class="text-red-800">{{ match.loserScore }}</div>
+      <div [ngClass]="currentPlayer.id === match.winnerId ? 'text-red-800' : 'text-blue-800'">
+        {{ currentPlayer.id === match.winnerId ? match.loserScore : match.winnerScore }}
+      </div>
     </div>
     <div
       *ngIf="
