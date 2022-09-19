@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { faArrowRightRotate } from '@fortawesome/free-solid-svg-icons';
 import { Match } from 'src/app/shared/models/match';
 import { Player } from 'src/app/shared/models/player';
 
@@ -9,8 +10,10 @@ import { Player } from 'src/app/shared/models/player';
 })
 export class RecentMatchesComponent {
   @Input() matches: Match[];
-
   @Input() players: Player[];
+  @Output() playAnimationForMatchEmitter = new EventEmitter<Match>();
+
+  faArrowRightRotate = faArrowRightRotate;
 
   getPlayer(id: string): Player {
     return this.players?.find((player) => player.id === id)!;
@@ -46,5 +49,9 @@ export class RecentMatchesComponent {
       return match.winnerStartElo < match.loserStartElo ? match.winnerScore : match.loserScore;
     }
     return match.loserScore;
+  }
+
+  replayAnimationForMatch(match: Match): void {
+    this.playAnimationForMatchEmitter.emit(match);
   }
 }

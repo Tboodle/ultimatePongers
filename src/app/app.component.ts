@@ -1,7 +1,7 @@
 import { Component, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'firebase/auth';
-import { combineLatest, filter, forkJoin, map, Observable, switchMap, take, tap } from 'rxjs';
+import { combineLatest, filter, map, Observable, switchMap, take, tap } from 'rxjs';
 import { Match } from './shared/models/match';
 import { AddMatchModalComponent } from './shared/modals/add-match-modal/add-match-modal/add-match-modal.component';
 import { RegisterModalComponent } from './shared/modals/register-modal/register-modal.component';
@@ -107,11 +107,7 @@ export class AppComponent implements OnInit {
     combineLatest([winner$, loser$])
       .pipe(take(1))
       .subscribe((players) => {
-        this.newMatchAnimation = this.appViewRef.createComponent(NewMatchAnimationComponent);
-        this.newMatchAnimation.instance.match = match;
-        this.newMatchAnimation.instance.winner = players[0];
-        this.newMatchAnimation.instance.loser = players[1];
-        this.newMatchAnimation.instance.closeModal.subscribe(() => this.appViewRef.clear());
+        this.matchFacade.startNewMatchAnimation(match, players[0], players[1], this.appViewRef);
       });
   }
 }
