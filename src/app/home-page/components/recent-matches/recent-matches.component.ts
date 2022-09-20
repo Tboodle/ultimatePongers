@@ -21,7 +21,7 @@ export class RecentMatchesComponent {
 
   getLeftPlayer(match: Match): Player {
     if (match?.winnerStartElo && match?.loserStartElo) {
-      return match.winnerStartElo > match.loserStartElo
+      return match.winnerStartElo >= match.loserStartElo
         ? this.getPlayer(match.winnerId)
         : this.getPlayer(match.loserId);
     }
