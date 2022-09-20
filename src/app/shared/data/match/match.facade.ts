@@ -43,15 +43,17 @@ export class MatchFacade {
   }
 
   startNewMatchAnimation(match: Match, winner: Player, loser: Player, viewRef: ViewContainerRef) {
-    if (!this.newMatchAnimation) {
-      this.newMatchAnimation = viewRef.createComponent(NewMatchAnimationComponent);
-      this.newMatchAnimation.instance.match = match;
-      this.newMatchAnimation.instance.winner = winner;
-      this.newMatchAnimation.instance.loser = loser;
-      this.newMatchAnimation.instance.closeModal.subscribe(() => {
-        viewRef.clear();
-        this.newMatchAnimation = undefined;
-      });
+    if (this.newMatchAnimation) {
+      viewRef.clear();
+      this.newMatchAnimation = undefined;
     }
+    this.newMatchAnimation = viewRef.createComponent(NewMatchAnimationComponent);
+    this.newMatchAnimation.instance.match = match;
+    this.newMatchAnimation.instance.winner = winner;
+    this.newMatchAnimation.instance.loser = loser;
+    this.newMatchAnimation.instance.closeModal.subscribe(() => {
+      viewRef.clear();
+      this.newMatchAnimation = undefined;
+    });
   }
 }
