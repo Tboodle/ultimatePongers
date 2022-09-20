@@ -39,7 +39,7 @@ export class RecentMatchesComponent {
 
   getLeftScore(match: Match): number {
     if (match?.winnerStartElo && match?.loserStartElo) {
-      return match.winnerStartElo > match.loserStartElo ? match.winnerScore : match.loserScore;
+      return match.winnerStartElo >= match.loserStartElo ? match.winnerScore : match.loserScore;
     }
     return match.winnerScore;
   }
