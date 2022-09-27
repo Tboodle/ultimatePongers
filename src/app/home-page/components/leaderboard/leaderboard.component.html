@@ -20,7 +20,7 @@
           <tr *ngFor="let player of players | sortPlayersByElo; let i = index" class="bg-white">
             <th
               scope="row"
-              class="sm:px-6 sm:py-4 font-medium whitespace-nowrap"
+              class="sm:px-6 sm:py-4 font-medium whitespace-nowrap align-baseline"
               [ngClass]="{
                 'text-gold': i === 0,
                 'text-silver': i === 1,
