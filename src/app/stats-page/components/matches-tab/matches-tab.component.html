@@ -1,5 +1,5 @@
-<div class="mx-auto px-6">
-  <div class="mx-auto px-4 py-5 sm:px-6 max-w-3xl lg:max-w-7xl">
+<div class="mx-auto px-2 sm:px-6">
+  <div class="mx-auto sm:px-6 max-w-3xl lg:max-w-7xl">
     <div *ngIf="matches && players" class="mb-4 flow-root">
       <match-history-header
         [currentPlayer]="currentPlayer"
@@ -7,7 +7,7 @@
         [matches]="filteredMatches || matches"
         (opponentSelected)="opponentSelected($event)"
       ></match-history-header>
-      <ul role="list" class="-mb-8">
+      <ul role="list" class="mt-4 sm:mt-8 flex flex-col gap-2 sm:gap-8">
         <li *ngFor="let match of filteredMatches || matches">
           <match-card
             [match]="match"

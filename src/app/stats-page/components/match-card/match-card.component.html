@@ -1,16 +1,16 @@
-<div class="mt-8 mx-auto grid grid-cols-1 lg:w-4/5">
+<div class="mx-auto grid grid-cols-1 lg:w-4/5">
   <div
     class="shadow sm:rounded-xl grid grid-cols-10 p-4"
     [ngClass]="currentPlayer.id === match.winnerId ? 'bg-blue-100' : 'bg-red-100'"
   >
     <div class="grid grid-rcols-1 col-start-1 col-span-2 justify-items-start content-center">
       <div
-        class="text-2xl"
+        class="sm:text-2xl"
         [ngClass]="currentPlayer.id === match.winnerId ? 'text-blue-800' : 'text-red-800'"
       >
         {{ currentPlayer.id === match.winnerId ? 'WIN' : 'LOSS' }}
       </div>
-      <div class="text-slate-400 justify-items-end">
+      <div class="text-slate-400 justify-items-end text-sm sm:text-base">
         {{ match.date | formatDate }}
       </div>
     </div>
@@ -21,7 +21,7 @@
       <div></div>
     </div>
     <div
-      class="grid grid-cols-3 justify-items-center col-start-7 col-span-2 content-center text-3xl"
+      class="grid grid-cols-3 justify-items-center col-start-7 col-span-2 content-center text-lg sm:text-3xl"
     >
       <div [ngClass]="currentPlayer.id === match.winnerId ? 'text-blue-800' : 'text-red-800'">
         {{ currentPlayer.id === match.winnerId ? match.winnerScore : match.loserScore }}
@@ -37,11 +37,11 @@
       "
       class="grid grid-cols-1 col-start-10 col-span-1 justify-items-end content-center"
     >
-      <div class="text-2xl">
+      <div class="sm:text-2xl">
         {{ currentPlayer.id === match.winnerId ? match.winnerEndElo : match.loserEndElo }}
       </div>
       <div
-        class="text-slate-400 lg:text-base md:text-sm sm:text-sm"
+        class="text-slate-400 text-xs sm:text-lg"
         [ngClass]="currentPlayer.id === match.winnerId ? 'text-blue-800' : 'text-red-800'"
       >
         (<fa-icon
