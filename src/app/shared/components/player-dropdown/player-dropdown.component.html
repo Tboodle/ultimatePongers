@@ -2,7 +2,9 @@
 <div class="flex">
   <div
     class="mb-4 w-5/6"
-    [ngClass]="{ 'grid grid-cols-5 justify-items-start content-center mb-0': flatView }"
+    [ngClass]="{
+      'grid grid-cols-1 sm:grid-cols-5 justify-items-start content-center mb-0': flatView
+    }"
   >
     <div
       id="listbox-label"

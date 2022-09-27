@@ -3,10 +3,10 @@
   <!-- card -->
   <div class="flex flex-col justify-center bg-white rounded-2xl shadow-xl shadow-slate-300/60">
     <!-- text information -->
-    <div class="p-4">
+    <div class="px-1 py-4 sm:p-4">
       <h1 class="text-3xl font-medium text-slate-800 pb-8 px-6">Leaderboard</h1>
       <table *ngIf="players?.length; else noPlayers" class="table-fixed w-full px-6">
-        <thead class="text-center text-slate-400">
+        <thead class="text-center text-slate-400 text-sm sm:text-base">
           <tr>
             <th class="w-1/12"></th>
             <th class="w-5/12"></th>
@@ -20,7 +20,7 @@
           <tr *ngFor="let player of players | sortPlayersByElo; let i = index" class="bg-white">
             <th
               scope="row"
-              class="px-6 py-4 font-medium whitespace-nowrap"
+              class="sm:px-6 sm:py-4 font-medium whitespace-nowrap align-baseline"
               [ngClass]="{
                 'text-gold': i === 0,
                 'text-silver': i === 1,
@@ -31,14 +31,14 @@
             >
               {{ i + 1 }}
             </th>
-            <td class="px-6 py-4 flex items-center space-x-2">
+            <td class="sm:px-6 py-4 flex items-center space-x-2">
               <player-profile [player]="player" [navigationEnabled]="true"></player-profile>
             </td>
-            <td class="py-4 px-6 text-center text-xl">
+            <td class="px-2 sm:px-6 py-4 text-center text-md sm:text-xl">
               {{ player.elo }}
             </td>
             <td
-              class="py-4 px-6 text-center text-xl"
+              class="px-2 sm:px-6 py-4 text-center text-md sm:text-xl"
               [ngClass]="{
                 'text-green-400': player.wins >= player.losses,
                 'text-red-400': player.wins < player.losses
@@ -46,10 +46,10 @@
             >
               {{ getWinPercentageForPlayer(player) }}
             </td>
-            <td class="py-4 px-6 text-center text-xl">
+            <td class="py-4 px-6 text-center text-md sm:text-xl">
               {{ player.wins }}
             </td>
-            <td class="py-4 px-6 text-center text-xl">
+            <td class="py-4 px-6 text-center text-md sm:text-xl">
               {{ player.losses }}
             </td>
           </tr>
