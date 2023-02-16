@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getAuth, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class AuthService {
       if (user) {
         this.user$.next(user);
       } else {
-        signInWithRedirect(auth, provider);
+        signInWithPopup(auth, provider);
       }
     });
   }
