@@ -13,11 +13,20 @@ export class AuthService {
     provider.setCustomParameters({
       hd: 'bti360.com',
     });
-    getRedirectResult(auth, (response: any) => console.log(response));
 
-    auth.onAuthStateChanged((user) => {
-      console.log(user);
-      getRedirectResult(auth, (response: any) => console.log(response));
+    getRedirectResult(auth).then((result) => {
+      // This gives you a Google Access Token. You can use it to access Google APIs.
+      console.log(result);
+      if (result) {
+        // The signd-in user info.
+        const user = result.user;
+        this.user$.next(user);
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      }
+    });
+
+    auth.onIdTokenChanged((user) => {
       if (user) {
         this.user$.next(user);
       } else {
