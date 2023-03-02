@@ -18,19 +18,15 @@ export class AuthService {
       // This gives you a Google Access Token. You can use it to access Google APIs.
       console.log(result);
       if (result) {
+        console.log('get result', result);
         // The signd-in user info.
         const user = result.user;
         this.user$.next(user);
         // IdP data available using getAdditionalUserInfo(result)
         // ...
-      }
-    });
-
-    auth.onIdTokenChanged((user) => {
-      if (user) {
-        this.user$.next(user);
       } else {
-        // signInWithRedirect(auth, provider);
+        console.log('redirect', result);
+        signInWithRedirect(auth, provider);
       }
     });
   }
