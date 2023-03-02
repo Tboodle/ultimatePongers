@@ -30,7 +30,7 @@ export class AuthService {
       if (user) {
         this.user$.next(user);
       } else {
-        signInWithRedirect(auth, provider);
+        // signInWithRedirect(auth, provider);
       }
     });
   }
