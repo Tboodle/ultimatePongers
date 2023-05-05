@@ -1,25 +1,40 @@
 import { Injectable } from '@angular/core';
-import { getAuth, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
+import { getAuth, getRedirectResult, GoogleAuthProvider, OAuthProvider, signInWithRedirect } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   user$: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
+  auth = getAuth();
+  googleProvider = new GoogleAuthProvider();
+  microsoftProvider = new OAuthProvider('microsoft.com');
 
-  authenitcateUser() {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({
+  constructor() {
+    this.googleProvider.setCustomParameters({
       hd: 'bti360.com',
     });
-
-    auth.onAuthStateChanged((user) => {
+    // this.microsoftProvider.setCustomParameters({ prompt: 'consent' });
+    this.auth.onAuthStateChanged((user) => {
+      console.log('test ', user);
       if (user) {
         this.user$.next(user);
-      } else {
-        signInWithRedirect(auth, provider);
       }
     });
+    getRedirectResult(this.auth).then((result) => {
+      console.log('redirect: ', result);
+    });
+  }
+
+  authenitcateUserWithGoogle() {
+    if (!this.user$.value) {
+      signInWithRedirect(this.auth, this.googleProvider);
+    }
+  }
+
+  authenitcateUserWithMicrosoft() {
+    if (!this.user$.value) {
+      signInWithRedirect(this.auth, this.microsoftProvider);
+    }
   }
 }
