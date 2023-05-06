@@ -31,9 +31,14 @@
             "style": "kebab-case"
           }
         ],
+        "prettier/prettier": [
+          "error",
+          {
+            "endOfLine": "auto"
+          }
+        ],
         "unused-imports/no-unused-imports-ts": 2,
-        "@typescript-eslint/lines-between-class-members": 0,
-        "@angular-eslint/component-selector": 0
+        "@typescript-eslint/lines-between-class-members": 0
       },
       "plugins": ["@typescript-eslint", "unused-imports", "import"]
     },

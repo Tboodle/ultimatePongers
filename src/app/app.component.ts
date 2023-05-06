@@ -1,7 +1,7 @@
 import { Component, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'firebase/auth';
-import { combineLatest, filter, map, Observable, switchMap, take, tap } from 'rxjs';
+import { combineLatest, filter, map, Observable, skip, switchMap, take, tap } from 'rxjs';
 import { Match } from './shared/models/match';
 import { AddMatchModalComponent } from './shared/modals/add-match-modal/add-match-modal/add-match-modal.component';
 import { RegisterModalComponent } from './shared/modals/register-modal/register-modal.component';
@@ -38,19 +38,19 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.matchFacade.fetchMatches();
-    this.playerFacade.fetchPlayers();
-    console.log('init');
     this.authService.user$
       .pipe(
+        skip(1),
         tap((user) => {
-          if (!user) {
+          if (user) {
+            this.matchFacade.fetchMatches();
+            this.playerFacade.fetchPlayers();
+          } else {
             this.displayAuthModal();
           }
         }),
         filter((user) => !!user),
         tap((user: User) => {
-          console.log(user);
           this.currentUser = user;
         }),
         switchMap(() => this.playerFacade.players$),

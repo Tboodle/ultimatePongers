@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { getAuth, getRedirectResult, GoogleAuthProvider, OAuthProvider, signInWithRedirect } from 'firebase/auth';
+import {
+  getAuth,
+  getRedirectResult,
+  GoogleAuthProvider,
+  OAuthProvider,
+  signInWithRedirect,
+} from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
@@ -16,13 +22,14 @@ export class AuthService {
     });
     // this.microsoftProvider.setCustomParameters({ prompt: 'consent' });
     this.auth.onAuthStateChanged((user) => {
-      console.log('test ', user);
       if (user) {
         this.user$.next(user);
       }
     });
     getRedirectResult(this.auth).then((result) => {
-      console.log('redirect: ', result);
+      if (result) {
+        console.log('redirect: ', result);
+      }
     });
   }
 
