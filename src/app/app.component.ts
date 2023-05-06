@@ -10,6 +10,8 @@ import { Player } from './shared/models/player';
 import { MatchFacade } from './shared/data/match/match.facade';
 import { PlayerFacade } from './shared/data/player/player.facade';
 import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/new-match-animation.component';
+import { AuthModalComponent } from './shared/modals/auth-modal/auth-modal.component';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,6 +23,7 @@ export class AppComponent implements OnInit {
   currentUser: User;
   addMatchModal: ComponentRef<AddMatchModalComponent>;
   registerModal: ComponentRef<RegisterModalComponent>;
+  authModal: ComponentRef<AuthModalComponent>;
   profileDropdownOpen = false;
   appViewRef: ViewContainerRef;
   newMatchAnimation: ComponentRef<NewMatchAnimationComponent>;
@@ -35,12 +38,18 @@ export class AppComponent implements OnInit {
     this.appViewRef = vcr;
   }
 
-  ngOnInit() {
-    this.authService.authenitcateUser();
-    this.matchFacade.fetchMatches();
-    this.playerFacade.fetchPlayers();
+  async ngOnInit() {
     this.authService.user$
       .pipe(
+        tap((user) => {
+          if (user) {
+            this.closeAuthModal();
+            this.matchFacade.fetchMatches();
+            this.playerFacade.fetchPlayers();
+          } else {
+            this.displayAuthModal();
+          }
+        }),
         filter((user) => !!user),
         tap((user: User) => {
           this.currentUser = user;
@@ -95,6 +104,19 @@ export class AppComponent implements OnInit {
       }
       this.vcr.clear();
     });
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
+  displayAuthModal() {
+    this.authModal = this.vcr.createComponent(AuthModalComponent);
+    return this.authModal.instance.closeModal;
+  }
+
+  closeAuthModal() {
+    this.authModal.destroy();
   }
 
   toggleProfileDropdown() {
