@@ -23,7 +23,6 @@ export class AuthService {
       hd: 'bti360.com',
     });
     this.microsoftProvider.setCustomParameters({
-      prompt: 'consent',
       tenant: 'b9bd382c-6514-4b2f-b2dc-3b1830cb58c9',
     });
     this.auth.onAuthStateChanged((user) => {
