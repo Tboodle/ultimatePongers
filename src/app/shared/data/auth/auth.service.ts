@@ -4,6 +4,7 @@ import {
   getRedirectResult,
   GoogleAuthProvider,
   OAuthProvider,
+  signInWithPopup,
   signInWithRedirect,
 } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
@@ -12,6 +13,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
   user$: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
+  authLoading = true;
   auth = getAuth();
   googleProvider = new GoogleAuthProvider();
   microsoftProvider = new OAuthProvider('microsoft.com');
@@ -20,28 +22,32 @@ export class AuthService {
     this.googleProvider.setCustomParameters({
       hd: 'bti360.com',
     });
-    // this.microsoftProvider.setCustomParameters({ prompt: 'consent' });
+    this.microsoftProvider.setCustomParameters({
+      prompt: 'consent',
+      tenant: 'b9bd382c-6514-4b2f-b2dc-3b1830cb58c9',
+    });
     this.auth.onAuthStateChanged((user) => {
+      this.authLoading = false;
       if (user) {
         this.user$.next(user);
       }
     });
-    getRedirectResult(this.auth).then((result) => {
-      if (result) {
-        console.log('redirect: ', result);
-      }
-    });
+  }
+
+  logout() {
+    this.auth.signOut();
+    location.reload();
   }
 
   authenitcateUserWithGoogle() {
     if (!this.user$.value) {
-      signInWithRedirect(this.auth, this.googleProvider);
+      signInWithPopup(this.auth, this.googleProvider);
     }
   }
 
   authenitcateUserWithMicrosoft() {
     if (!this.user$.value) {
-      signInWithRedirect(this.auth, this.microsoftProvider);
+      signInWithPopup(this.auth, this.microsoftProvider);
     }
   }
 }

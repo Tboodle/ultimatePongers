@@ -1,5 +1,4 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
-import { User } from 'firebase/auth';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { AuthService } from '../../data/auth/auth.service';
 import { PlayerFacade } from '../../data/player/player.facade';
 import { Player } from '../../models/player';
@@ -15,12 +14,10 @@ export class AuthModalComponent {
   constructor(private authService: AuthService, private playerFacade: PlayerFacade) {}
 
   loginWithGoogle() {
-    console.log('google login');
     this.authService.authenitcateUserWithGoogle();
   }
 
   loginWithMicrosoft() {
-    console.log('microsoft login');
     this.authService.authenitcateUserWithMicrosoft();
   }
 

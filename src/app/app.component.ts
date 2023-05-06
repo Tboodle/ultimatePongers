@@ -1,7 +1,7 @@
 import { Component, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'firebase/auth';
-import { combineLatest, filter, map, Observable, skip, switchMap, take, tap } from 'rxjs';
+import { combineLatest, filter, map, Observable, switchMap, take, tap } from 'rxjs';
 import { Match } from './shared/models/match';
 import { AddMatchModalComponent } from './shared/modals/add-match-modal/add-match-modal/add-match-modal.component';
 import { RegisterModalComponent } from './shared/modals/register-modal/register-modal.component';
@@ -11,6 +11,7 @@ import { MatchFacade } from './shared/data/match/match.facade';
 import { PlayerFacade } from './shared/data/player/player.facade';
 import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/new-match-animation.component';
 import { AuthModalComponent } from './shared/modals/auth-modal/auth-modal.component';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -40,9 +41,9 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.authService.user$
       .pipe(
-        skip(1),
         tap((user) => {
           if (user) {
+            this.closeAuthModal();
             this.matchFacade.fetchMatches();
             this.playerFacade.fetchPlayers();
           } else {
@@ -105,10 +106,17 @@ export class AppComponent implements OnInit {
     });
   }
 
+  logout() {
+    this.authService.logout();
+  }
+
   displayAuthModal() {
-    console.log('display');
     this.authModal = this.vcr.createComponent(AuthModalComponent);
     return this.authModal.instance.closeModal;
+  }
+
+  closeAuthModal() {
+    this.authModal.destroy();
   }
 
   toggleProfileDropdown() {
