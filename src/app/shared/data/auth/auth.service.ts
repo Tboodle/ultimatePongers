@@ -19,9 +19,6 @@ export class AuthService {
   microsoftProvider = new OAuthProvider('microsoft.com');
 
   constructor() {
-    this.googleProvider.setCustomParameters({
-      hd: 'bti360.com',
-    });
     this.microsoftProvider.setCustomParameters({
       tenant: 'b9bd382c-6514-4b2f-b2dc-3b1830cb58c9',
     });
