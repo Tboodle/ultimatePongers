@@ -14,9 +14,10 @@
               <div class="relative grid grid-cols-5 w-full">
                 <div class="flex w-full col-span-1">
                   <img
-                    class="inline w-12 h-12 mr-2 rounded-full col-span-1"
-                    src="{{ opponent.photoUrl }}"
+                    class="inline w-12 h-12 mr-2 col-span-1"
+                    src="{{ opponent.photoUrl ?? '../../../assets/user_icon.png' }}"
                     title="{{ opponent.name }}"
+                    [ngClass]="{ 'rounded-full': opponent.photoUrl }"
                   />
                 </div>
                 <div class="flex w-full col-span-3">

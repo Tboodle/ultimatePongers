@@ -10,4 +10,5 @@ export interface Player {
   elo: number;
   victorySongId?: string;
   victorySongStart?: number;
+  hidden?: boolean;
 }

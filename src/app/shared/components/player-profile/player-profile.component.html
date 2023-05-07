@@ -4,10 +4,11 @@
   [ngClass]="{ 'rounded-2xl overflow-hidden shadow-lg bg-white p-4 w-full': cardView }"
 >
   <img
-    class="inline w-8 h-8 sm:w-16 sm:h-16 mr-2 rounded-full"
+    class="inline w-8 h-8 sm:w-16 sm:h-16 mr-2"
     referrerpolicy="no-referrer"
-    src="{{ player.photoUrl }}"
+    src="{{ player.photoUrl ?? '../../../assets/user_icon.png' }}"
     alt="Profile image"
+    [ngClass]="{ 'rounded-full': player.photoUrl }"
   />
   <div class="flex flex-col justify-center">
     <div

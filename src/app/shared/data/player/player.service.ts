@@ -21,7 +21,7 @@ export class PlayerService {
     return this.afs
       .collection('players')
       .valueChanges({ idField: 'id' })
-      .pipe(map((players) => players as Player[]));
+      .pipe(map((players) => (players as Player[]).filter((player) => !player.hidden)));
   }
 
   savePlayer(player: Player): void {

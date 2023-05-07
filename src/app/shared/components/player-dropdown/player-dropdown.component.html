@@ -28,11 +28,11 @@
       >
         <span *ngIf="selectedPlayer; else noneSelected" class="flex items-center">
           <img
-            *ngIf="selectedPlayer?.photoUrl"
             referrerpolicy="no-referrer"
-            src="{{ selectedPlayer?.photoUrl }}"
+            src="{{ selectedPlayer.photoUrl ?? '../../../assets/user_icon.png' }}"
+            [ngClass]="{ 'rounded-full': selectedPlayer.photoUrl }"
             alt=""
-            class="flex-shrink-0 h-6 w-6 rounded-full"
+            class="flex-shrink-0 h-6 w-6"
           />
           <span class="ml-3 block truncate"> {{ selectedPlayer.name }} </span>
         </span>
@@ -85,11 +85,11 @@
         >
           <div class="flex items-center">
             <img
-              *ngIf="player?.photoUrl"
               referrerpolicy="no-referrer"
-              src="{{ player?.photoUrl }}"
+              src="{{ player.photoUrl ?? '../../../assets/user_icon.png' }}"
               alt=""
-              class="flex-shrink-0 h-6 w-6 rounded-full"
+              class="flex-shrink-0 h-6 w-6"
+              [ngClass]="{ 'rounded-full': player.photoUrl }"
             />
             <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
             <span class="font-normal ml-3 block truncate">{{ player.name }} </span>
