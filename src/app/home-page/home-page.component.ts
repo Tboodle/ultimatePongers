@@ -2,6 +2,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { combineLatest, Observable, take } from 'rxjs';
 import { MatchFacade } from '../shared/data/match/match.facade';
 import { PlayerFacade } from '../shared/data/player/player.facade';
+import { TournamentFacade } from '../shared/data/tournament/tournament.facade';
 import { Match } from '../shared/models/match';
 import { Player } from '../shared/models/player';
 
@@ -13,11 +14,13 @@ import { Player } from '../shared/models/player';
 export class HomePageComponent implements OnInit {
   players$: Observable<any>;
   matches$: Observable<any>;
+  tournaments$: Observable<any>;
   viewRef: ViewContainerRef;
 
   constructor(
     private playerFacade: PlayerFacade,
     private matchFacade: MatchFacade,
+    private tournamentFacade: TournamentFacade,
     private vcr: ViewContainerRef,
   ) {
     this.viewRef = vcr;
@@ -26,6 +29,7 @@ export class HomePageComponent implements OnInit {
   ngOnInit(): void {
     this.players$ = this.playerFacade.players$;
     this.matches$ = this.matchFacade.matches$;
+    this.tournaments$ = this.tournamentFacade.tournaments$;
   }
 
   startNewMatchAnimation(match: Match) {

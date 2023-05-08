@@ -41,6 +41,9 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { NgxsModule } from '@ngxs/store';
 import { MatchState } from './shared/data/match/match.state';
 import { PlayerState } from './shared/data/player/player.state';
+import { TournamentPageComponent } from './tournament-page/tournament-page.component';
+import { TournamentsComponent } from './home-page/components/tournaments/tournaments.component';
+import { TournamentState } from './shared/data/tournament/tournament.state';
 
 @NgModule({
   declarations: [
@@ -63,6 +66,8 @@ import { PlayerState } from './shared/data/player/player.state';
     MatchesTabComponent,
     MatchCardComponent,
     MatchHistoryHeaderComponent,
+    TournamentPageComponent,
+    TournamentsComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,7 +83,7 @@ import { PlayerState } from './shared/data/player/player.state';
     AngularFireAnalyticsModule,
     FontAwesomeModule,
     YouTubePlayerModule,
-    NgxsModule.forRoot([MatchState, PlayerState], {
+    NgxsModule.forRoot([MatchState, PlayerState, TournamentState], {
       developmentMode: !environment.production,
     }),
   ],

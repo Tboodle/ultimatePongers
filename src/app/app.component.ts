@@ -11,6 +11,7 @@ import { MatchFacade } from './shared/data/match/match.facade';
 import { PlayerFacade } from './shared/data/player/player.facade';
 import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/new-match-animation.component';
 import { AuthModalComponent } from './shared/modals/auth-modal/auth-modal.component';
+import { TournamentFacade } from './shared/data/tournament/tournament.facade';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit {
     private vcr: ViewContainerRef,
     private matchFacade: MatchFacade,
     private playerFacade: PlayerFacade,
+    private tournamentFacade: TournamentFacade,
     private authService: AuthService,
   ) {
     this.appViewRef = vcr;
@@ -46,6 +48,7 @@ export class AppComponent implements OnInit {
             this.closeAuthModal();
             this.matchFacade.fetchMatches();
             this.playerFacade.fetchPlayers();
+            this.tournamentFacade.fetchTournaments();
           } else {
             this.displayAuthModal();
           }

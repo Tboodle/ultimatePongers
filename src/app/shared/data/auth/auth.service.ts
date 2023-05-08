@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  getAuth,
-  getRedirectResult,
-  GoogleAuthProvider,
-  OAuthProvider,
-  signInWithPopup,
-  signInWithRedirect,
-} from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, OAuthProvider, signInWithPopup } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
