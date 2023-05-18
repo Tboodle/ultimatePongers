@@ -88,6 +88,10 @@ export class AppComponent implements OnInit {
     return this.router.url.includes('/player/');
   }
 
+  isTournamentsPage() {
+    return this.router.url.includes('/tournament');
+  }
+
   displayAddMatchModal() {
     this.addMatchModal = this.vcr.createComponent(AddMatchModalComponent);
     this.addMatchModal.instance.closeModal.subscribe((match?: Match) => {

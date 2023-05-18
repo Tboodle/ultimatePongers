@@ -14,7 +14,6 @@ export class TournamentFacade {
   @Select(TournamentState.getTournaments) tournaments$: Observable<Tournament[]>;
 
   fetchTournaments(): Observable<any> {
-    console.log('fetchin');
     return this.store.dispatch(new FetchTournamentsAction());
   }
 }

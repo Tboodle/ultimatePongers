@@ -1,1 +1,189 @@
-<div class="flex">test</div>
+<div [@parent] class="w-full h-full relative">
+  <div
+    *ngIf="!formView; else form"
+    class="absolute h-max w-max left-0 right-0 flex flex-col justify-center h-full py-10 lg:w-1/2 w-2/3 m-auto top-0"
+    [@listSlide]
+  >
+    <div class="flex flex-row gap-4 w-full items-center">
+      <h1 class="text-xl sm:text-3xl text-slate-800">Active Tournaments</h1>
+      <button
+        type="button"
+        class="rounded-full bg-bti-orange-800 p-1 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bti-orange-1000"
+        (click)="toggleForm()"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path
+            d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
+          />
+        </svg>
+      </button>
+    </div>
+    <ul role="list" class="mt-4 sm:mt-8 flex flex-col gap-2 sm:gap-8">
+      <li *ngFor="let tournament of tournaments$ | async">
+        <tournament-card [tournament]="tournament" class="cursor-pointer"></tournament-card>
+      </li>
+    </ul>
+  </div>
+  <ng-template #form id="form">
+    <div
+      [@formSlide]
+      class="absolute h-max left-0 right-0 flex flex-col justify-center h-full py-10 lg:w-1/2 w-2/3 m-auto top-0"
+    >
+      <div class="flex flex-row gap-16">
+        <div class="flex align-start p-1">
+          <button
+            type="button"
+            class="rounded-full transparent text-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 h-max"
+            (click)="toggleForm()"
+          >
+            <fa-icon [icon]="faArrowLeft" size="lg"></fa-icon>
+          </button>
+        </div>
+        <div class="flex flex-col mx-auto w-full grow">
+          <div class="flex flex-row gap-8 w-full items-center">
+            <h1 class="text-xl sm:text-3xl text-slate-800">Create a Tournament</h1>
+          </div>
+          <div class="mt-4">
+            <div class="mt-10 grid gap-x-6 gap-y-8 grid-cols-6">
+              <div class="row-start-1 col-span-4">
+                <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900"
+                  >Name</label
+                >
+                <div class="mt-2">
+                  <input
+                    [formControl]="nameControl"
+                    type="text"
+                    name="first-name"
+                    id="first-name"
+                    autocomplete="given-name"
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-bti-orange-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              <div class="row-start-2 col-span-4">
+                <label for="date" class="block text-sm font-medium leading-6 text-gray-900"
+                  >Start Date</label
+                >
+                <div class="relative mt-2">
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+                  ></div>
+                  <input
+                    [formControl]="dateControl"
+                    id="date"
+                    type="date"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  />
+                </div>
+              </div>
+              <div class="row-start-3 col-span-4">
+                <label for="combobox" class="block text-sm font-medium leading-6 text-gray-900"
+                  >Format</label
+                >
+                <div class="relative mt-2" (click)="toggleDropdown()">
+                  <input
+                    id="combobox"
+                    [formControl]="formatControl"
+                    type="text"
+                    class="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-bti-orange-600 sm:text-sm sm:leading-6"
+                    role="combobox"
+                    aria-controls="options"
+                    aria-expanded="false"
+                  />
+                  <button
+                    type="button"
+                    class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
+                  >
+                    <svg
+                      class="h-5 w-5 text-gray-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
+
+                  <ul
+                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                    id="options"
+                    role="listbox"
+                    [ngClass]="{ hidden: !formatDropdownOpen }"
+                    (focusout)="closeDropdown()"
+                  >
+                    <li
+                      *ngFor="let format of formats"
+                      class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-gray-100 active:bg-gray-200 hover:cursor-pointer"
+                      id="option-0"
+                      role="option"
+                      tabindex="-1"
+                      (click)="setFormat($event, format)"
+                    >
+                      <span
+                        class="block truncate"
+                        [ngClass]="{ 'font-semibold': formatControl.value === format }"
+                        (click)="setFormat($event, format)"
+                        >{{ format }}</span
+                      >
+                      <span
+                        *ngIf="formatControl.value === format"
+                        class="absolute inset-y-0 right-0 flex items-center pr-4 text-bti-orange-600"
+                      >
+                        <svg
+                          class="h-5 w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      </span>
+                    </li>
+
+                    <!-- More items... -->
+                  </ul>
+                </div>
+              </div>
+              <div class="row-start-4 col-span-4">
+                <div class="relative flex items-start">
+                  <div class="flex h-6 items-center">
+                    <input
+                      id="comments"
+                      [formControl]="dateControl"
+                      aria-describedby="comments-description"
+                      name="comments"
+                      type="checkbox"
+                      class="h-4 w-4 rounded border-gray-300 text-bti-orange-800 focus:ring-bti-orange-800"
+                    />
+                  </div>
+                  <div class="ml-3 text-sm leading-6">
+                    <label for="comments" class="font-medium text-gray-900">Seeded</label>
+                    <p id="comments-description" class="text-gray-500">
+                      Determine matchups based on current rankings in the app.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="row-start-5 col-span-4 flex justify-end">
+                <button
+                  type="button"
+                  class="rounded-md bg-bti-orange-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-bti-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bti-orange-800"
+                >
+                  Create
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

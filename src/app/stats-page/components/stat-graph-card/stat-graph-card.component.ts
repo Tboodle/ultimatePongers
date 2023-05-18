@@ -1,4 +1,11 @@
-import { AfterViewChecked, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+} from '@angular/core';
 import { Match } from 'src/app/shared/models/match';
 import { Player } from 'src/app/shared/models/player';
 import { Chart, registerables } from 'chart.js';
@@ -8,11 +15,10 @@ import { Chart, registerables } from 'chart.js';
   templateUrl: './stat-graph-card.component.html',
   styleUrls: ['./stat-graph-card.component.scss'],
 })
-export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
+export class StatGraphCardComponent implements OnChanges, AfterViewChecked, OnDestroy {
   @Input() matches: Match[];
   @Input() player: Player;
   @Input() players: Player[];
-
 
   filteredMatches: Match[];
   noRatedMatches: boolean = true;
@@ -21,13 +27,20 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   generateTooltipForDataPoint = (data: any) => {
     const match = this.filteredMatches[data[0].dataIndex];
     const currentPlayerWon = this.player.id === match.winnerId;
-    return match.date.toLocaleString() + 
-    '\n' + (currentPlayerWon ? 'Win' : 'Loss') + ' vs ' + 
-    this.players.find((matchPlayer) => 
-      matchPlayer.id === (currentPlayerWon ? match.loserId : match.winnerId))?.name + 
-    '\n' + (currentPlayerWon ? match.winnerScore : match.loserScore) + 
-    ' - ' + (currentPlayerWon ? match.loserScore : match.winnerScore)
-  }
+    return (
+      match.date.toLocaleString() +
+      '\n' +
+      (currentPlayerWon ? 'Win' : 'Loss') +
+      ' vs ' +
+      this.players.find(
+        (matchPlayer) => matchPlayer.id === (currentPlayerWon ? match.loserId : match.winnerId),
+      )?.name +
+      '\n' +
+      (currentPlayerWon ? match.winnerScore : match.loserScore) +
+      ' - ' +
+      (currentPlayerWon ? match.loserScore : match.winnerScore)
+    );
+  };
 
   constructor() {
     Chart.register(...registerables);
@@ -46,6 +59,10 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
     }
   }
 
+  ngOnDestroy(): void {
+    this.chart.destroy();
+  }
+
   ngAfterViewChecked(): void {
     this.filteredMatches = this.matches
       ?.filter((match) => match.winnerEndElo)
@@ -59,7 +76,9 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   private populateEloChart() {
     const canvas = document.getElementById('chart') as HTMLCanvasElement;
     const data = this.generateDataFromFilteredMatches();
-    const playerElos = this.filteredMatches.map((match) => this.getPlayerEloForMatch(match) || 99999999);
+    const playerElos = this.filteredMatches.map(
+      (match) => this.getPlayerEloForMatch(match) || 99999999,
+    );
     const minElo = Math.min(...playerElos);
     const maxElo = Math.max(...playerElos);
     const yScaleMin = Math.floor((minElo * 0.9) / 10) * 10;
@@ -87,9 +106,9 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
         },
         tooltip: {
           callbacks: {
-            title: this.generateTooltipForDataPoint
-          }
-        }
+            title: this.generateTooltipForDataPoint,
+          },
+        },
       },
     };
 

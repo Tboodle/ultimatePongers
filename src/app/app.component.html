@@ -14,7 +14,7 @@
         </a>
         <div class="ml-6 sm:ml-10 space-x-4 sm:space-x-8 lg:block">
           <a
-            href="/"
+            [routerLink]="['/']"
             class="text-base font-medium text-white hover:text-indigo-50"
             [ngClass]="{ active: isHomePage() }"
           >
@@ -27,6 +27,14 @@
             [ngClass]="{ active: isStatsPage() }"
           >
             Stats
+          </a>
+
+          <a
+            [routerLink]="['/tournament']"
+            class="text-base font-medium text-white hover:text-indigo-50"
+            [ngClass]="{ active: isTournamentsPage() }"
+          >
+            Tournaments
           </a>
         </div>
       </div>

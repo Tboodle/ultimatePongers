@@ -24,9 +24,7 @@ export class TournamentState {
 
   @Action(FetchTournamentsAction)
   fetchTournaments(ctx: StateContext<TournamentStateModel>) {
-    console.log('state');
     return this.tournamentsService.getTournaments().subscribe((tournaments: Tournament[]) => {
-      console.log(tournaments);
       ctx.patchState({
         tournaments,
       });

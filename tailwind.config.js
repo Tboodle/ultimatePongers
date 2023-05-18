@@ -4,10 +4,12 @@ module.exports = {
     extend: {
       colors: {
         'bti-orange': {
+          100: '#FFE5D5',
+          200: '#FFC7A9',
           400: '#FFBB9C',
           600: '#FE9A6A',
           800: '#FE7839',
-          1000: '#FE5607',
+          1000: '#9b1911',
         },
         'bti-red-orange': '#FF2000',
         'bti-dark': {

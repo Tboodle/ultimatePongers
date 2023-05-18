@@ -27,6 +27,8 @@ import { PlayerProfileComponent } from './shared/components/player-profile/playe
 import { StatsPageComponent } from './stats-page/stats-page.component';
 import { MatchupCardComponent } from './stats-page/components/matchup-card/matchup-card.component';
 import { StatGraphCardComponent } from './stats-page/components/stat-graph-card/stat-graph-card.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {
   AngularFireAnalyticsModule,
   UserTrackingService,
@@ -44,6 +46,7 @@ import { PlayerState } from './shared/data/player/player.state';
 import { TournamentPageComponent } from './tournament-page/tournament-page.component';
 import { TournamentsComponent } from './home-page/components/tournaments/tournaments.component';
 import { TournamentState } from './shared/data/tournament/tournament.state';
+import { TournamentCardComponent } from './tournament-page/components/tournament-card/tournament-card.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +71,7 @@ import { TournamentState } from './shared/data/tournament/tournament.state';
     MatchHistoryHeaderComponent,
     TournamentPageComponent,
     TournamentsComponent,
+    TournamentCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,6 +90,7 @@ import { TournamentState } from './shared/data/tournament/tournament.state';
     NgxsModule.forRoot([MatchState, PlayerState, TournamentState], {
       developmentMode: !environment.production,
     }),
+    BrowserAnimationsModule,
   ],
   providers: [AuthService, UserTrackingService, ScreenTrackingService],
   bootstrap: [AppComponent],

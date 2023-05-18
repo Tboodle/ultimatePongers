@@ -1,0 +1,37 @@
+<div class="mx-auto grid grid-cols-1">
+  <div
+    class="shadow sm:rounded-xl grid grid-cols-4 p-4 bg-white active:bg-gray-50"
+    (click)="navigateToTournamentPage()"
+  >
+    <div class="grid grid-rows-2 col-span-3">
+      <div class="text-2xl text-slate-600">
+        {{ tournament.name }}
+      </div>
+      <div class="mt-2 flex flex-row gap-2">
+        <span
+          class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium w-max"
+          [ngClass]="getStatusColor()"
+        >
+          <fa-icon [icon]="faCalendar" size="xs"></fa-icon>
+          {{ getStatusLabel() }}
+        </span>
+        <span
+          *ngIf="isActive()"
+          class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium w-max bg-bti-orange-100 text-bti-orange-1000"
+        >
+          <fa-icon [icon]="faCalendar" size="xs"></fa-icon>
+          {{ getRoundLabel() }}
+        </span>
+        <span
+          class="inline-flex items-center gap-x-1.5 rounded-full bg-bti-orange-100 px-2 py-1 text-xs font-medium text-bti-orange-1000 w-max"
+        >
+          <fa-icon [icon]="faUser" size="xs"></fa-icon>
+          {{ tournament.competitors?.length || '0' }} Players
+        </span>
+      </div>
+    </div>
+    <div class="flex justify-end items-center">
+      <fa-icon [icon]="faArrowRight" class="mr-3 text-slate-600" size="lg"></fa-icon>
+    </div>
+  </div>
+</div>
