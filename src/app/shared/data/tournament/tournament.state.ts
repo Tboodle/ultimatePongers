@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Tournament } from '../../models/tournament';
-import { FetchTournamentsAction } from './tournament.actions';
+import {
+  AddPlayerToTournamentAction,
+  CreateTournamentAction,
+  FetchTournamentsAction,
+} from './tournament.actions';
 import { TournamentService } from './tournament.service';
 
 export interface TournamentStateModel {
@@ -29,5 +33,18 @@ export class TournamentState {
         tournaments,
       });
     });
+  }
+
+  @Action(CreateTournamentAction)
+  createTournament(ctx: StateContext<TournamentStateModel>, action: CreateTournamentAction) {
+    return this.tournamentsService.createTournament(action.tournament);
+  }
+
+  @Action(AddPlayerToTournamentAction)
+  addPlayerToTournament(
+    ctx: StateContext<TournamentStateModel>,
+    action: AddPlayerToTournamentAction,
+  ) {
+    return this.tournamentsService.addPlayerToTournament(action.tournament, action.playerId);
   }
 }

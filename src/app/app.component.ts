@@ -1,7 +1,7 @@
 import { Component, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'firebase/auth';
-import { combineLatest, filter, map, Observable, switchMap, take, tap } from 'rxjs';
+import { combineLatest, filter, Observable, switchMap, take, tap } from 'rxjs';
 import { Match } from './shared/models/match';
 import { AddMatchModalComponent } from './shared/modals/add-match-modal/add-match-modal/add-match-modal.component';
 import { RegisterModalComponent } from './shared/modals/register-modal/register-modal.component';
@@ -62,15 +62,12 @@ export class AppComponent implements OnInit {
         switchMap(() => {
           return this.playerFacade.getPlayerForEmail(this.currentUser.email || '');
         }),
-        map((player: Player) => {
-          this.playerId = player?.id;
-          // this.playerFacade.setCurrentPlayer(player);
-          return !!player;
-        }),
       )
-      .subscribe((isExistingUser: boolean) => {
-        if (!isExistingUser) {
+      .subscribe((player: Player) => {
+        if (!player) {
           this.displayRegisterModal();
+        } else {
+          this.playerFacade.setCurrentPlayer(player);
         }
       });
     this.matchFacade.newMatch$.subscribe((newMatch: Match) => {

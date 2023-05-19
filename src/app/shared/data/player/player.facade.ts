@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Player } from '../../models/player';
 import { FetchPlayersAction, SetCurrentPlayerAction, UpdatePlayerAction } from './player.actions';
 import { PlayerState } from './player.state';

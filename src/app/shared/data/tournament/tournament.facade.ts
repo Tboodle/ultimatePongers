@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Tournament } from '../../models/tournament';
-import { FetchTournamentsAction } from './tournament.actions';
+import {
+  FetchTournamentsAction,
+  CreateTournamentAction,
+  AddPlayerToTournamentAction,
+} from './tournament.actions';
 import { TournamentState } from './tournament.state';
 
 @Injectable({
@@ -15,5 +19,13 @@ export class TournamentFacade {
 
   fetchTournaments(): Observable<any> {
     return this.store.dispatch(new FetchTournamentsAction());
+  }
+
+  createTournament(tournament: Tournament): Observable<any> {
+    return this.store.dispatch(new CreateTournamentAction(tournament));
+  }
+
+  addPlayerToTournament(tournament: Tournament, playerId: string) {
+    return this.store.dispatch(new AddPlayerToTournamentAction(tournament, playerId));
   }
 }

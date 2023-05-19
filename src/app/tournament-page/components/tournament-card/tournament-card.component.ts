@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Tournament } from 'src/app/shared/models/tournament';
 import { faArrowRight, faCalendar, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { Player } from 'src/app/shared/models/player';
 
 @Component({
   selector: 'tournament-card',
@@ -10,10 +11,15 @@ import { Router } from '@angular/router';
 })
 export class TournamentCardComponent {
   @Input() tournament: Tournament;
+  @Input() currentPlayer: Player;
+
+  @Output() joinTournamentEmitter = new EventEmitter<Tournament>();
+  @Output() tournamentViewEmitter = new EventEmitter<Tournament>();
 
   faArrowRight = faArrowRight;
   faCalendar = faCalendar;
   faUser = faUser;
+  joining = false;
 
   constructor(private router: Router) {}
 
@@ -37,6 +43,10 @@ export class TournamentCardComponent {
     return !this.tournament.championId && Date.parse(this.tournament.startDate) <= now;
   }
 
+  currentPlayerJoined(): boolean {
+    return this.tournament.competitors.includes(this.currentPlayer.id);
+  }
+
   getStatusColor(): string {
     const now = Date.now();
     if (Date.parse(this.tournament.startDate) > now) {
@@ -48,7 +58,14 @@ export class TournamentCardComponent {
     }
   }
 
-  navigateToTournamentPage(): void {
-    this.router.navigateByUrl(`/tournament/${this.tournament.id}`);
+  navigateToTournamentView(): void {
+    this.tournamentViewEmitter.emit(this.tournament);
+  }
+
+  joinTournament(): void {
+    this.joining = true;
+    if (!this.currentPlayerJoined()) {
+      this.joinTournamentEmitter.emit(this.tournament);
+    }
   }
 }

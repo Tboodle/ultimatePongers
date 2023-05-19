@@ -47,6 +47,7 @@ import { TournamentPageComponent } from './tournament-page/tournament-page.compo
 import { TournamentsComponent } from './home-page/components/tournaments/tournaments.component';
 import { TournamentState } from './shared/data/tournament/tournament.state';
 import { TournamentCardComponent } from './tournament-page/components/tournament-card/tournament-card.component';
+import { TournamentFormComponent } from './tournament-page/components/tournament-form/tournament-form.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { TournamentCardComponent } from './tournament-page/components/tournament
     TournamentPageComponent,
     TournamentsComponent,
     TournamentCardComponent,
+    TournamentFormComponent,
   ],
   imports: [
     BrowserModule,

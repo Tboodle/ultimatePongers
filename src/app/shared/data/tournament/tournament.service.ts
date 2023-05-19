@@ -3,7 +3,7 @@
 /* eslint-disable require-jsdoc */
 import { Injectable } from '@angular/core';
 // import {Player} from '../../../../shared/player';
-import { map, Observable } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 
 import { Tournament } from '../../models/tournament';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -26,5 +26,18 @@ export class TournamentService {
             }) as Tournament[],
         ),
       );
+  }
+
+  createTournament(tournament: Tournament): Observable<any> {
+    return from(this.afs.collection('tournaments').add(tournament));
+  }
+
+  addPlayerToTournament(tournament: Tournament, playerId: string): Observable<any> {
+    return from(
+      this.afs
+        .collection('tournaments')
+        .doc(tournament.id)
+        .set({ ...tournament, competitors: [...tournament.competitors, playerId] }),
+    );
   }
 }

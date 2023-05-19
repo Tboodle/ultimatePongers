@@ -1,12 +1,12 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
+import { PlayerFacade } from '../shared/data/player/player.facade';
 import { TournamentFacade } from '../shared/data/tournament/tournament.facade';
+import { Player } from '../shared/models/player';
 import { Tournament } from '../shared/models/tournament';
-import { TournamentFormat } from '../shared/models/tournamentFormat';
 
 @Component({
   selector: 'app-tournament-page',
@@ -14,7 +14,7 @@ import { TournamentFormat } from '../shared/models/tournamentFormat';
   styleUrls: ['./tournament-page.component.scss'],
   animations: [
     trigger('parent', [transition(':enter', [])]),
-    trigger('formSlide', [
+    trigger('contentSlide', [
       transition(':enter', [
         style({ transform: 'translateX(200%)' }),
         animate('500ms ease-in', style({ transform: 'translateX(0%)' })),
@@ -32,36 +32,45 @@ import { TournamentFormat } from '../shared/models/tournamentFormat';
 })
 export class TournamentPageComponent implements OnInit {
   tournaments$: Observable<Tournament[]>;
-  formView = true;
-  nameControl = new FormControl('');
-  dateControl = new FormControl(new Date().toISOString().slice(0, 10));
-  seededControl = new FormControl(false);
-  formatControl = new FormControl('Single Elimination');
-  formats = Object.values(TournamentFormat);
-  formatDropdownOpen = false;
+  currentPlayer: Player;
+  activeTournament: Tournament;
+  formView = false;
   faArrowLeft = faArrowLeft;
 
-  constructor(private tournamentFacade: TournamentFacade, private router: Router) {}
+  constructor(
+    private tournamentFacade: TournamentFacade,
+    private playerFacade: PlayerFacade,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.tournaments$ = this.tournamentFacade.tournaments$;
+    this.playerFacade.currentPlayer$.subscribe((currentPlayer) => {
+      this.currentPlayer = currentPlayer;
+    });
   }
 
   toggleForm(): void {
     this.formView = !this.formView;
   }
 
-  toggleDropdown(): void {
-    this.formatDropdownOpen = !this.formatDropdownOpen;
+  createTournament(partialTournament: Tournament): void {
+    const tournament: Tournament = {
+      ...partialTournament,
+      creatorId: this.currentPlayer?.id,
+    };
+    this.tournamentFacade.createTournament(tournament).subscribe(() => {
+      this.formView = false;
+    });
   }
 
-  closeDropdown(): void {
-    this.formatDropdownOpen = false;
+  joinTournament(tournament: Tournament): void {
+    this.tournamentFacade.addPlayerToTournament(tournament, this.currentPlayer.id).subscribe(() => {
+      console.log('done');
+    });
   }
 
-  setFormat(event: any, format: TournamentFormat): void {
-    event.stopPropagation();
-    this.toggleDropdown();
-    this.formatControl.setValue(format);
+  viewTournament(tournament: Tournament): void {
+    this.activeTournament = tournament;
   }
 }

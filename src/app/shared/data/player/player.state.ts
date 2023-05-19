@@ -56,9 +56,11 @@ export class PlayerState {
 
   @Action(SetCurrentPlayerAction)
   setCurrentPlayer(ctx: StateContext<PlayerStateModel>, action: SetCurrentPlayerAction) {
-    ctx.patchState({
-      currentPlayer: action.player,
-    });
+    if (!ctx.getState().currentPlayer) {
+      ctx.patchState({
+        currentPlayer: action.player,
+      });
+    }
   }
 
   @Action(UpdatePlayerAction)

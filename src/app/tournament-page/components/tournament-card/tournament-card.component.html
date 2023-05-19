@@ -1,7 +1,7 @@
 <div class="mx-auto grid grid-cols-1">
   <div
     class="shadow sm:rounded-xl grid grid-cols-4 p-4 bg-white active:bg-gray-50"
-    (click)="navigateToTournamentPage()"
+    (click)="navigateToTournamentView()"
   >
     <div class="grid grid-rows-2 col-span-3">
       <div class="text-2xl text-slate-600">
@@ -30,7 +30,20 @@
         </span>
       </div>
     </div>
-    <div class="flex justify-end items-center">
+    <div class="flex justify-end items-center gap-4">
+      <button
+        type="button"
+        class="rounded-md bg-bti-orange-800 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+        [ngClass]="{
+          'bg-bti-orange-200': this.currentPlayerJoined(),
+          'hover:bg-bti-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bti-orange-800':
+            !this.currentPlayerJoined()
+        }"
+        [disabled]="this.currentPlayerJoined()"
+        (click)="joinTournament()"
+      >
+        <span>{{ this.currentPlayerJoined() ? 'Joined' : 'Join Now' }}</span>
+      </button>
       <fa-icon [icon]="faArrowRight" class="mr-3 text-slate-600" size="lg"></fa-icon>
     </div>
   </div>

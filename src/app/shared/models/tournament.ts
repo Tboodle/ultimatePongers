@@ -1,8 +1,10 @@
 export interface Tournament {
-  id: string;
-  creatorId: string;
+  id?: string;
+  creatorId?: string;
   startDate: any;
-  championId: string;
+  championId?: string;
   name: string;
+  format: string;
+  seeded: boolean;
   competitors: string[];
 }
