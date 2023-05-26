@@ -13,7 +13,6 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   @Input() player: Player;
   @Input() players: Player[];
 
-
   filteredMatches: Match[];
   noRatedMatches: boolean = true;
   chart: Chart;
@@ -21,13 +20,31 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   generateTooltipForDataPoint = (data: any) => {
     const match = this.filteredMatches[data[0].dataIndex];
     const currentPlayerWon = this.player.id === match.winnerId;
-    return match.date.toLocaleString() + 
-    '\n' + (currentPlayerWon ? 'Win' : 'Loss') + ' vs ' + 
-    this.players.find((matchPlayer) => 
-      matchPlayer.id === (currentPlayerWon ? match.loserId : match.winnerId))?.name + 
-    '\n' + (currentPlayerWon ? match.winnerScore : match.loserScore) + 
-    ' - ' + (currentPlayerWon ? match.loserScore : match.winnerScore)
-  }
+    const eloGain =
+      match.winnerEndElo && match?.winnerStartElo
+        ? `+${(match.winnerEndElo - match.winnerStartElo).toFixed(1)}`
+        : '';
+    const eloLoss =
+      match.loserEndElo && match?.loserStartElo
+        ? `${(match.loserEndElo - match.loserStartElo).toFixed(1)}`
+        : '';
+
+    return (
+      match.date.toLocaleString() +
+      '\n' +
+      (currentPlayerWon ? 'Win' : 'Loss') +
+      ' vs ' +
+      this.players.find(
+        (matchPlayer) => matchPlayer.id === (currentPlayerWon ? match.loserId : match.winnerId),
+      )?.name +
+      '  ' +
+      `(${currentPlayerWon ? eloGain : eloLoss})` +
+      '\n' +
+      (currentPlayerWon ? match.winnerScore : match.loserScore) +
+      ' - ' +
+      (currentPlayerWon ? match.loserScore : match.winnerScore)
+    );
+  };
 
   constructor() {
     Chart.register(...registerables);
@@ -59,7 +76,9 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
   private populateEloChart() {
     const canvas = document.getElementById('chart') as HTMLCanvasElement;
     const data = this.generateDataFromFilteredMatches();
-    const playerElos = this.filteredMatches.map((match) => this.getPlayerEloForMatch(match) || 99999999);
+    const playerElos = this.filteredMatches.map(
+      (match) => this.getPlayerEloForMatch(match) || 99999999,
+    );
     const minElo = Math.min(...playerElos);
     const maxElo = Math.max(...playerElos);
     const yScaleMin = Math.floor((minElo * 0.9) / 10) * 10;
@@ -87,9 +106,9 @@ export class StatGraphCardComponent implements OnChanges, AfterViewChecked {
         },
         tooltip: {
           callbacks: {
-            title: this.generateTooltipForDataPoint
-          }
-        }
+            title: this.generateTooltipForDataPoint,
+          },
+        },
       },
     };
 
