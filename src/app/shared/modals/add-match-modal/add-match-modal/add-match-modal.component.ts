@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Match } from '../../../models/match';
 import { Player } from 'src/app/shared/models/player';
@@ -14,11 +14,12 @@ import { PlayerFacade } from 'src/app/shared/data/player/player.facade';
 export class AddMatchModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter<any>();
 
-  players$: Observable<any>;
+  players$: Observable<Player[]>;
   winner: Player;
   loser: Player;
   winnerScore = 21;
   loserScore: number;
+  scoreError = false;
 
   constructor(private matchFacade: MatchFacade, private playerFacade: PlayerFacade) {}
 
@@ -47,17 +48,28 @@ export class AddMatchModalComponent implements OnInit {
     this.loserScore = score;
   }
 
+  isSubmittable(): boolean {
+    return (
+      this.winnerScore > this.loserScore &&
+      this.winner &&
+      this.loser &&
+      this.winner.id !== this.loser.id
+    );
+  }
+
   addMatch() {
-    const match: Match = {
-      id: uuidv4(),
-      winnerId: this.winner?.id,
-      winnerScore: this.winnerScore,
-      winnerStartElo: this.winner.elo,
-      loserId: this.loser?.id,
-      loserScore: this.loserScore,
-      loserStartElo: this.loser.elo,
-      date: new Date(),
-    };
-    this.closeModal.emit(match);
+    if (this.isSubmittable()) {
+      const match: Match = {
+        id: uuidv4(),
+        winnerId: this.winner?.id,
+        winnerScore: this.winnerScore,
+        winnerStartElo: this.winner.elo,
+        loserId: this.loser?.id,
+        loserScore: this.loserScore,
+        loserStartElo: this.loser.elo,
+        date: new Date(),
+      };
+      this.closeModal.emit(match);
+    }
   }
 }

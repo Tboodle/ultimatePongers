@@ -22,7 +22,8 @@
     "module": "es2020",
     "lib": ["es2020", "dom"],
     "strictPropertyInitialization": false,
-    "types": ["node", "lodash", "express", "zone.js"]
+    "types": ["node", "lodash", "express", "zone.js"],
+    "strictNullChecks": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
