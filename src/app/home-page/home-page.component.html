@@ -2,7 +2,7 @@
   *ngIf="(players$ | async)?.length && (matches$ | async)?.length; else noData"
   class="h-full sm:mx-16 xl:mx-8 my-8 grid grid-cols-1 xl:grid-cols-2 gap-16"
 >
-  <app-leaderboard [players]="players$ | async"> </app-leaderboard>
+  <app-leaderboard [players]="players$ | sortPlayersByElo | async"> </app-leaderboard>
   <app-recent-matches
     [matches]="matches$ | async"
     [players]="players$ | async"

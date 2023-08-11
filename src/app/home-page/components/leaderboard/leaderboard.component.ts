@@ -23,12 +23,16 @@ export class LeaderboardComponent {
   }
 
   goToPage(pageNumber: number): void {
-    const maxPage = this.players.length / this.pageSize - 1;
-    this.currentPage = pageNumber < 1 ? 1 : pageNumber > maxPage ? maxPage : pageNumber;
+    this.currentPage =
+      pageNumber < 1 ? 1 : pageNumber > this.getMaxPage() ? this.getMaxPage() : pageNumber;
   }
 
   filterPlayersForPage(players: Player[]): Player[] {
     const start = (this.currentPage - 1) * this.pageSize;
     return players.slice(start, start + this.pageSize);
+  }
+
+  getMaxPage(): number {
+    return Math.ceil(this.players.length / this.pageSize);
   }
 }

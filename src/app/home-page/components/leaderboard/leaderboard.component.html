@@ -17,10 +17,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let player of filterPlayersForPage(players | sortPlayersByElo); let i = index"
-            class="bg-white"
-          >
+          <tr *ngFor="let player of filterPlayersForPage(players); let i = index" class="bg-white">
             <th
               scope="row"
               class="sm:px-6 sm:py-4 font-medium whitespace-nowrap align-middle"
@@ -81,7 +78,7 @@
             </svg>
           </a>
           <a
-            *ngFor="let item of [].constructor(players.length / pageSize - 1); let i = index"
+            *ngFor="let item of [].constructor(getMaxPage()); let i = index"
             (click)="goToPage(i + 1)"
             [ngClass]="{
               'bg-bti-orange-800 text-white focus-visible:outline-bti-orange-800':
@@ -93,8 +90,8 @@
           <a
             (click)="goToPage(currentPage + 1)"
             [ngClass]="{
-              'cursor-not-allowed bg-gray-100': currentPage === players.length / pageSize - 1,
-              'hover:bg-gray-50': currentPage !== players.length / pageSize - 1
+              'cursor-not-allowed bg-gray-100': currentPage === getMaxPage(),
+              'hover:bg-gray-50': currentPage !== getMaxPage()
             }"
             class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 hover:cursor-pointer"
           >
