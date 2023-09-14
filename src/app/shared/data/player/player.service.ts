@@ -45,8 +45,10 @@ export class PlayerService {
     if (winner && loser && match.winnerEndElo && match.loserEndElo) {
       winner.elo = match.winnerEndElo;
       winner.wins += 1;
+      winner.decaying = false;
       loser.elo = match.loserEndElo;
       loser.losses += 1;
+      loser.decaying = false;
       this.updatePlayerDoc(winner);
       this.updatePlayerDoc(loser);
       return of([winner, loser]);

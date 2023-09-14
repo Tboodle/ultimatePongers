@@ -1,6 +1,6 @@
 <div
   *ngIf="player"
-  class="player-profile flex"
+  class="player-profile flex relative"
   [ngClass]="{ 'rounded-2xl overflow-hidden shadow-lg bg-white p-4 w-full': cardView }"
 >
   <img
@@ -8,8 +8,20 @@
     referrerpolicy="no-referrer"
     src="{{ player.photoUrl ?? '../../../assets/user_icon.png' }}"
     alt="Profile image"
-    [ngClass]="{ 'rounded-full': player.photoUrl }"
+    [ngClass]="{ 'rounded-full': player.photoUrl, 'brightness-50 opacity-50': player.decaying }"
+    data-tooltip-target="tooltip-default"
   />
+  <div
+    id="tooltip-default"
+    role="tooltip"
+    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+  >
+    Tooltip content
+    <div class="tooltip-arrow" data-popper-arrow></div>
+  </div>
+  <div *ngIf="player.decaying" class="zzz zzz-zzz">Z</div>
+  <div *ngIf="player.decaying" class="zzz zzz-zz">Z</div>
+  <div *ngIf="player.decaying" class="zzz zzz-z">Z</div>
   <div class="flex flex-col justify-center">
     <div
       class="text-lg sm:text-2xl mb-1 text-slate-600"

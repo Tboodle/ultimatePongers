@@ -1,0 +1,59 @@
+.zzz {
+  animation-name: zzz;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+  animation-direction: forwards;
+  color: #fe5607;
+  font-weight: bold;
+  position: absolute;
+  z-index: 100;
+  transform: translateY(100%);
+  font-family: 'Concert One', cursive;
+  top: 0;
+}
+
+.zzz-z {
+  animation-delay: 0s;
+  left: 3rem;
+}
+.zzz-zz {
+  animation-delay: 0.5s;
+  left: 3.25rem;
+}
+.zzz-zzz {
+  animation-delay: 1s;
+  left: 2.75rem;
+}
+
+/* *** All Animations *** */
+/*Darker Sky*/
+@-webkit-keyframes zzz {
+  0% {
+    color: rgba(160, 84, 246, 0);
+    font-size: 8px;
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+  }
+  100% {
+    color: #fe5607;
+    font-size: 16px;
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes zzz {
+  0% {
+    color: rgba(160, 84, 246, 0);
+    font-size: 8px;
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+  }
+  100% {
+    color: #fe5607;
+    font-size: 16px;
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+  }
+}
