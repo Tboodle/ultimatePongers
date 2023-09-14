@@ -7,12 +7,12 @@ import admin = require('firebase-admin');
 admin.initializeApp();
 
 export const scheduledDecay = onSchedule('every monday 00:00', async () => {
-  // Get all users -> Filter for those that havent played in over a month and whose elo > 400
+  // Get all users -> Filter for those that havent
+  // played in over 2 months and whose elo > 400
   const db = admin.firestore();
   (await db.collection('players').get()).docs
     .map((doc) => doc.data())
     .forEach(async (player) => {
-      //   const oldPlayer = { ...player };
       const mostRecentWinDocs = await (
         await db
           .collection('matches')
@@ -51,7 +51,7 @@ export const scheduledDecay = onSchedule('every monday 00:00', async () => {
       const weeksBetween = currentDate.diff(mostRecentMatchDate, 'week');
 
       if (player.elo > 400 && weeksBetween > 7) {
-        const decayedElo = player.elo - Math.pow(2, weeksBetween - 7);
+        const decayedElo = player.elo - Math.pow(weeksBetween - 7, 2);
         const newElo = decayedElo < 400 ? 400 : decayedElo;
         const newPlayer = {
           ...player,
