@@ -1,31 +1,31 @@
-import { onSchedule } from 'firebase-functions/v2/scheduler';
-import { logger } from 'firebase-functions';
-import * as moment from 'moment';
+import {onSchedule} from "firebase-functions/v2/scheduler";
+import {logger} from "firebase-functions";
+import * as moment from "moment";
 
 // The Firebase Admin SDK to delete inactive users.
-import admin = require('firebase-admin');
+import admin = require("firebase-admin");
 admin.initializeApp();
 
-export const scheduledDecay = onSchedule('every monday 00:00', async () => {
+export const scheduledDecay = onSchedule("every monday 00:00", async () => {
   // Get all users -> Filter for those that havent
   // played in over 2 months and whose elo > 400
   const db = admin.firestore();
-  (await db.collection('players').get()).docs
+  (await db.collection("players").get()).docs
     .map((doc) => doc.data())
     .forEach(async (player) => {
       const mostRecentWinDocs = await (
         await db
-          .collection('matches')
-          .where('winnerId', '==', player.id)
-          .orderBy('date', 'desc')
+          .collection("matches")
+          .where("winnerId", "==", player.id)
+          .orderBy("date", "desc")
           .limit(1)
           .get()
       ).docs;
       const mostRecentLossDocs = await (
         await db
-          .collection('matches')
-          .where('loserId', '==', player.id)
-          .orderBy('date', 'desc')
+          .collection("matches")
+          .where("loserId", "==", player.id)
+          .orderBy("date", "desc")
           .limit(1)
           .get()
       ).docs;
@@ -45,13 +45,15 @@ export const scheduledDecay = onSchedule('every monday 00:00', async () => {
       mostRecentLossDate = mostRecentLossDate ?? new Date(0);
 
       const mostRecentMatchDate = moment(
-        mostRecentWinDate >= mostRecentLossDate ? mostRecentWinDate : mostRecentLossDate,
+        mostRecentWinDate >= mostRecentLossDate ?
+          mostRecentWinDate : mostRecentLossDate,
       );
       const currentDate = moment(new Date());
-      const weeksBetween = currentDate.diff(mostRecentMatchDate, 'week');
+      const weeksBetween = currentDate.diff(mostRecentMatchDate, "week");
 
       if (player.elo > 400 && weeksBetween > 7) {
-        const decayedElo = player.elo - Math.pow(weeksBetween - 7, 2);
+        const decayedWeeks = weeksBetween - 7;
+        const decayedElo = player.elo - decayedWeeks * decayedWeeks;
         const newElo = decayedElo < 400 ? 400 : decayedElo;
         const newPlayer = {
           ...player,
@@ -60,16 +62,15 @@ export const scheduledDecay = onSchedule('every monday 00:00', async () => {
           decaying: true,
         };
         console.log(
-          `${
-            player.name
-          } has decayed to ${newElo} elo because they were inactive for ${weeksBetween} weeks. This was a drop of ${
-            player.elo - newElo
-          } elo`,
+          `${player.name} has decayed to ${newElo} elo because they were \
+          inactive for ${weeksBetween} weeks. \
+          This was a drop of ${player.elo - newElo} elo`,
         );
-        await db.collection('players').doc(player.id).set(newPlayer);
+        await db.collection("players").doc(player.id).set(newPlayer);
       }
     });
 
-  // For each of those, calculate new elo based off time since last game (decay 2^(weeksSinceLast - 3))
-  logger.log('Scheduled player decay finished');
+  // For each of those, calculate new elo based off
+  // time since last game (decay 2^(weeksSinceLast - 3))
+  logger.log("Scheduled player decay finished");
 });
