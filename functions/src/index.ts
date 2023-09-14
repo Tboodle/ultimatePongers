@@ -50,10 +50,15 @@ export const scheduledDecay = onSchedule('every monday 00:00', async () => {
       const currentDate = moment(new Date());
       const weeksBetween = currentDate.diff(mostRecentMatchDate, 'week');
 
-      if (player.elo > 400 && weeksBetween > 3) {
-        const decayedElo = player.elo - Math.pow(2, weeksBetween - 3);
+      if (player.elo > 400 && weeksBetween > 7) {
+        const decayedElo = player.elo - Math.pow(2, weeksBetween - 7);
         const newElo = decayedElo < 400 ? 400 : decayedElo;
-        const newPlayer = { ...player, elo: newElo, decayedFrom: player.elo, decaying: true };
+        const newPlayer = {
+          ...player,
+          elo: newElo,
+          decayedFrom: player.decayedFrom ? player.decayedFrom : player.elo,
+          decaying: true,
+        };
         console.log(
           `${
             player.name
@@ -61,7 +66,7 @@ export const scheduledDecay = onSchedule('every monday 00:00', async () => {
             player.elo - newElo
           } elo`,
         );
-        // await db.collection('players').doc(player.id).set(newPlayer);
+        await db.collection('players').doc(player.id).set(newPlayer);
       }
     });
 
