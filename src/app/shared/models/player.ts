@@ -12,4 +12,5 @@ export interface Player {
   victorySongStart?: number;
   hidden?: boolean;
   decaying?: boolean;
+  champion?: boolean;
 }
