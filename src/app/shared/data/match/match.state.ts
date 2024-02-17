@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { filter } from 'rxjs';
+import { filter, map } from 'rxjs';
 import { Match } from '../../models/match';
 import { UpdatePlayersForMatchAction } from '../player/player.actions';
 import {
@@ -34,7 +34,10 @@ export interface MatchStateModel {
 export class MatchState {
   ELO_CONST = 40;
 
-  constructor(private store: Store, private matchService: MatchService) {}
+  constructor(
+    private store: Store,
+    private matchService: MatchService,
+  ) {}
 
   @Selector()
   static getMatches(state: MatchStateModel) {
@@ -79,13 +82,23 @@ export class MatchState {
   @Action(AddMatchAction)
   addMatch(ctx: StateContext<MatchStateModel>, action: AddMatchAction) {
     const state = ctx.getState();
-    const updatedMatch = this.setMatchEndElos(action.match);
-    this.matchService.addMatch(updatedMatch).subscribe(() => {
-      this.store.dispatch(new UpdatePlayersForMatchAction(updatedMatch));
-      ctx.patchState({
-        recentMatches: [...state.recentMatches, updatedMatch],
+    const matchResult = this.setMatchEndElos(action.match);
+    const liveMatch = state.liveMatches.find(
+      (liveMatch: LiveMatch) =>
+        liveMatch.player1 == matchResult.winnerId ||
+        (matchResult.winnerStartElo && liveMatch.player2 === matchResult.winnerId) ||
+        matchResult.loserId,
+    );
+    this.matchService
+      .handleLiveMatchResult(liveMatch, matchResult)
+      .pipe(map(() => this.matchService.addMatch(matchResult)))
+      .subscribe(() => {
+        // console.log('match added!');
+        this.store.dispatch(new UpdatePlayersForMatchAction(matchResult));
+        ctx.patchState({
+          recentMatches: [...state.recentMatches, matchResult],
+        });
       });
-    });
   }
 
   @Action(AddLiveMatchAction)

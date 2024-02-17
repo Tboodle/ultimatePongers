@@ -31,7 +31,6 @@ export class MatchService {
       .valueChanges()
       .pipe(
         map((liveMatches: any[]) => {
-          console.log(liveMatches);
           return liveMatches.map((liveMatch) => {
             return { ...liveMatch, date: new Date(liveMatch.date?.seconds * 1000) };
           }) as LiveMatch[];
@@ -67,10 +66,15 @@ export class MatchService {
 
   public addMatch(match: Match): Observable<any> {
     return from(this.afs.collection('matches').add(match));
+    // return from([]);
+  }
+
+  public handleLiveMatchResult(liveMatch: LiveMatch, match: Match): Observable<any> {
+    return from(this.afs.collection('liveMatches').doc(liveMatch.id).delete());
   }
 
   public addLiveMatch(liveMatch: LiveMatch): Observable<any> {
-    return from(this.afs.collection('liveMatches').add(liveMatch));
+    return from(this.afs.collection('liveMatches').doc(liveMatch.id).set(liveMatch));
   }
 
   public watchForNewMatch(): Observable<Match> {
