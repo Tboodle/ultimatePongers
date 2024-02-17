@@ -12,6 +12,7 @@ import { PlayerFacade } from './shared/data/player/player.facade';
 import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/new-match-animation.component';
 import { AuthModalComponent } from './shared/modals/auth-modal/auth-modal.component';
 import { StartLiveMatchModalComponent } from './shared/modals/start-live-match-modal/add-match-modal/start-live-match-modal.component';
+import { LiveMatch } from './shared/models/liveMatch';
 
 @Component({
   selector: 'app-root',
@@ -100,9 +101,9 @@ export class AppComponent implements OnInit {
   displayLiveMatchModal() {
     this.startLiveMatchModal = this.vcr.createComponent(StartLiveMatchModalComponent);
     this.startLiveMatchModal.instance.isLiveMatch = true;
-    this.startLiveMatchModal.instance.closeModal.subscribe((match?: Match) => {
+    this.startLiveMatchModal.instance.closeModal.subscribe((match?: LiveMatch) => {
       if (match) {
-        this.matchFacade.addMatch(match);
+        this.matchFacade.addLiveMatch(match);
       }
       this.vcr.clear();
     });

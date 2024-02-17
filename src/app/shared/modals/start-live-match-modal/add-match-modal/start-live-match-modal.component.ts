@@ -1,8 +1,9 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 import { Player } from 'src/app/shared/models/player';
-import { MatchFacade } from 'src/app/shared/data/match/match.facade';
 import { PlayerFacade } from 'src/app/shared/data/player/player.facade';
+import { LiveMatch } from 'src/app/shared/models/liveMatch';
 
 @Component({
   selector: 'start-live-match-modal',
@@ -10,17 +11,14 @@ import { PlayerFacade } from 'src/app/shared/data/player/player.facade';
   styleUrls: ['./start-live-match-modal.component.scss'],
 })
 export class StartLiveMatchModalComponent implements OnInit {
-  @Output() closeModal = new EventEmitter<any>();
-  @Input() isLiveMatch = false;
+  @Output() closeModal = new EventEmitter<LiveMatch | null>();
+  isLiveMatch = false;
 
   players$: Observable<Player[]>;
   player1: Player;
   player2: Player;
 
-  constructor(
-    private matchFacade: MatchFacade,
-    private playerFacade: PlayerFacade,
-  ) {}
+  constructor(private playerFacade: PlayerFacade) {}
 
   ngOnInit(): void {
     this.players$ = this.playerFacade.players$;
@@ -44,8 +42,11 @@ export class StartLiveMatchModalComponent implements OnInit {
   }
 
   startLiveMatch() {
-    if (this.isStartable()) {
-      return;
-    }
+    this.closeModal.emit({
+      id: uuidv4(),
+      player1: this.player1.id,
+      player2: this.player2.id,
+      date: new Date(),
+    });
   }
 }

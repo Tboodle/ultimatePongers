@@ -6,12 +6,14 @@ import { Match } from '../../models/match';
 import { Player } from '../../models/player';
 import { UpdatePlayersForMatchAction } from '../player/player.actions';
 import {
+  AddLiveMatchAction,
   AddMatchAction,
   FetchMachesForPlayerIdAction,
   FetchMatchesAction,
   WatchForNewMatchAction,
 } from './match.actions';
 import { MatchState } from './match.state';
+import { LiveMatch } from '../../models/liveMatch';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +42,10 @@ export class MatchFacade {
   addMatch(match: Match): void {
     this.store.dispatch(new UpdatePlayersForMatchAction(match));
     this.store.dispatch(new AddMatchAction(match));
+  }
+
+  addLiveMatch(liveMatch: LiveMatch): void {
+    this.store.dispatch(new AddLiveMatchAction(liveMatch));
   }
 
   startNewMatchAnimation(match: Match, winner: Player, loser: Player, viewRef: ViewContainerRef) {

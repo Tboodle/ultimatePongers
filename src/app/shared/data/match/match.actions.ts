@@ -1,3 +1,4 @@
+import { LiveMatch } from '../../models/liveMatch';
 import { Match } from '../../models/match';
 
 export class FetchMatchesAction {
@@ -12,6 +13,11 @@ export class FetchMachesForPlayerIdAction {
 export class AddMatchAction {
   static readonly type = '[Match] Add Match';
   constructor(public match: Match) {}
+}
+
+export class AddLiveMatchAction {
+  static readonly type = '[Match] Add Live Match';
+  constructor(public liveMatch: LiveMatch) {}
 }
 
 export class WatchForNewMatchAction {

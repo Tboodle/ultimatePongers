@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { pipe } from 'gsap';
 import { filter } from 'rxjs';
 import { Match } from '../../models/match';
 import { UpdatePlayersForMatchAction } from '../player/player.actions';
 import {
+  AddLiveMatchAction,
   AddMatchAction,
   FetchMachesForPlayerIdAction,
   FetchMatchesAction,
   WatchForNewMatchAction,
 } from './match.actions';
 import { MatchService } from './match.service';
+import { LiveMatch } from '../../models/liveMatch';
 
 export interface MatchStateModel {
   recentMatches: Match[];
   matchesByPlayerId: { [key: string]: any };
   newMatch?: Match;
+  liveMatches?: LiveMatch[];
 }
 
 @State<MatchStateModel>({
@@ -65,6 +67,17 @@ export class MatchState {
       this.store.dispatch(new UpdatePlayersForMatchAction(updatedMatch));
       ctx.patchState({
         recentMatches: [...state.recentMatches, updatedMatch],
+      });
+    });
+  }
+
+  @Action(AddLiveMatchAction)
+  addLiveMatch(ctx: StateContext<MatchStateModel>, action: AddLiveMatchAction) {
+    const state = ctx.getState();
+    const liveMatch = action.liveMatch;
+    this.matchService.addLiveMatch(liveMatch).subscribe(() => {
+      ctx.patchState({
+        liveMatches: [...state.liveMatches, liveMatch],
       });
     });
   }

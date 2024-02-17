@@ -3,6 +3,7 @@ import { forkJoin, from, map, Observable } from 'rxjs';
 import { Match } from '../../models/match';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { LiveMatch } from '../../models/liveMatch';
 
 @Injectable({
   providedIn: 'root',
@@ -52,6 +53,10 @@ export class MatchService {
 
   public addMatch(match: Match): Observable<any> {
     return from(this.afs.collection('matches').add(match));
+  }
+
+  public addLiveMatch(liveMatch: LiveMatch): Observable<any> {
+    return from(this.afs.collection('liveMatches').add(liveMatch));
   }
 
   public watchForNewMatch(): Observable<Match> {

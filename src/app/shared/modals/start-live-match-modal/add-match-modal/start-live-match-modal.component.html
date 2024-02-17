@@ -35,10 +35,9 @@
             <h3 class="text-lg leading-6 font-medium text-slate-800 mb-4" id="modal-title">
               Start Live Match
             </h3>
-            <div class="flex space-x-8">
-              <div class="w-full">
+            <div class="flex flex-col w-full">
                 <player-dropdown
-                  class="mb-3"
+                  class="mb-3 w-full"
                   [players]="players$ | async"
                   [fieldTitle]="'Player 1'"
                   [selectedPlayer]="player1"
@@ -46,13 +45,13 @@
                   (selectionEmitter)="setPlayer1($event)"
                 ></player-dropdown>
                 <player-dropdown
+                class="w-full"
                   [players]="players$ | async"
                   [fieldTitle]="'Player 2'"
                   [selectedPlayer]="player2"
                   [scoreEnabled]="false"
                   (selectionEmitter)="setPlayer2($event)"
                 ></player-dropdown>
-              </div>
             </div>
           </div>
         </div>
