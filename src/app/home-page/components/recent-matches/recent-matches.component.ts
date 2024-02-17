@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faArrowRightRotate } from '@fortawesome/free-solid-svg-icons';
+import { LiveMatch } from 'src/app/shared/models/liveMatch';
 import { Match } from 'src/app/shared/models/match';
 import { Player } from 'src/app/shared/models/player';
 
@@ -10,6 +11,7 @@ import { Player } from 'src/app/shared/models/player';
 })
 export class RecentMatchesComponent {
   @Input() matches: Match[];
+  @Input() liveMatches: LiveMatch[];
   @Input() players: Player[];
   @Output() playAnimationForMatchEmitter = new EventEmitter<Match>();
 
@@ -26,6 +28,20 @@ export class RecentMatchesComponent {
         : this.getPlayer(match.loserId);
     }
     return this.getPlayer(match.winnerId);
+  }
+
+  getLeftPlayerForLiveMatch(liveMatch: LiveMatch): Player {
+    const player1 = this.getPlayer(liveMatch.player1);
+    const player2 = this.getPlayer(liveMatch.player2);
+
+    return player1.elo > player2.elo ? player1 : player2;
+  }
+
+  getRightPlayerForLiveMatch(liveMatch: LiveMatch): Player {
+    const player1 = this.getPlayer(liveMatch.player1);
+    const player2 = this.getPlayer(liveMatch.player2);
+
+    return player1.elo > player2.elo ? player2 : player1;
   }
 
   getRightPlayer(match: Match): Player {
@@ -53,5 +69,9 @@ export class RecentMatchesComponent {
 
   replayAnimationForMatch(match: Match): void {
     this.playAnimationForMatchEmitter.emit(match);
+  }
+
+  routeToWatch(): void {
+    window.location.href = 'http://192.168.1.25:8082';
   }
 }

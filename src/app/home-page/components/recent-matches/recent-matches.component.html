@@ -5,13 +5,41 @@
     <!-- text information -->
     <div class="p-4">
       <h1 class="text-3xl font-medium text-slate-800 pb-8 px-6">Recent Matches</h1>
-      <div *ngIf="matches?.length; else noMatches">
+      <div *ngIf="matches?.length || liveMatches?.length; else noMatches">
+        <div
+          *ngFor="let match of liveMatches; let i = index"
+          class="text-sm tracking-tight font-light text-slate-400 leading-6 flex flex-row px-6 mb-3"
+        >
+          <div class="text-slate-400 w-1/4 grid grid-rows-3">
+            <a class="row-span-1 cursor-pointer hover:underline" (click)="routeToWatch()"
+              >Playing now!</a
+            >
+          </div>
+          <div class="grid grid-cols-3 text-center w-3/4">
+            <match-player-display
+              [player]="getLeftPlayerForLiveMatch(match)"
+            ></match-player-display>
+            <div class="grid grid-cols-3">
+              <div class="text-xl">
+                <img class="m-auto" src="../../../../assets/loading_paddle_v2.gif" />
+              </div>
+              <div>-</div>
+              <img class="m-auto" src="../../../../assets/loading_paddle_v2.gif" />
+            </div>
+            <match-player-display
+              [player]="getRightPlayerForLiveMatch(match)"
+            ></match-player-display>
+          </div>
+        </div>
         <div
           *ngFor="let match of matches; let i = index"
           class="text-sm tracking-tight font-light text-slate-400 leading-6 flex flex-row px-6 mb-3"
         >
           <div class="text-slate-400 w-1/4 grid grid-rows-3">
-            <div class="row-span-1" (click)="replayAnimationForMatch(match)">
+            <div
+              class="row-span-1 cursor-pointer hover:underline"
+              (click)="replayAnimationForMatch(match)"
+            >
               {{ match.date | formatDate }}
             </div>
           </div>

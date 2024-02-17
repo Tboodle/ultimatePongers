@@ -13,6 +13,7 @@ import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/
 import { AuthModalComponent } from './shared/modals/auth-modal/auth-modal.component';
 import { StartLiveMatchModalComponent } from './shared/modals/start-live-match-modal/add-match-modal/start-live-match-modal.component';
 import { LiveMatch } from './shared/models/liveMatch';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,8 @@ export class AppComponent implements OnInit {
   profileDropdownOpen = false;
   appViewRef: ViewContainerRef;
   newMatchAnimation: ComponentRef<NewMatchAnimationComponent>;
+  liveMatches$: Observable<LiveMatch[]>;
+  faEye = faEye;
 
   constructor(
     private router: Router,
@@ -39,6 +42,7 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
   ) {
     this.appViewRef = vcr;
+    this.liveMatches$ = matchFacade.liveMatches$;
   }
 
   async ngOnInit() {
