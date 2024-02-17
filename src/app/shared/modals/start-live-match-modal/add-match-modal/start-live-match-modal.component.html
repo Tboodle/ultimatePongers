@@ -42,6 +42,7 @@
                   [fieldTitle]="'Player 1'"
                   [selectedPlayer]="player1"
                   [scoreEnabled]="false"
+                  [errorMessage]="getErrorMessageForPlayer(player1)"
                   (selectionEmitter)="setPlayer1($event)"
                 ></player-dropdown>
                 <player-dropdown
@@ -50,6 +51,7 @@
                   [fieldTitle]="'Player 2'"
                   [selectedPlayer]="player2"
                   [scoreEnabled]="false"
+                  [errorMessage]="getErrorMessageForPlayer(player2)"
                   (selectionEmitter)="setPlayer2($event)"
                 ></player-dropdown>
             </div>

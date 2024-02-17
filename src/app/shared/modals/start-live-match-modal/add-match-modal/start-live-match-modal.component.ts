@@ -1,5 +1,5 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, EventEmitter, HostListener, OnDestroy, OnInit, Output } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from 'src/app/shared/models/player';
 import { PlayerFacade } from 'src/app/shared/data/player/player.facade';
@@ -10,18 +10,24 @@ import { LiveMatch } from 'src/app/shared/models/liveMatch';
   templateUrl: './start-live-match-modal.component.html',
   styleUrls: ['./start-live-match-modal.component.scss'],
 })
-export class StartLiveMatchModalComponent implements OnInit {
+export class StartLiveMatchModalComponent implements OnInit, OnDestroy {
   @Output() closeModal = new EventEmitter<LiveMatch | null>();
-  isLiveMatch = false;
 
   players$: Observable<Player[]>;
+  liveMatches$: Observable<LiveMatch[]>;
+  liveMatches: LiveMatch[];
   player1: Player;
   player2: Player;
-
-  constructor(private playerFacade: PlayerFacade) {}
+  subscription: Subscription;
 
   ngOnInit(): void {
-    this.players$ = this.playerFacade.players$;
+    this.subscription = this.liveMatches$.subscribe((liveMatches) => {
+      this.liveMatches = liveMatches;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   @HostListener('document:keydown.escape', ['$event'])
@@ -38,7 +44,20 @@ export class StartLiveMatchModalComponent implements OnInit {
   }
 
   isStartable(): boolean {
-    return !!this.player1 && !!this.player2;
+    return !this.playerAlreadyPlaying(this.player1) && !this.playerAlreadyPlaying(this.player2);
+  }
+
+  playerAlreadyPlaying(player: Player): boolean {
+    return (
+      !!player &&
+      this.liveMatches
+        .flatMap((liveMatch) => [liveMatch.player1, liveMatch.player2])
+        .includes(player?.id || null)
+    );
+  }
+
+  getErrorMessageForPlayer(player: Player): string {
+    return this.playerAlreadyPlaying(player) ? `${player.name} is already playing` : '';
   }
 
   startLiveMatch() {

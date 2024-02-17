@@ -122,6 +122,9 @@
         </li>
       </ul>
     </div>
+    <div *ngIf="errorMessage" class="text-red-600 text-sm mt-1">
+      {{ errorMessage }}
+    </div>
   </div>
   <div *ngIf="scoreEnabled" class="w-1/6">
     <label id="listbox-label" class="block text-sm font-medium text-gray-700"> Score </label>

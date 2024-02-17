@@ -5,6 +5,10 @@ export class FetchMatchesAction {
   static readonly type = '[Match] Fetch Matches';
 }
 
+export class FetchLiveMatchesAction {
+  static readonly type = '[Match] Fetch Live Matches';
+}
+
 export class FetchMachesForPlayerIdAction {
   static readonly type = '[Match] Fetch Matches for Player Id';
   constructor(public id: string) {}

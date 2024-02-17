@@ -25,6 +25,20 @@ export class MatchService {
       );
   }
 
+  public getLiveMatches(): Observable<LiveMatch[]> {
+    return this.afs
+      .collection('liveMatches', (ref) => ref.orderBy('date', 'desc').limit(10))
+      .valueChanges()
+      .pipe(
+        map((liveMatches: any[]) => {
+          console.log(liveMatches);
+          return liveMatches.map((liveMatch) => {
+            return { ...liveMatch, date: new Date(liveMatch.date?.seconds * 1000) };
+          }) as LiveMatch[];
+        }),
+      );
+  }
+
   public getMatchesForId(id: string): Observable<Match[]> {
     const wins$: Observable<Match[]> = this.afs
       .collection('matches', (ref) => ref.where('winnerId', '==', id))

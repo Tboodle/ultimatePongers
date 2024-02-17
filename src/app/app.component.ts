@@ -48,6 +48,7 @@ export class AppComponent implements OnInit {
           if (user) {
             this.closeAuthModal();
             this.matchFacade.fetchMatches();
+            this.matchFacade.fetchLiveMatches();
             this.playerFacade.fetchPlayers();
           } else {
             this.displayAuthModal();
@@ -100,7 +101,8 @@ export class AppComponent implements OnInit {
 
   displayLiveMatchModal() {
     this.startLiveMatchModal = this.vcr.createComponent(StartLiveMatchModalComponent);
-    this.startLiveMatchModal.instance.isLiveMatch = true;
+    this.startLiveMatchModal.instance.players$ = this.playerFacade.players$;
+    this.startLiveMatchModal.instance.liveMatches$ = this.matchFacade.liveMatches$;
     this.startLiveMatchModal.instance.closeModal.subscribe((match?: LiveMatch) => {
       if (match) {
         this.matchFacade.addLiveMatch(match);

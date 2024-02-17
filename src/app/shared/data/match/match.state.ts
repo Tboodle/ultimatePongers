@@ -6,6 +6,7 @@ import { UpdatePlayersForMatchAction } from '../player/player.actions';
 import {
   AddLiveMatchAction,
   AddMatchAction,
+  FetchLiveMatchesAction,
   FetchMachesForPlayerIdAction,
   FetchMatchesAction,
   WatchForNewMatchAction,
@@ -24,6 +25,7 @@ export interface MatchStateModel {
   name: 'match',
   defaults: {
     recentMatches: [],
+    liveMatches: [],
     matchesByPlayerId: {},
     newMatch: undefined,
   },
@@ -49,12 +51,27 @@ export class MatchState {
     return state.newMatch;
   }
 
+  @Selector()
+  static getLiveMatches(state: MatchStateModel) {
+    return state.liveMatches;
+  }
+
   @Action(FetchMatchesAction)
   fetchMatches(ctx: StateContext<MatchStateModel>) {
     const state = ctx.getState();
     this.matchService.getMatches().subscribe((matches: Match[]) => {
       ctx.patchState({
         recentMatches: matches.concat(state.recentMatches),
+      });
+    });
+  }
+
+  @Action(FetchLiveMatchesAction)
+  fetchLiveMatches(ctx: StateContext<MatchStateModel>) {
+    const state = ctx.getState();
+    this.matchService.getLiveMatches().subscribe((liveMatches: LiveMatch[]) => {
+      ctx.patchState({
+        liveMatches: liveMatches.concat(state.liveMatches),
       });
     });
   }

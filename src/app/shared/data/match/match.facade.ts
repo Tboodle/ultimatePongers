@@ -8,6 +8,7 @@ import { UpdatePlayersForMatchAction } from '../player/player.actions';
 import {
   AddLiveMatchAction,
   AddMatchAction,
+  FetchLiveMatchesAction,
   FetchMachesForPlayerIdAction,
   FetchMatchesAction,
   WatchForNewMatchAction,
@@ -26,6 +27,7 @@ export class MatchFacade {
     [id: string]: Match[];
   }>;
   @Select(MatchState.getNewMatch) newMatch$: Observable<Match>;
+  @Select(MatchState.getLiveMatches) liveMatches$: Observable<LiveMatch[]>;
 
   constructor(private store: Store) {
     this.store.dispatch(new WatchForNewMatchAction());
@@ -33,6 +35,10 @@ export class MatchFacade {
 
   fetchMatches(): Observable<any> {
     return this.store.dispatch(new FetchMatchesAction());
+  }
+
+  fetchLiveMatches(): Observable<any> {
+    return this.store.dispatch(new FetchLiveMatchesAction());
   }
 
   fetchMatchesForId(id: string): Observable<any> {
