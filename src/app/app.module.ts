@@ -41,6 +41,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { NgxsModule } from '@ngxs/store';
 import { MatchState } from './shared/data/match/match.state';
 import { PlayerState } from './shared/data/player/player.state';
+import { StartLiveMatchModalComponent } from './shared/modals/start-live-match-modal/add-match-modal/start-live-match-modal.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { PlayerState } from './shared/data/player/player.state';
     FormatDatePipe,
     SortPlayersByEloPipe,
     AddMatchModalComponent,
+    StartLiveMatchModalComponent,
     PlayerDropdownComponent,
     RegisterModalComponent,
     NewMatchAnimationComponent,

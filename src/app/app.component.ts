@@ -11,6 +11,7 @@ import { MatchFacade } from './shared/data/match/match.facade';
 import { PlayerFacade } from './shared/data/player/player.facade';
 import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/new-match-animation.component';
 import { AuthModalComponent } from './shared/modals/auth-modal/auth-modal.component';
+import { StartLiveMatchModalComponent } from './shared/modals/start-live-match-modal/add-match-modal/start-live-match-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
   playerId: string;
   currentUser: User;
   addMatchModal: ComponentRef<AddMatchModalComponent>;
+  startLiveMatchModal: ComponentRef<StartLiveMatchModalComponent>;
   registerModal: ComponentRef<RegisterModalComponent>;
   authModal: ComponentRef<AuthModalComponent>;
   profileDropdownOpen = false;
@@ -88,6 +90,17 @@ export class AppComponent implements OnInit {
   displayAddMatchModal() {
     this.addMatchModal = this.vcr.createComponent(AddMatchModalComponent);
     this.addMatchModal.instance.closeModal.subscribe((match?: Match) => {
+      if (match) {
+        this.matchFacade.addMatch(match);
+      }
+      this.vcr.clear();
+    });
+  }
+
+  displayLiveMatchModal() {
+    this.startLiveMatchModal = this.vcr.createComponent(StartLiveMatchModalComponent);
+    this.startLiveMatchModal.instance.isLiveMatch = true;
+    this.startLiveMatchModal.instance.closeModal.subscribe((match?: Match) => {
       if (match) {
         this.matchFacade.addMatch(match);
       }
