@@ -1,0 +1,10 @@
+<div *ngIf="player" class="grid h-full">
+  <div class="text-slate-600 text-xl">
+    {{ player?.name }}
+  </div>
+  <div *ngIf="player?.nickName" class="text-slate-400 text-l">
+    "{{
+      player?.nickName.length > 50 ? (player?.nickName | slice: 0:50) + '...' : player?.nickName
+    }}"
+  </div>
+</div>

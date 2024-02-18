@@ -7,6 +7,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { LeaderboardComponent } from './home-page/components/leaderboard/leaderboard.component';
 import { RecentMatchesComponent } from './home-page/components/recent-matches/recent-matches.component';
 import { MatchPlayerDisplayComponent } from './home-page/components/match-player-display/match-player-display.component';
+import { LivePlayerDisplayComponent } from './home-page/components/live-player-display/live-player-display.component';
 import { FormatDatePipe } from './shared/pipes/format-date.pipe';
 import { AddMatchModalComponent } from './shared/modals/add-match-modal/add-match-modal/add-match-modal.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -50,6 +51,7 @@ import { StartLiveMatchModalComponent } from './shared/modals/start-live-match-m
     LeaderboardComponent,
     RecentMatchesComponent,
     MatchPlayerDisplayComponent,
+    LivePlayerDisplayComponent,
     FormatDatePipe,
     SortPlayersByEloPipe,
     AddMatchModalComponent,
