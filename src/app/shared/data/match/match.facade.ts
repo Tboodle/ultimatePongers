@@ -8,6 +8,7 @@ import { UpdatePlayersForMatchAction } from '../player/player.actions';
 import {
   AddLiveMatchAction,
   AddMatchAction,
+  CancelLiveMatchAction,
   FetchLiveMatchesAction,
   FetchMachesForPlayerIdAction,
   FetchMatchesAction,
@@ -52,6 +53,10 @@ export class MatchFacade {
 
   addLiveMatch(liveMatch: LiveMatch): void {
     this.store.dispatch(new AddLiveMatchAction(liveMatch));
+  }
+
+  cancelLiveMatch(id: string): void {
+    this.store.dispatch(new CancelLiveMatchAction(id))
   }
 
   startNewMatchAnimation(match: Match, winner: Player, loser: Player, viewRef: ViewContainerRef) {

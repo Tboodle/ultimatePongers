@@ -77,6 +77,10 @@ export class MatchService {
     return from(this.afs.collection('liveMatches').doc(liveMatch.id).set(liveMatch));
   }
 
+  public cancelLiveMatch(id: string): Observable<any> {
+    return from(this.afs.collection('liveMatches').doc(id).delete());
+  }
+
   public watchForNewMatch(): Observable<Match> {
     return this.afs
       .collection('matches', (ref) => ref.orderBy('date', 'desc').limit(10))

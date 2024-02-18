@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { faCrown } from '@fortawesome/free-solid-svg-icons';
 import { Player } from 'src/app/shared/models/player';
 
 @Component({
@@ -8,4 +9,5 @@ import { Player } from 'src/app/shared/models/player';
 })
 export class LivePlayerDisplayComponent {
   @Input() player: Player;
+  faCrown = faCrown;
 }

@@ -1,15 +1,28 @@
 <div class="relative flex flex-col justify-center">
-  <div class="flex flex-col justify-center bg-white rounded-2xl shadow-xl shadow-slate-300/60 mb-4">
+  <div
+    *ngIf="liveMatches?.length > 0"
+    class="flex flex-col justify-center bg-white rounded-2xl shadow-xl shadow-slate-300/60 mb-4"
+  >
     <div class="p-4">
-      <h1 class="text-3xl font-medium text-slate-800 pb-8 px-6">Live Matches</h1>
-      <div *ngIf="liveMatches?.length; else noMatches">
+      <div class="flex h-min pb-8 px-6 justify-between">
+        <h1 class="text-3xl font-medium text-slate-800">Live Matches</h1>
+        <button
+          *ngIf="playerIsActive()"
+          class="bg-bti-orange-800 hover:bg-bti-orange-600 text-white font-semibold rounded shadow px-2 ml-2"
+          (click)="cancelUserMatch()"
+        >
+          Cancel my match
+        </button>
+      </div>
+      <div>
         <div
           *ngFor="let match of liveMatches; let i = index"
-          class="text-sm tracking-tight font-light text-slate-400 leading-6 flex flex-row px-6 mb-3"
+          class="text-sm tracking-tight font-light text-slate-400 leading-6 flex grid-cols-3 flex-row px-6 mb-3 grid justify-center items-center"
         >
-          <match-player-display [player]="getLeftPlayerForLiveMatch(match)"></match-player-display>
-          <match-player-display [player]="getRightPlayerForLiveMatch(match)"></match-player-display>
-x        </div>
+          <live-player-display [player]="getLeftPlayerForLiveMatch(match)"></live-player-display>
+          <span class="text-center text-3xl">VS</span>
+          <live-player-display [player]="getRightPlayerForLiveMatch(match)"></live-player-display>
+        </div>
       </div>
     </div>
   </div>
@@ -18,7 +31,7 @@ x        </div>
     <!-- text information -->
     <div class="p-4">
       <h1 class="text-3xl font-medium text-slate-800 pb-8 px-6">Recent Matches</h1>
-      <div *ngIf="liveMatches?.length; else noMatches">
+      <div *ngIf="matches?.length; else noMatches">
         <div
           *ngFor="let match of matches; let i = index"
           class="text-sm tracking-tight font-light text-slate-400 leading-6 flex flex-row px-6 mb-3"

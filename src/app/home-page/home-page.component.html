@@ -4,6 +4,7 @@
 >
   <app-leaderboard [players]="players$ | sortPlayersByElo | async"> </app-leaderboard>
   <app-recent-matches
+    [currentPlayer]="currentPlayer$ | async"
     [matches]="matches$ | async"
     [players]="players$ | async"
     [liveMatches]="liveMatches$ | async"

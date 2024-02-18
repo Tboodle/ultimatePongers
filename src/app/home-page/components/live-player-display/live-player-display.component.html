@@ -1,10 +1,25 @@
-<div *ngIf="player" class="grid h-full">
-  <div class="text-slate-600 text-xl">
-    {{ player?.name }}
-  </div>
-  <div *ngIf="player?.nickName" class="text-slate-400 text-l">
-    "{{
-      player?.nickName.length > 50 ? (player?.nickName | slice: 0:50) + '...' : player?.nickName
-    }}"
+<div
+  *ngIf="player"
+  class="player-profile flex relative items-center justify-center"
+>
+  <fa-icon *ngIf="player.champion" [icon]="faCrown" class="text-2xl text-yellow-600 absolute top-[-1.25rem] left-5"></fa-icon>
+  <img
+    class="inline w-8 h-8 sm:w-16 sm:h-16 mr-2"
+    referrerpolicy="no-referrer"
+    src="{{ player.photoUrl ?? '../../../assets/user_icon.png' }}"
+    alt="Profile image"
+    [ngClass]="{ 'rounded-full': player.photoUrl, 'brightness-50 opacity-50': player.decaying }"
+  />
+  <div class="flex flex-col justify-center">
+    <div
+      class="text-lg sm:text-2xl mb-1 text-slate-600 relative"
+    >
+      {{ player.name }}
+    </div>
+    <div *ngIf="player.nickName" class="text-base text-slate-400">
+      "{{
+        player?.nickName.length > 50 ? (player?.nickName | slice: 0:50) + '...' : player?.nickName
+      }}"
+    </div>
   </div>
 </div>

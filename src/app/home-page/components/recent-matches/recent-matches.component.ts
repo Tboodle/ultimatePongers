@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { faArrowRightRotate } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightRotate, faClose } from '@fortawesome/free-solid-svg-icons';
+import { MatchFacade } from 'src/app/shared/data/match/match.facade';
+import { PlayerFacade } from 'src/app/shared/data/player/player.facade';
 import { LiveMatch } from 'src/app/shared/models/liveMatch';
 import { Match } from 'src/app/shared/models/match';
 import { Player } from 'src/app/shared/models/player';
@@ -13,9 +15,34 @@ export class RecentMatchesComponent {
   @Input() matches: Match[];
   @Input() liveMatches: LiveMatch[];
   @Input() players: Player[];
+  @Input() currentPlayer: Player;
   @Output() playAnimationForMatchEmitter = new EventEmitter<Match>();
 
+  constructor(private matchFacade: MatchFacade) {}
+
   faArrowRightRotate = faArrowRightRotate;
+  faClose = faClose;
+
+  playerIsActive(): boolean {
+    return this.liveMatches
+      .flatMap((liveMatch) => [liveMatch.player1, liveMatch.player2])
+      .includes(this.currentPlayer.id);
+  }
+
+  cancelUserMatch(): void {
+    const matchId = this.liveMatches.find(
+      (match) => match.player1 === this.currentPlayer.id || match.player2 === this.currentPlayer.id,
+    ).id;
+
+    if (matchId) {
+      this.matchFacade.cancelLiveMatch(
+        this.liveMatches.find(
+          (match) =>
+            match.player1 === this.currentPlayer.id || match.player2 === this.currentPlayer.id,
+        ).id,
+      );
+    }
+  }
 
   getPlayer(id: string): Player {
     return this.players?.find((player) => player.id === id)!;

@@ -6,6 +6,7 @@ import { UpdatePlayersForMatchAction } from '../player/player.actions';
 import {
   AddLiveMatchAction,
   AddMatchAction,
+  CancelLiveMatchAction,
   FetchLiveMatchesAction,
   FetchMachesForPlayerIdAction,
   FetchMatchesAction,
@@ -112,6 +113,16 @@ export class MatchState {
     });
   }
 
+  @Action(CancelLiveMatchAction)
+  cancelLiveMatch(ctx: StateContext<MatchStateModel>, action: CancelLiveMatchAction) {
+    const state = ctx.getState();
+    this.matchService.cancelLiveMatch(action.id).subscribe(() => {
+      ctx.patchState({
+        liveMatches: state.liveMatches.filter((match) => match.id !== action.id),
+      });
+    });
+  }
+  
   @Action(FetchMachesForPlayerIdAction)
   fetchMachesForPlayerId(ctx: StateContext<MatchStateModel>, action: FetchMachesForPlayerIdAction) {
     const state = ctx.getState();

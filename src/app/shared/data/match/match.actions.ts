@@ -23,6 +23,10 @@ export class AddLiveMatchAction {
   static readonly type = '[Match] Add Live Match';
   constructor(public liveMatch: LiveMatch) {}
 }
+export class CancelLiveMatchAction {
+  static readonly type = '[Match] Cancel Live Match';
+  constructor(public id: string) {}
+}
 
 export class WatchForNewMatchAction {
   static readonly type = '[Match] Watch For New Match';
