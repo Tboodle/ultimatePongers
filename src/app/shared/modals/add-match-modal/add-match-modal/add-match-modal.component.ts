@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Match } from '../../../models/match';
@@ -21,7 +21,10 @@ export class AddMatchModalComponent implements OnInit {
   loserScore: number;
   scoreError = false;
 
-  constructor(private matchFacade: MatchFacade, private playerFacade: PlayerFacade) {}
+  constructor(
+    private matchFacade: MatchFacade,
+    private playerFacade: PlayerFacade,
+  ) {}
 
   ngOnInit(): void {
     this.players$ = this.playerFacade.players$;

@@ -1,27 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { pipe } from 'gsap';
-import { filter } from 'rxjs';
+import { filter, map } from 'rxjs';
 import { Match } from '../../models/match';
 import { UpdatePlayersForMatchAction } from '../player/player.actions';
 import {
+  AddLiveMatchAction,
   AddMatchAction,
+  CancelLiveMatchAction,
+  FetchLiveMatchesAction,
   FetchMachesForPlayerIdAction,
   FetchMatchesAction,
   WatchForNewMatchAction,
 } from './match.actions';
 import { MatchService } from './match.service';
+import { LiveMatch } from '../../models/liveMatch';
 
 export interface MatchStateModel {
   recentMatches: Match[];
   matchesByPlayerId: { [key: string]: any };
   newMatch?: Match;
+  liveMatches?: LiveMatch[];
 }
 
 @State<MatchStateModel>({
   name: 'match',
   defaults: {
     recentMatches: [],
+    liveMatches: [],
     matchesByPlayerId: {},
     newMatch: undefined,
   },
@@ -30,7 +35,10 @@ export interface MatchStateModel {
 export class MatchState {
   ELO_CONST = 40;
 
-  constructor(private store: Store, private matchService: MatchService) {}
+  constructor(
+    private store: Store,
+    private matchService: MatchService,
+  ) {}
 
   @Selector()
   static getMatches(state: MatchStateModel) {
@@ -47,6 +55,11 @@ export class MatchState {
     return state.newMatch;
   }
 
+  @Selector()
+  static getLiveMatches(state: MatchStateModel) {
+    return state.liveMatches;
+  }
+
   @Action(FetchMatchesAction)
   fetchMatches(ctx: StateContext<MatchStateModel>) {
     const state = ctx.getState();
@@ -57,18 +70,59 @@ export class MatchState {
     });
   }
 
-  @Action(AddMatchAction)
-  addMatch(ctx: StateContext<MatchStateModel>, action: AddMatchAction) {
+  @Action(FetchLiveMatchesAction)
+  fetchLiveMatches(ctx: StateContext<MatchStateModel>) {
     const state = ctx.getState();
-    const updatedMatch = this.setMatchEndElos(action.match);
-    this.matchService.addMatch(updatedMatch).subscribe(() => {
-      this.store.dispatch(new UpdatePlayersForMatchAction(updatedMatch));
+    this.matchService.getLiveMatches().subscribe((liveMatches: LiveMatch[]) => {
       ctx.patchState({
-        recentMatches: [...state.recentMatches, updatedMatch],
+        liveMatches: liveMatches.concat(state.liveMatches),
       });
     });
   }
 
+  @Action(AddMatchAction)
+  addMatch(ctx: StateContext<MatchStateModel>, action: AddMatchAction) {
+    const state = ctx.getState();
+    const matchResult = this.setMatchEndElos(action.match);
+    const liveMatch = state.liveMatches.find(
+      (liveMatch: LiveMatch) =>
+        liveMatch.player1 == matchResult.winnerId ||
+        (matchResult.winnerStartElo && liveMatch.player2 === matchResult.winnerId) ||
+        matchResult.loserId,
+    );
+    this.matchService
+      .handleLiveMatchResult(liveMatch, matchResult)
+      .pipe(map(() => this.matchService.addMatch(matchResult)))
+      .subscribe(() => {
+        // console.log('match added!');
+        this.store.dispatch(new UpdatePlayersForMatchAction(matchResult));
+        ctx.patchState({
+          recentMatches: [...state.recentMatches, matchResult],
+        });
+      });
+  }
+
+  @Action(AddLiveMatchAction)
+  addLiveMatch(ctx: StateContext<MatchStateModel>, action: AddLiveMatchAction) {
+    const state = ctx.getState();
+    const liveMatch = action.liveMatch;
+    this.matchService.addLiveMatch(liveMatch).subscribe(() => {
+      ctx.patchState({
+        liveMatches: [...state.liveMatches, liveMatch],
+      });
+    });
+  }
+
+  @Action(CancelLiveMatchAction)
+  cancelLiveMatch(ctx: StateContext<MatchStateModel>, action: CancelLiveMatchAction) {
+    const state = ctx.getState();
+    this.matchService.cancelLiveMatch(action.id).subscribe(() => {
+      ctx.patchState({
+        liveMatches: state.liveMatches.filter((match) => match.id !== action.id),
+      });
+    });
+  }
+  
   @Action(FetchMachesForPlayerIdAction)
   fetchMachesForPlayerId(ctx: StateContext<MatchStateModel>, action: FetchMachesForPlayerIdAction) {
     const state = ctx.getState();

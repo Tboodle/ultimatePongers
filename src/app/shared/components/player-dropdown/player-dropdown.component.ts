@@ -22,6 +22,7 @@ export class PlayerDropdownComponent implements OnChanges, AfterViewChecked {
   @Input() scoreEnabled = true;
   @Input() score: number;
   @Input() flatView = false;
+  @Input() errorMessage = '';
   @Output() selectionEmitter = new EventEmitter<any>();
   @Output() scoreEmitter = new EventEmitter<number>();
 

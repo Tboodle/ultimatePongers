@@ -11,6 +11,9 @@ import { MatchFacade } from './shared/data/match/match.facade';
 import { PlayerFacade } from './shared/data/player/player.facade';
 import { NewMatchAnimationComponent } from './shared/modals/new-match-animation/new-match-animation.component';
 import { AuthModalComponent } from './shared/modals/auth-modal/auth-modal.component';
+import { StartLiveMatchModalComponent } from './shared/modals/start-live-match-modal/add-match-modal/start-live-match-modal.component';
+import { LiveMatch } from './shared/models/liveMatch';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -22,11 +25,14 @@ export class AppComponent implements OnInit {
   playerId: string;
   currentUser: User;
   addMatchModal: ComponentRef<AddMatchModalComponent>;
+  startLiveMatchModal: ComponentRef<StartLiveMatchModalComponent>;
   registerModal: ComponentRef<RegisterModalComponent>;
   authModal: ComponentRef<AuthModalComponent>;
   profileDropdownOpen = false;
   appViewRef: ViewContainerRef;
   newMatchAnimation: ComponentRef<NewMatchAnimationComponent>;
+  liveMatches$: Observable<LiveMatch[]>;
+  faEye = faEye;
 
   constructor(
     private router: Router,
@@ -36,6 +42,7 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
   ) {
     this.appViewRef = vcr;
+    this.liveMatches$ = matchFacade.liveMatches$;
   }
 
   async ngOnInit() {
@@ -45,6 +52,7 @@ export class AppComponent implements OnInit {
           if (user) {
             this.closeAuthModal();
             this.matchFacade.fetchMatches();
+            this.matchFacade.fetchLiveMatches();
             this.playerFacade.fetchPlayers();
           } else {
             this.displayAuthModal();
@@ -90,6 +98,18 @@ export class AppComponent implements OnInit {
     this.addMatchModal.instance.closeModal.subscribe((match?: Match) => {
       if (match) {
         this.matchFacade.addMatch(match);
+      }
+      this.vcr.clear();
+    });
+  }
+
+  displayLiveMatchModal() {
+    this.startLiveMatchModal = this.vcr.createComponent(StartLiveMatchModalComponent);
+    this.startLiveMatchModal.instance.players$ = this.playerFacade.players$;
+    this.startLiveMatchModal.instance.liveMatches$ = this.matchFacade.liveMatches$;
+    this.startLiveMatchModal.instance.closeModal.subscribe((match?: LiveMatch) => {
+      if (match) {
+        this.matchFacade.addLiveMatch(match);
       }
       this.vcr.clear();
     });

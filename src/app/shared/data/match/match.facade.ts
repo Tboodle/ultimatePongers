@@ -6,12 +6,16 @@ import { Match } from '../../models/match';
 import { Player } from '../../models/player';
 import { UpdatePlayersForMatchAction } from '../player/player.actions';
 import {
+  AddLiveMatchAction,
   AddMatchAction,
+  CancelLiveMatchAction,
+  FetchLiveMatchesAction,
   FetchMachesForPlayerIdAction,
   FetchMatchesAction,
   WatchForNewMatchAction,
 } from './match.actions';
 import { MatchState } from './match.state';
+import { LiveMatch } from '../../models/liveMatch';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +28,7 @@ export class MatchFacade {
     [id: string]: Match[];
   }>;
   @Select(MatchState.getNewMatch) newMatch$: Observable<Match>;
+  @Select(MatchState.getLiveMatches) liveMatches$: Observable<LiveMatch[]>;
 
   constructor(private store: Store) {
     this.store.dispatch(new WatchForNewMatchAction());
@@ -33,6 +38,10 @@ export class MatchFacade {
     return this.store.dispatch(new FetchMatchesAction());
   }
 
+  fetchLiveMatches(): Observable<any> {
+    return this.store.dispatch(new FetchLiveMatchesAction());
+  }
+
   fetchMatchesForId(id: string): Observable<any> {
     return this.store.dispatch(new FetchMachesForPlayerIdAction(id));
   }
@@ -40,6 +49,14 @@ export class MatchFacade {
   addMatch(match: Match): void {
     this.store.dispatch(new UpdatePlayersForMatchAction(match));
     this.store.dispatch(new AddMatchAction(match));
+  }
+
+  addLiveMatch(liveMatch: LiveMatch): void {
+    this.store.dispatch(new AddLiveMatchAction(liveMatch));
+  }
+
+  cancelLiveMatch(id: string): void {
+    this.store.dispatch(new CancelLiveMatchAction(id))
   }
 
   startNewMatchAnimation(match: Match, winner: Player, loser: Player, viewRef: ViewContainerRef) {

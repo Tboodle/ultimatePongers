@@ -1,8 +1,43 @@
-<!-- background -->
 <div class="relative flex flex-col justify-center">
-  <!-- card -->
+  <div
+    *ngIf="liveMatches?.length > 0"
+    class="flex flex-col justify-center bg-white rounded-2xl shadow-xl shadow-slate-300/60 mb-4 p-4"
+  >
+    <div class="flex h-min pb-8 px-6 justify-between">
+      <h1 class="text-3xl font-medium text-slate-800">Live Match</h1>
+      <button
+        *ngIf="playerIsActive()"
+        class="bg-bti-orange-800 hover:bg-bti-orange-600 text-white font-semibold rounded shadow px-2 ml-2"
+        (click)="cancelUserMatch()"
+      >
+        Cancel my match
+      </button>
+    </div>
+    <div
+      class="text-sm tracking-tight font-light text-slate-400 leading-6 flex grid-cols-3 flex-row px-6 mb-3 grid justify-center items-center"
+    >
+      <live-player-display
+        [player]="getLeftPlayerForLiveMatch(liveMatches[0])"
+      ></live-player-display>
+      <span class="text-center text-3xl">VS</span>
+      <live-player-display
+        [player]="getRightPlayerForLiveMatch(liveMatches[0])"
+      ></live-player-display>
+    </div>
+
+    <div *ngIf="liveMatches.length > 1" class=" px-6">
+      <h1 class="text-3xl font-medium text-slate-800 mt-4">On Deck</h1>
+      <div
+        *ngFor="let match of liveMatches.slice(1); let i = index"
+        class="text-sm tracking-tight font-light text-slate-400 leading-6 flex grid-cols-3 flex-row px-6 mb-3 grid justify-center items-center"
+      >
+        <live-player-display [player]="getLeftPlayerForLiveMatch(match)"></live-player-display>
+        <span class="text-center text-3xl">VS</span>
+        <live-player-display [player]="getRightPlayerForLiveMatch(match)"></live-player-display>
+      </div>
+    </div>
+  </div>
   <div class="flex flex-col justify-center bg-white rounded-2xl shadow-xl shadow-slate-300/60">
-    <!-- text information -->
     <div class="p-4">
       <h1 class="text-3xl font-medium text-slate-800 pb-8 px-6">Recent Matches</h1>
       <div *ngIf="matches?.length; else noMatches">
@@ -11,7 +46,10 @@
           class="text-sm tracking-tight font-light text-slate-400 leading-6 flex flex-row px-6 mb-3"
         >
           <div class="text-slate-400 w-1/4 grid grid-rows-3">
-            <div class="row-span-1" (click)="replayAnimationForMatch(match)">
+            <div
+              class="row-span-1 cursor-pointer hover:underline"
+              (click)="replayAnimationForMatch(match)"
+            >
               {{ match.date | formatDate }}
             </div>
           </div>

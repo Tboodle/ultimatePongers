@@ -7,6 +7,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { LeaderboardComponent } from './home-page/components/leaderboard/leaderboard.component';
 import { RecentMatchesComponent } from './home-page/components/recent-matches/recent-matches.component';
 import { MatchPlayerDisplayComponent } from './home-page/components/match-player-display/match-player-display.component';
+import { LivePlayerDisplayComponent } from './home-page/components/live-player-display/live-player-display.component';
 import { FormatDatePipe } from './shared/pipes/format-date.pipe';
 import { AddMatchModalComponent } from './shared/modals/add-match-modal/add-match-modal/add-match-modal.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -41,6 +42,8 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { NgxsModule } from '@ngxs/store';
 import { MatchState } from './shared/data/match/match.state';
 import { PlayerState } from './shared/data/player/player.state';
+import { StartLiveMatchModalComponent } from './shared/modals/start-live-match-modal/add-match-modal/start-live-match-modal.component';
+import { SortMatchesByDatePipe } from './shared/pipes/sort-match-by-date';
 
 @NgModule({
   declarations: [
@@ -49,9 +52,12 @@ import { PlayerState } from './shared/data/player/player.state';
     LeaderboardComponent,
     RecentMatchesComponent,
     MatchPlayerDisplayComponent,
+    LivePlayerDisplayComponent,
     FormatDatePipe,
     SortPlayersByEloPipe,
+    SortMatchesByDatePipe,
     AddMatchModalComponent,
+    StartLiveMatchModalComponent,
     PlayerDropdownComponent,
     RegisterModalComponent,
     NewMatchAnimationComponent,

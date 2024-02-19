@@ -1,7 +1,12 @@
+import { LiveMatch } from '../../models/liveMatch';
 import { Match } from '../../models/match';
 
 export class FetchMatchesAction {
   static readonly type = '[Match] Fetch Matches';
+}
+
+export class FetchLiveMatchesAction {
+  static readonly type = '[Match] Fetch Live Matches';
 }
 
 export class FetchMachesForPlayerIdAction {
@@ -12,6 +17,15 @@ export class FetchMachesForPlayerIdAction {
 export class AddMatchAction {
   static readonly type = '[Match] Add Match';
   constructor(public match: Match) {}
+}
+
+export class AddLiveMatchAction {
+  static readonly type = '[Match] Add Live Match';
+  constructor(public liveMatch: LiveMatch) {}
+}
+export class CancelLiveMatchAction {
+  static readonly type = '[Match] Cancel Live Match';
+  constructor(public id: string) {}
 }
 
 export class WatchForNewMatchAction {

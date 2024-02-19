@@ -28,9 +28,22 @@
           >
             Stats
           </a>
+
+          <a
+            *ngIf="(liveMatches$ | async).length > 0"
+            href="http://192.168.1.25:8082"
+            class="text-base font-medium text-white hover:text-indigo-50"
+            [ngClass]="{ active: isStatsPage() }"
+          >
+            Watch
+          </a>
         </div>
       </div>
       <div class="flex align-middle space-x-6 sm:space-x-8">
+        <button
+          class="bg-bti-orange-800 hover:bg-bti-orange-600 text-white font-semibold py-2 px-4 rounded shadow after:content-['Start'] sm:after:content-['Start_Live_Match']"
+          (click)="displayLiveMatchModal()"
+        ></button>
         <button
           class="bg-bti-orange-800 hover:bg-bti-orange-600 text-white font-semibold py-2 px-4 rounded shadow after:content-['Add'] sm:after:content-['Add_Match']"
           (click)="displayAddMatchModal()"

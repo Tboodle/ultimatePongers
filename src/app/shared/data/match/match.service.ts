@@ -3,6 +3,7 @@ import { forkJoin, from, map, Observable } from 'rxjs';
 import { Match } from '../../models/match';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { LiveMatch } from '../../models/liveMatch';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,19 @@ export class MatchService {
               return { ...match, date: new Date(match.date?.seconds * 1000) };
             }) as Match[],
         ),
+      );
+  }
+
+  public getLiveMatches(): Observable<LiveMatch[]> {
+    return this.afs
+      .collection('liveMatches', (ref) => ref.orderBy('date', 'desc').limit(10))
+      .valueChanges()
+      .pipe(
+        map((liveMatches: any[]) => {
+          return liveMatches.map((liveMatch) => {
+            return { ...liveMatch, date: new Date(liveMatch.date?.seconds * 1000) };
+          }) as LiveMatch[];
+        }),
       );
   }
 
@@ -52,6 +66,19 @@ export class MatchService {
 
   public addMatch(match: Match): Observable<any> {
     return from(this.afs.collection('matches').add(match));
+    // return from([]);
+  }
+
+  public handleLiveMatchResult(liveMatch: LiveMatch, match: Match): Observable<any> {
+    return from(this.afs.collection('liveMatches').doc(liveMatch.id).delete());
+  }
+
+  public addLiveMatch(liveMatch: LiveMatch): Observable<any> {
+    return from(this.afs.collection('liveMatches').doc(liveMatch.id).set(liveMatch));
+  }
+
+  public cancelLiveMatch(id: string): Observable<any> {
+    return from(this.afs.collection('liveMatches').doc(id).delete());
   }
 
   public watchForNewMatch(): Observable<Match> {
