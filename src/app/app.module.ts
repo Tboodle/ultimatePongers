@@ -43,6 +43,7 @@ import { NgxsModule } from '@ngxs/store';
 import { MatchState } from './shared/data/match/match.state';
 import { PlayerState } from './shared/data/player/player.state';
 import { StartLiveMatchModalComponent } from './shared/modals/start-live-match-modal/add-match-modal/start-live-match-modal.component';
+import { SortMatchesByDatePipe } from './shared/pipes/sort-match-by-date';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { StartLiveMatchModalComponent } from './shared/modals/start-live-match-m
     LivePlayerDisplayComponent,
     FormatDatePipe,
     SortPlayersByEloPipe,
+    SortMatchesByDatePipe,
     AddMatchModalComponent,
     StartLiveMatchModalComponent,
     PlayerDropdownComponent,

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { faArrowRightRotate, faClose } from '@fortawesome/free-solid-svg-icons';
 import { MatchFacade } from 'src/app/shared/data/match/match.facade';
 import { PlayerFacade } from 'src/app/shared/data/player/player.facade';
@@ -11,7 +11,7 @@ import { Player } from 'src/app/shared/models/player';
   templateUrl: './recent-matches.component.html',
   styleUrls: ['./recent-matches.component.scss'],
 })
-export class RecentMatchesComponent {
+export class RecentMatchesComponent implements OnInit {
   @Input() matches: Match[];
   @Input() liveMatches: LiveMatch[];
   @Input() players: Player[];
@@ -19,6 +19,10 @@ export class RecentMatchesComponent {
   @Output() playAnimationForMatchEmitter = new EventEmitter<Match>();
 
   constructor(private matchFacade: MatchFacade) {}
+
+  ngOnInit(): void {
+    console.log(this.liveMatches);
+  }
 
   faArrowRightRotate = faArrowRightRotate;
   faClose = faClose;

@@ -7,7 +7,7 @@
     [currentPlayer]="currentPlayer$ | async"
     [matches]="matches$ | async"
     [players]="players$ | async"
-    [liveMatches]="liveMatches$ | async"
+    [liveMatches]="liveMatches$ | sortMatchesByDate | async"
     (playAnimationForMatchEmitter)="startNewMatchAnimation($event)"
   >
   </app-recent-matches>
