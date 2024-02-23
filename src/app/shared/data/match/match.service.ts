@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, from, map, Observable } from 'rxjs';
+import { forkJoin, from, map, Observable, of } from 'rxjs';
 import { Match } from '../../models/match';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -65,6 +65,7 @@ export class MatchService {
   }
 
   public addMatch(match: Match): Observable<any> {
+    return of();
     return from(this.afs.collection('matches').add(match));
     // return from([]);
   }

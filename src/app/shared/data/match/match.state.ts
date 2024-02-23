@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { filter, map } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs';
 import { Match } from '../../models/match';
 import { UpdatePlayersForMatchAction } from '../player/player.actions';
 import {
@@ -90,16 +90,18 @@ export class MatchState {
         (matchResult.winnerStartElo && liveMatch.player2 === matchResult.winnerId) ||
         matchResult.loserId,
     );
-    this.matchService
-      .handleLiveMatchResult(liveMatch, matchResult)
-      .pipe(map(() => this.matchService.addMatch(matchResult)))
-      .subscribe(() => {
-        // console.log('match added!');
-        this.store.dispatch(new UpdatePlayersForMatchAction(matchResult));
-        ctx.patchState({
-          recentMatches: [...state.recentMatches, matchResult],
-        });
+    const matchCall = liveMatch
+      ? this.matchService
+          .handleLiveMatchResult(liveMatch, matchResult)
+          .pipe(switchMap(() => this.matchService.addMatch(matchResult)))
+      : this.matchService.addMatch(matchResult);
+
+    matchCall.subscribe(() => {
+      this.store.dispatch(new UpdatePlayersForMatchAction(matchResult));
+      ctx.patchState({
+        recentMatches: [...state.recentMatches, matchResult],
       });
+    });
   }
 
   @Action(AddLiveMatchAction)
@@ -122,7 +124,7 @@ export class MatchState {
       });
     });
   }
-  
+
   @Action(FetchMachesForPlayerIdAction)
   fetchMachesForPlayerId(ctx: StateContext<MatchStateModel>, action: FetchMachesForPlayerIdAction) {
     const state = ctx.getState();
