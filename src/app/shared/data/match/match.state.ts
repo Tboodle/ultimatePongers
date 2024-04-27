@@ -35,10 +35,7 @@ export interface MatchStateModel {
 export class MatchState {
   ELO_CONST = 40;
 
-  constructor(
-    private store: Store,
-    private matchService: MatchService,
-  ) {}
+  constructor(private store: Store, private matchService: MatchService) {}
 
   @Selector()
   static getMatches(state: MatchStateModel) {
@@ -85,9 +82,9 @@ export class MatchState {
     const state = ctx.getState();
     const matchResult = this.setMatchEndElos(action.match);
     const liveMatch = state.liveMatches.find(
-      (liveMatch: LiveMatch) =>
-        liveMatch.player1 == matchResult.winnerId ||
-        (matchResult.winnerStartElo && liveMatch.player2 === matchResult.winnerId) ||
+      (match: LiveMatch) =>
+        match.player1 == matchResult.winnerId ||
+        (matchResult.winnerStartElo && match.player2 === matchResult.winnerId) ||
         matchResult.loserId,
     );
     const matchCall = liveMatch

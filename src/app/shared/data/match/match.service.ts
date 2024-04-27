@@ -65,9 +65,7 @@ export class MatchService {
   }
 
   public addMatch(match: Match): Observable<any> {
-    return of();
     return from(this.afs.collection('matches').add(match));
-    // return from([]);
   }
 
   public handleLiveMatchResult(liveMatch: LiveMatch, match: Match): Observable<any> {
